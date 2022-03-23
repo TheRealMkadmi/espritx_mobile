@@ -23,6 +23,7 @@ import com.codename1.ui.*;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import com.espritx.client.gui.posts.HomeForm;
+import com.espritx.client.gui.service.ShowForm;
 import com.espritx.client.gui.user.LoginForm;
 import com.espritx.client.gui.user.ShowUsers;
 import com.espritx.client.services.User.AuthenticationService;
@@ -60,8 +61,7 @@ public class BaseForm extends Form {
         inboxButton.addActionListener(e -> new InboxForm().show());
         getToolbar().addComponentToSideMenu(inbox);
         getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new CalendarForm(res).show());
-        getToolbar().addCommandToSideMenu("Map", null, e -> {
-        });
+        getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
         getToolbar().addCommandToSideMenu("Trending", trendingImage, e -> new TrendingForm(res).show());
         getToolbar().addCommandToSideMenu("Settings", null, e -> {
         });
