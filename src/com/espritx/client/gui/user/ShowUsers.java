@@ -20,11 +20,13 @@ import java.util.List;
  * @author Wahib
  */
 public class ShowUsers extends BaseForm {
+    private UserService userService;
     public ShowUsers() {
         this(Resources.getGlobalResources());
     }
 
     public ShowUsers(Resources resourceObjectInstance) {
+        this.userService = new UserService();
         setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setInlineStylesTheme(resourceObjectInstance);
         initUserControls(resourceObjectInstance);
@@ -35,21 +37,36 @@ public class ShowUsers extends BaseForm {
 
     private void initUserControls(Resources resourceObjectInstance) {
         Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
-        List<User> userList = UserService.GetAllUsers();
-        int size = Display.getInstance().convertToPixels(5, true);
+        List<User> userList = this.userService.GetAll();
         Container list = new Container(BoxLayout.y());
         list.setScrollableY(true);
         list.setInlineStylesTheme(resourceObjectInstance);
-        FontImage fi = FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size);
+        int size = Display.getInstance().convertToPixels(8, true);
+        EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
         for (User user : userList) {
             MultiButton mb = new MultiButton(user.first_name.get() + " " + user.last_name.get());
-            mb.setIcon(fi);
+            mb.setInlineStylesTheme(resourceObjectInstance);
+            mb.setIcon(placeholder);
+            mb.setUIIDLine1("SlightlySmallerFontLabelLeft");
             mb.setTextLine2(user.email.get());
+            mb.setUIIDLine2("RedLabel");
             mb.addActionListener(e -> {
                 new UserForm(resourceObjectInstance, user).show();
             });
             list.addComponent(mb);
             mb.putClientProperty("id", user.id.getInt());
+            if (user.avatarFile.get() != null) {
+                Display.getInstance().scheduleBackgroundTask(() -> {
+                    Display.getInstance().callSerially(() -> {
+                        String[] fragments = user.avatarFile.get().split("/");
+                        String storageName = fragments[fragments.length - 1];
+                        URLImage photo = URLImage.createToStorage(placeholder, storageName, user.avatarFile.get());
+                        photo.fetch();
+                        mb.setIcon(photo.scaled(size, size));
+                        mb.revalidate();
+                    });
+                });
+            }
         }
         addComponent(list);
         getToolbar().addSearchCommand(e -> {
@@ -73,6 +90,9 @@ public class ShowUsers extends BaseForm {
             }
             list.animateLayout(150);
         }, 4);
+        getToolbar().addCommandToRightBar("", FontImage.createMaterial(FontImage.MATERIAL_PERSON_ADD, "FloatingActionButton",4f), (e) -> {
+            (new UserForm(resourceObjectInstance, new User())).show();
+        });
         dlg.dispose();
     }
 }

@@ -15,13 +15,14 @@ public class User implements PropertyBusinessObject {
     public final Property<String, User> identityType = new Property<>("identityType");
     public final Property<String, User> phoneNumber = new Property<>("phoneNumber");
     public final Property<String, User> identityDocumentNumber = new Property<>("identityDocumentNumber");
+    public final Property<String, User> plainPassword = new Property<>("identityDocumentNumber");
 
-    public final SetProperty<Group, User> groups = new SetProperty<>("groups");
+    public final ListProperty<Group, User> groups = new ListProperty<>("groups");
 
     public final PropertyIndex idx = new PropertyIndex(this, "User",
             id, avatarFile, first_name, last_name, email, phoneNumber, classe, userStatus,
             identityType, identityDocumentNumber,
-            groups
+            groups, plainPassword
     );
 
     public boolean isStudent() { return this.isOfGroup("student"); }
@@ -43,6 +44,7 @@ public class User implements PropertyBusinessObject {
     }
 
     public User() {
+        avatarFile.setLabel("Avatar");
         first_name.setLabel("First Name");
         last_name.setLabel("Last Name");
         email.setLabel("E-Mail");
@@ -50,6 +52,7 @@ public class User implements PropertyBusinessObject {
         userStatus.setLabel("User Status");
         classe.setLabel("Enrolled in Class");
         identityType.setLabel("Identity Document Type");
+        plainPassword.setLabel("Plain Password");
     }
 
     @Override

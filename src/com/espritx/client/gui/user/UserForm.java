@@ -17,17 +17,21 @@ import com.espritx.client.entities.User;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.User.UserService;
 
+import java.util.ArrayList;
+
 /**
  * @author Wahib
  */
 public class UserForm extends BaseForm {
     private User user;
+    private UserService userService;
 
     public UserForm() {
         this(Resources.getGlobalResources());
     }
 
     public UserForm(Resources resourceObjectInstance, User instance) {
+        this.userService = new UserService(); // Who needs DI when you have CN1?
         this.user = instance;
         instance.getPropertyIndex().registerExternalizable();
         setLayout(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_CENTER));
@@ -35,7 +39,7 @@ public class UserForm extends BaseForm {
         setInlineStylesTheme(resourceObjectInstance);
         initUserControls(resourceObjectInstance);
         installSidemenu(resourceObjectInstance);
-        getToolbar().setTitleComponent(new Label("Add a User", "Title"));
+        getToolbar().setTitleComponent(new Label("User Details", "Title"));
     }
 
     public UserForm(Resources resourceObjectInstance) {
@@ -52,7 +56,7 @@ public class UserForm extends BaseForm {
     private void initUserControls(Resources resourceObjectInstance) {
         InstantUI iui = new InstantUI();
         iui.excludeProperty(this.user.id);
-        iui.excludeProperty(this.user.groups);
+        iui.excludeProperty(this.user.avatarFile);
         iui.setMultiChoiceLabels(this.user.userStatus, "Active", "Pending", "Inactive", "Restricted");
         iui.setMultiChoiceValues(this.user.userStatus, "active", "pending", "inactive", "restricted");
         iui.setMultiChoiceLabels(this.user.identityType, "ID Card", "Passport", "N/A");
@@ -63,12 +67,16 @@ public class UserForm extends BaseForm {
         cnt.setInlineStylesTheme(resourceObjectInstance);
         addComponent(BorderLayout.CENTER, cnt);
 
-        Container actionsContainer = new Container(BoxLayout.x());
+        ArrayList<Button> actions = new ArrayList<Button>();
         Button saveButton = makeButton("SaveButton", "Save");
         saveButton.addActionListener(evt -> {
             Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
             try {
-                UserService.UpdateUser(user);
+                if (user.id.get() != null) {
+                    this.userService.Update(user);
+                } else {
+                    this.userService.Create(user);
+                }
             } catch (Exception e) {
                 Log.p(e.getMessage(), Log.ERROR);
                 dlg.dispose();
@@ -77,26 +85,28 @@ public class UserForm extends BaseForm {
             dlg.dispose();
             (new ShowUsers()).show();
         });
-        actionsContainer.addComponent(saveButton);
-
-        Button deleteButton = makeButton("DeleteButton", "Delete");
-        deleteButton.addActionListener(evt -> {
-            if(user == AuthenticationService.getAuthenticatedUser()){
-                Dialog.show("Error", "You can't delete yourself...", "ok", null);
-                return;
-            }
-            Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
-            try {
-                UserService.DeleteUser(user);
-            } catch (Exception e) {
-                Log.p(e.getMessage(), Log.ERROR);
+        actions.add(saveButton);
+        if (user.id.get() != null) {
+            Button deleteButton = makeButton("DeleteButton", "Delete");
+            deleteButton.addActionListener(evt -> {
+                if (user == AuthenticationService.getAuthenticatedUser()) {
+                    Dialog.show("Error", "You can't delete yourself...", "ok", null);
+                    return;
+                }
+                Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
+                try {
+                    this.userService.Delete(user);
+                } catch (Exception e) {
+                    Log.p(e.getMessage(), Log.ERROR);
+                    dlg.dispose();
+                    Dialog.show("error", e.getMessage(), "ok", null);
+                }
                 dlg.dispose();
-                Dialog.show("error", e.getMessage(), "ok", null);
-            }
-            dlg.dispose();
-            (new ShowUsers()).show();
-        });
-        actionsContainer.addComponent(deleteButton);
+                (new ShowUsers()).show();
+            });
+            actions.add(deleteButton);
+        }
+        Container actionsContainer = BoxLayout.encloseXCenter(actions.toArray(new Button[0]));
         addComponent(BorderLayout.SOUTH, actionsContainer);
     }
 }
