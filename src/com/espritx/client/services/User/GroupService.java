@@ -1,27 +1,26 @@
 package com.espritx.client.services.User;
 
+import ca.weblite.codename1.json.JSONObject;
 import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
+import com.codename1.processing.Result;
 import com.codename1.properties.PropertyBusinessObject;
 import com.espritx.client.entities.Group;
 import com.espritx.client.entities.Group;
+import com.espritx.client.entities.User;
+import com.espritx.client.services.AbstractService;
 import com.espritx.client.utils.Statics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class GroupService {
+public class GroupService extends AbstractService {
 
     public static List<Group> GetAll() {
-        Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/group").acceptJson().getAsPropertyList(Group.class);
-        List<PropertyBusinessObject> res = k.getResponseData();
-        List<Group> u = new ArrayList<>(); // why can't streams be used in android build?!
-        for (PropertyBusinessObject r : res) {
-            u.add((Group) r);
-        }
-        return u;
+        return fetchListFrom(Statics.BASE_URL + "/group", Group.class);
     }
 
     public static Map Create(Group u) {
@@ -34,6 +33,22 @@ public class GroupService {
 
     public static Map Delete(Group u) {
         return Rest.delete(Statics.BASE_URL + "/group/" + u.id).jsonContent().acceptJson().getAsJsonMap().getResponseData();
+    }
+
+    public static List<User> GetMembers(Group group) {
+        return fetchListFrom(Statics.BASE_URL + "/group/" + group.id + "/users", User.class);
+    }
+
+    public static Map AddUserToGroup(String email, Group group) {
+        Map<String, String> auth = new HashMap<>();
+        auth.put("email", email);
+        final String payload = Result.fromContent(auth).toString();
+
+        return Rest.post(Statics.BASE_URL + "/group/" + group.id + "/users").body(payload).jsonContent().acceptJson().getAsJsonMap().getResponseData();
+    }
+
+    public static Map RemoveUserFromGroup(int id, Group group) {
+        return Rest.delete(Statics.BASE_URL + "/group/" + group.id + "/users/" + id).jsonContent().acceptJson().getAsJsonMap().getResponseData();
     }
 }
 

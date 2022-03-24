@@ -16,4 +16,10 @@ public class Group implements PropertyBusinessObject {
     public PropertyIndex getPropertyIndex() {
         return idx;
     }
+
+    public Group(){
+        this.display_name.setLabel("Display Name");
+        this.security_title.setLabel("Security Title");
+        this.group_type.setLabel("Group Type");
+    }
 }

@@ -9,14 +9,13 @@ public class User implements PropertyBusinessObject {
     public final Property<String, User> first_name = new Property<>("first_name");
     public final Property<String, User> last_name = new Property<>("last_name");
     public final Property<String, User> email = new Property<>("email");
-    public final Property<String, User> classe = new Property<>("class");
     public final Property<String, User> userStatus = new Property<>("userStatus");
+    public final Property<String, User> classe = new Property<>("class");
     public final Property<String, User> avatarFile = new Property<>("avatarFile");
     public final Property<String, User> identityType = new Property<>("identityType");
     public final Property<String, User> phoneNumber = new Property<>("phoneNumber");
     public final Property<String, User> identityDocumentNumber = new Property<>("identityDocumentNumber");
-    public final Property<String, User> plainPassword = new Property<>("identityDocumentNumber");
-
+    public final Property<String, User> plainPassword = new Property<>("plainPassword");
     public final ListProperty<Group, User> groups = new ListProperty<>("groups");
 
     public final PropertyIndex idx = new PropertyIndex(this, "User",
@@ -52,6 +51,7 @@ public class User implements PropertyBusinessObject {
         userStatus.setLabel("User Status");
         classe.setLabel("Enrolled in Class");
         identityType.setLabel("Identity Document Type");
+        identityDocumentNumber.setLabel("Identity Document Number");
         plainPassword.setLabel("Plain Password");
     }
 

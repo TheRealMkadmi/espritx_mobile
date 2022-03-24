@@ -2,11 +2,14 @@ package com.espritx.client.services.User;
 
 import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
+import com.codename1.processing.Result;
 import com.codename1.properties.PropertyBusinessObject;
+import com.espritx.client.entities.Group;
 import com.espritx.client.entities.User;
 import com.espritx.client.utils.Statics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,5 +38,15 @@ public class UserService {
 
     public static Map Delete(User u) {
         return Rest.delete(Statics.BASE_URL + "/user/" + u.id).jsonContent().acceptJson().getAsJsonMap().getResponseData();
+    }
+
+    public static ArrayList<String> AutoComplete(String text) {
+        Map<String, String> auth = new HashMap<>();
+        auth.put("email", text);
+        final String payload = Result.fromContent(auth).toString();
+        Response<Map> k = Rest.post(Statics.BASE_URL + "/user/autocomplete_emails").body(payload).jsonContent().acceptJson().getAsJsonMap();
+        Map res = k.getResponseData();
+        ArrayList<String> arrayList = (ArrayList<String>)res.get("values");
+        return arrayList;
     }
 }
