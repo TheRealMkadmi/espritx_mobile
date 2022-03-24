@@ -12,7 +12,9 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
 import com.codename1.util.StringUtil;
+import com.espritx.client.entities.Group;
 import com.espritx.client.entities.User;
+import com.espritx.client.services.User.GroupService;
 import com.espritx.client.services.User.UserService;
 import com.espritx.client.utils.StringUtils;
 
@@ -21,52 +23,41 @@ import java.util.List;
 /**
  * @author Wahib
  */
-public class ShowUsers extends BaseForm {
+public class ShowGroups extends BaseForm {
 
-    public ShowUsers() {
+    public ShowGroups() {
         this(Resources.getGlobalResources());
     }
 
-    public ShowUsers(Resources resourceObjectInstance) {
+    public ShowGroups(Resources resourceObjectInstance) {
         setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setInlineStylesTheme(resourceObjectInstance);
         initUserControls(resourceObjectInstance);
-        setTitle("Manage Users");
-        setName("ManageUsers");
+        setTitle("Manage Groups");
+        setName("ManageGroups");
         installSidemenu(resourceObjectInstance);
     }
 
     private void initUserControls(Resources resourceObjectInstance) {
         Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
-        List<User> userList = UserService.GetAll();
+        List<Group> groupList = GroupService.GetAll();
         Container list = new Container(BoxLayout.y());
         list.setScrollableY(true);
         list.setInlineStylesTheme(resourceObjectInstance);
         int size = Display.getInstance().convertToPixels(8, true);
         EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
-        for (User user : userList) {
-            MultiButton mb = new MultiButton(user.first_name.get() + " " + user.last_name.get());
+        for (Group group : groupList) {
+            MultiButton mb = new MultiButton(group.display_name.get());
             mb.setInlineStylesTheme(resourceObjectInstance);
             mb.setIcon(placeholder);
             mb.setUIIDLine1("SlightlySmallerFontLabelLeft");
-            mb.setTextLine2(user.email.get());
+            mb.setTextLine2(group.group_type.get());
             mb.setUIIDLine2("RedLabel");
             mb.addActionListener(e -> {
-                new UserForm(resourceObjectInstance, user).show();
+                new GroupForm(resourceObjectInstance, group).show();
             });
             list.addComponent(mb);
-            mb.putClientProperty("id", user.id.getInt());
-            if (user.avatarFile.get() != null) {
-                Display.getInstance().scheduleBackgroundTask(() -> {
-                    Display.getInstance().callSerially(() -> {
-                        String[] fragments = StringUtils.split(user.avatarFile.get(), "/");
-                        String storageName = fragments[fragments.length - 1];
-                        URLImage photo = URLImage.createToStorage(placeholder, storageName, user.avatarFile.get());
-                        mb.setIcon(photo.scaled(size, size));
-                        mb.revalidate();
-                    });
-                });
-            }
+            mb.putClientProperty("id", group.id.getInt());
         }
         addComponent(list);
         getToolbar().addSearchCommand(e -> {
@@ -91,7 +82,7 @@ public class ShowUsers extends BaseForm {
             list.animateLayout(150);
         }, 4);
         getToolbar().addCommandToRightBar("", FontImage.createMaterial(FontImage.MATERIAL_PERSON_ADD, "FloatingActionButton", 4f), (e) -> {
-            (new UserForm(resourceObjectInstance, new User())).show();
+            (new GroupForm(resourceObjectInstance, new Group())).show();
         });
         dlg.dispose();
     }
