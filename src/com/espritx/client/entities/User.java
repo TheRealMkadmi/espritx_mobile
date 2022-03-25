@@ -32,11 +32,14 @@ public class User implements PropertyBusinessObject {
 
     private boolean isOfGroup(String groupName) {
         for (Group g : this.groups.asList()) {
-            if (g.group_type.get().equals(groupName)) return true;
+            if (g.groupType.get().equals(groupName)) return true;
         }
         return false;
     }
 
+    public String getFullName (){
+        return this.first_name + " " + this.last_name;
+    }
     @Override
     public PropertyIndex getPropertyIndex() {
         return idx;

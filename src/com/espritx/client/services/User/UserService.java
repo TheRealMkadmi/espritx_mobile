@@ -46,7 +46,11 @@ public class UserService {
         final String payload = Result.fromContent(auth).toString();
         Response<Map> k = Rest.post(Statics.BASE_URL + "/user/autocomplete_emails").body(payload).jsonContent().acceptJson().getAsJsonMap();
         Map res = k.getResponseData();
-        ArrayList<String> arrayList = (ArrayList<String>)res.get("values");
+        ArrayList<String> arrayList = (ArrayList<String>) res.get("values");
         return arrayList;
+    }
+
+    public static User fetchUserByEmail(String email) {
+        return (User) Rest.get(Statics.BASE_URL + "/user/fetch_by_email").acceptJson().jsonContent().queryParam("email", email).getAsProperties(User.class).getResponseData();
     }
 }

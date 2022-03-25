@@ -61,7 +61,7 @@ public class UserForm extends BaseForm {
         iui.setMultiChoiceValues(this.user.userStatus, "active", "pending", "inactive", "restricted");
         iui.setMultiChoiceLabels(this.user.identityType, "ID Card", "Passport", "N/A");
         iui.setMultiChoiceValues(this.user.identityType, "cin", "passport", "Unknown");
-
+        iui.excludeProperty(this.user.groups);
         Container cnt = iui.createEditUI(user, true);
         cnt.setScrollableY(true);
         cnt.setInlineStylesTheme(resourceObjectInstance);

@@ -21,6 +21,7 @@ public class GroupService extends AbstractService {
 
     public static List<Group> GetAll() {
         return fetchListFrom(Statics.BASE_URL + "/group", Group.class);
+
     }
 
     public static Map Create(Group u) {
@@ -35,20 +36,5 @@ public class GroupService extends AbstractService {
         return Rest.delete(Statics.BASE_URL + "/group/" + u.id).jsonContent().acceptJson().getAsJsonMap().getResponseData();
     }
 
-    public static List<User> GetMembers(Group group) {
-        return fetchListFrom(Statics.BASE_URL + "/group/" + group.id + "/users", User.class);
-    }
-
-    public static Map AddUserToGroup(String email, Group group) {
-        Map<String, String> auth = new HashMap<>();
-        auth.put("email", email);
-        final String payload = Result.fromContent(auth).toString();
-
-        return Rest.post(Statics.BASE_URL + "/group/" + group.id + "/users").body(payload).jsonContent().acceptJson().getAsJsonMap().getResponseData();
-    }
-
-    public static Map RemoveUserFromGroup(int id, Group group) {
-        return Rest.delete(Statics.BASE_URL + "/group/" + group.id + "/users/" + id).jsonContent().acceptJson().getAsJsonMap().getResponseData();
-    }
 }
 

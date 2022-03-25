@@ -51,7 +51,7 @@ public class ShowGroups extends BaseForm {
             mb.setInlineStylesTheme(resourceObjectInstance);
             mb.setIcon(placeholder);
             mb.setUIIDLine1("SlightlySmallerFontLabelLeft");
-            mb.setTextLine2(group.group_type.get());
+            mb.setTextLine2(group.groupType.get());
             mb.setUIIDLine2("RedLabel");
             mb.addActionListener(e -> {
                 new GroupForm(resourceObjectInstance, group).show();
