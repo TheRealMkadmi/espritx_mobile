@@ -22,6 +22,8 @@ package com.codename1.uikit.pheonixui;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.espritx.client.gui.calendar.AdminEvent;
+import com.espritx.client.gui.calendar.HomeEvent;
 import com.espritx.client.gui.posts.HomeForm;
 import com.espritx.client.gui.service.ShowForm;
 import com.espritx.client.gui.user.LoginForm;
@@ -61,7 +63,10 @@ public class BaseForm extends Form {
         inbox.setUIID("SideCommand");
         inboxButton.addActionListener(e -> new InboxForm().show());
         getToolbar().addComponentToSideMenu(inbox);
-        getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new CalendarForm(res).show());
+        //getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new CalendarForm(res).show());
+        getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new HomeEvent().show());
+        if(!AuthenticationService.getAuthenticatedUser().isStudent())
+        getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
         getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
         getToolbar().addCommandToSideMenu("Trending", trendingImage, e -> new TrendingForm(res).show());
         getToolbar().addCommandToSideMenu("Settings", null, e -> {});
