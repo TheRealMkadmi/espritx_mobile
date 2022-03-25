@@ -16,7 +16,7 @@ public class User implements PropertyBusinessObject {
     public final Property<String, User> phoneNumber = new Property<>("phoneNumber");
     public final Property<String, User> identityDocumentNumber = new Property<>("identityDocumentNumber");
     public final Property<String, User> plainPassword = new Property<>("plainPassword");
-    public final ListProperty<Group, User> groups = new ListProperty<>("groups");
+    public final ListProperty<Group, User> groups = new ListProperty<>("groups", Group.class);
 
     public final PropertyIndex idx = new PropertyIndex(this, "User",
             id, avatarFile, first_name, last_name, email, phoneNumber, classe, userStatus,
