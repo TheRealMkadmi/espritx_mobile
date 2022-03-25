@@ -18,6 +18,7 @@ public class Service {
     ArrayList<Requests> ServiceRequests;
 
     public Service() {
+        Recipient = new ArrayList<>();
     }
 
     public Service(String name, Group responsible, ArrayList<Group> recipient) {
@@ -56,6 +57,10 @@ public class Service {
 
     public void setRecipient(ArrayList<Group> recipient) {
         Recipient = recipient;
+    }
+
+    public void addRecipient(Group g) {
+        Recipient.add(g);
     }
 
     public ArrayList<Requests> getServiceRequests() {

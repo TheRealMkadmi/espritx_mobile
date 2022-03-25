@@ -35,21 +35,22 @@ public class AddServiceForm extends BaseForm {
         Label Respo = new Label("Responsible");
 
         RadioButtonList radioButtonList = new RadioButtonList(new DefaultListModel());
+        radioButtonList.setLayout(BoxLayout.y());
+        for(Group g:groupList) {
+            radioButtonList.getMultiListModel().addItem(g);
+        }
         Button b = new Button("Pick A Responsible");
         b.addActionListener(e -> {
             Dialog d = new Dialog();
-            radioButtonList.setLayout(BoxLayout.y());
             d.setLayout(BoxLayout.y());
             d.getContentPane().setScrollableY(true);
-            for(Group g:groupList) {
-                radioButtonList.getMultiListModel().addItem(g);
-            }
             d.add(radioButtonList);
             radioButtonList.addActionListener(ee -> {
                 b.setText(radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex()).toString());
                 d.dispose();
             });
             d.showPopupDialog(b);
+            d.removeComponent(radioButtonList);
         });
 
         Label Reciep = new Label("Recipients");
@@ -83,7 +84,19 @@ public class AddServiceForm extends BaseForm {
                         Service S = new Service(tfName.getText(),Responsible,Recipients);
 
                         if (ServiceService.getInstance().addService(S)) {
-                            Dialog.show("Success", "Connection accepted", new Command("OK"));
+                            Dialog success = new Dialog("Success");
+                            success.setLayout(BoxLayout.y());
+                            Button btn = new Button("Great");
+                            btn.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent evt) {
+                                    Form f=new ShowForm();
+                                    f.show();
+                                }
+                            });
+                            success.add(new SpanLabel("Service Created Successfully", "DialogBody"));
+                            success.add(btn);
+                            success.show();
                         } else
                             Dialog.show("ERROR", "Server error", new Command("OK"));
                     } catch (NumberFormatException e) {
@@ -91,9 +104,8 @@ public class AddServiceForm extends BaseForm {
                 }
             }
         });
-
+        addAll(tfName,b, Reciep, list, btnValider);
         Form f=new ShowForm();
-        addAll(tfName,b, list, btnValider);
         getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e -> f.show());
         setTitle("Add Service");
         setName("AddService");
