@@ -45,10 +45,8 @@ public class ShowForm extends BaseForm {
         list.setInlineStylesTheme(resourceObjectInstance);
         for (Service s : serviceList) {
             MultiButton mb = new MultiButton(s.getName());
-            //mb.setTextLine2(String.valueOf(s.getId()));
             if(s.getServiceRequests()==null){
-                //mb.setTextLine2("0");
-                mb.setTextLine2(String.valueOf(s.getRecipient().size()));
+                mb.setTextLine2("0");
             }else
             {mb.setTextLine2(String.valueOf(s.getServiceRequests().size()));}
             list.addComponent(mb);

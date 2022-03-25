@@ -25,7 +25,7 @@ public class AddServiceForm extends BaseForm {
     public AddServiceForm(Resources resourceObjectInstance) {
         setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setInlineStylesTheme(resourceObjectInstance);
-        setTitle("Add a new task");
+        setTitle("Add a new Service");
         setLayout(BoxLayout.y());
 
         TextField tfName = new TextField("", "Service Name");
@@ -109,6 +109,5 @@ public class AddServiceForm extends BaseForm {
         getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e -> f.show());
         setTitle("Add Service");
         setName("AddService");
-        installSidemenu(resourceObjectInstance);
     }
 }

@@ -4,6 +4,7 @@ import com.codename1.io.*;
 import com.codename1.processing.Result;
 import com.codename1.ui.events.ActionListener;
 import com.espritx.client.entities.Group;
+import com.espritx.client.entities.Request;
 import com.espritx.client.entities.Service;
 import com.espritx.client.utils.Statics;
 
@@ -48,17 +49,26 @@ public class ServiceService {
                     S.setName("null");
                 else
                     S.setName(obj.get("Name").toString());
+
                 HashMap<String,Object>Resp= (HashMap<String, Object>) obj.get("Responsible");
                 Group Res= new Group();
                 Res.getPropertyIndex().populateFromMap(Resp);
                 S.setResponsible(Res);
-                ArrayList<HashMap> Rece = (ArrayList<HashMap>) obj.get("Recipient");
 
+                ArrayList<HashMap> Rece = (ArrayList<HashMap>) obj.get("Recipient");
                 for (HashMap H:Rece) {
                     Group Rec= new Group();
                     Rec.getPropertyIndex().populateFromMap(H);
                     S.addRecipient(Rec);
                 }
+
+                ArrayList<HashMap> Reqs = (ArrayList<HashMap>) obj.get("serviceRequests");
+                for (HashMap R:Reqs){
+                    Request request = new Request();
+                    request.getPropertyIndex().populateFromMap(R);
+                    S.addRequest(request);
+                }
+
                 services.add(S);
             }
         } catch (IOException ex) {

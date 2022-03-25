@@ -15,10 +15,11 @@ public class Service {
     private String Name;
     private Group Responsible;
     ArrayList<Group> Recipient;
-    ArrayList<Requests> ServiceRequests;
+    ArrayList<Request> ServiceRequests;
 
     public Service() {
         Recipient = new ArrayList<>();
+        ServiceRequests = new ArrayList<>();
     }
 
     public Service(String name, Group responsible, ArrayList<Group> recipient) {
@@ -63,11 +64,13 @@ public class Service {
         Recipient.add(g);
     }
 
-    public ArrayList<Requests> getServiceRequests() {
+    public ArrayList<Request> getServiceRequests() {
         return ServiceRequests;
     }
 
-    public void setServiceRequests(ArrayList<Requests> serviceRequests) {
+    public void setServiceRequest(ArrayList<Request> serviceRequests) {
         ServiceRequests = serviceRequests;
     }
+
+    public void addRequest(Request r) {ServiceRequests.add(r);}
 }
