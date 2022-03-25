@@ -66,7 +66,7 @@ public class BaseForm extends Form {
         //getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new CalendarForm(res).show());
         getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new HomeEvent().show());
         if(!AuthenticationService.getAuthenticatedUser().isStudent())
-        getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
+            getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
         getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
         getToolbar().addCommandToSideMenu("Trending", trendingImage, e -> new TrendingForm(res).show());
         getToolbar().addCommandToSideMenu("Settings", null, e -> {});

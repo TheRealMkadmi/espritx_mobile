@@ -32,7 +32,7 @@ public class User implements PropertyBusinessObject {
 
     private boolean isOfGroup(String groupName) {
         for (Group g : this.groups.asList()) {
-            if (g.groupType.get().equals(groupName)) return true;
+            if (g.groupType.get().toLowerCase().equals(groupName.toLowerCase())) return true;
         }
         return false;
     }
