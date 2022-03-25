@@ -4,6 +4,8 @@ import com.codename1.components.InfiniteProgress;
 import com.codename1.components.MultiButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
@@ -20,6 +22,15 @@ public class ShowForm extends BaseForm {
     public ShowForm(Resources resourceObjectInstance){
         setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setInlineStylesTheme(resourceObjectInstance);
+        Button AddService = new Button("Add Service");
+        AddService.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                Form addser = new AddServiceForm();
+                addser.show();
+            }
+        });
+        addComponent(AddService);
         initUserControls(resourceObjectInstance);
         setTitle("Manage Services");
         setName("ManageServices");

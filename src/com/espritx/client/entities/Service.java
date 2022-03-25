@@ -5,6 +5,8 @@
  */
 package com.espritx.client.entities;
 
+import java.util.ArrayList;
+
 /**
  * @author Hedi
  */
@@ -12,67 +14,55 @@ public class Service {
     private int id;
     private String Name;
     private Group Responsible;
-    Group[] Recipient;
-    Requests[] ServiceRequests;
+    ArrayList<Group> Recipient;
+    ArrayList<Requests> ServiceRequests;
 
     public Service() {
     }
 
-    public Service(int id, String Name, Group Responsible, Group[] Recipient, Requests[] ServiceRequests) {
-        this.id = id;
-        this.Name = Name;
-        this.Responsible = Responsible;
-        this.Recipient = Recipient;
-        this.ServiceRequests = ServiceRequests;
-    }
-
-    public Service(String Name, Group Responsible, Group[] Recipient) {
-        this.Name = Name;
-        this.Responsible = Responsible;
-        this.Recipient = Recipient;
-    }
-
-    public Service(String Name) {
-        this.Name = Name;
+    public Service(String name, Group responsible, ArrayList<Group> recipient) {
+        Name = name;
+        Responsible = responsible;
+        Recipient = recipient;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return Name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        Name = name;
     }
 
     public Group getResponsible() {
         return Responsible;
     }
 
-    public void setResponsible(Group Responsible) {
-        this.Responsible = Responsible;
+    public void setResponsible(Group responsible) {
+        Responsible = responsible;
     }
 
-    public Group[] getRecipient() {
+    public ArrayList<Group> getRecipient() {
         return Recipient;
     }
 
-    public void setRecipient(Group[] Recipient) {
-        this.Recipient = Recipient;
+    public void setRecipient(ArrayList<Group> recipient) {
+        Recipient = recipient;
     }
 
-    public Requests[] getServiceRequests() {
+    public ArrayList<Requests> getServiceRequests() {
         return ServiceRequests;
     }
 
-    public void setServiceRequests(Requests[] ServiceRequests) {
-        this.ServiceRequests = ServiceRequests;
+    public void setServiceRequests(ArrayList<Requests> serviceRequests) {
+        ServiceRequests = serviceRequests;
     }
-
-
 }

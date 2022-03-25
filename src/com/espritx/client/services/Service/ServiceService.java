@@ -71,9 +71,12 @@ public class ServiceService {
     }
 
     public boolean addService(Service S) {
-        String url = Statics.BASE_URL + "/service/new";
+        String url = Statics.BASE_URL + "/service/add/";
         req.setUrl(url);
-        req.setPost(true);
+        req.setPost(false);
+        req.addArgument("Name", S.getName());
+        req.addArgument("Responsible",S.getResponsible().toString());
+        req.addArgument("Recipient",S.getRecipient().toString());
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {

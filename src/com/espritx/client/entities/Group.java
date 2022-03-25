@@ -22,4 +22,9 @@ public class Group implements PropertyBusinessObject {
         this.security_title.setLabel("Security Title");
         this.group_type.setLabel("Group Type");
     }
+
+    @Override
+    public String toString() {
+        return display_name.toString();
+    }
 }
