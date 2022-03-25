@@ -1,11 +1,13 @@
 package com.espritx.client.services.Service;
 
 import com.codename1.io.*;
+import com.codename1.processing.Result;
 import com.codename1.ui.events.ActionListener;
 import com.espritx.client.entities.Service;
 import com.espritx.client.utils.Statics;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,7 +16,7 @@ public class ServiceService {
 
     public ArrayList<Service> services;
 
-    public static ServiceService instance=null;
+    public static ServiceService instance = null;
     public boolean resultOK;
     private ConnectionRequest req;
 
@@ -29,19 +31,19 @@ public class ServiceService {
         return instance;
     }
 
-    public ArrayList<Service> parseServices(String jsonText){
+    public ArrayList<Service> parseServices(String jsonText) {
         try {
-            services=new ArrayList<>();
+            services = new ArrayList<>();
             JSONParser j = new JSONParser();
-            Map<String,Object> servicesListJson =
+            Map<String, Object> servicesListJson =
                     j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
 
-            List<Map<String,Object>> list = (List<Map<String,Object>>)servicesListJson.get("root");
-            for(Map<String,Object> obj : list){
+            List<Map<String, Object>> list = (List<Map<String, Object>>) servicesListJson.get("root");
+            for (Map<String, Object> obj : list) {
                 Service S = new Service();
                 float id = Float.parseFloat(obj.get("id").toString());
-                S.setId((int)id);
-                if (obj.get("Name")==null)
+                S.setId((int) id);
+                if (obj.get("Name") == null)
                     S.setName("null");
                 else
                     S.setName(obj.get("Name").toString());
@@ -53,10 +55,10 @@ public class ServiceService {
         return services;
     }
 
-    public ArrayList<Service> getAllServices(){
+    public ArrayList<Service> getAllServices() {
         req = new ConnectionRequest();
-        String url = Statics.BASE_URL+"/service/show/";
-        System.out.println("===>"+url);
+        String url = Statics.BASE_URL + "/service/show/";
+        System.out.println("===>" + url);
         req.setUrl(url);
         req.setPost(false);
         req.addResponseListener(new ActionListener<NetworkEvent>() {
@@ -73,10 +75,14 @@ public class ServiceService {
     public boolean addService(Service S) {
         String url = Statics.BASE_URL + "/service/add/";
         req.setUrl(url);
-        req.setPost(false);
-        req.addArgument("Name", S.getName());
-        req.addArgument("Responsible",S.getResponsible().toString());
-        req.addArgument("Recipient",S.getRecipient().toString());
+        req.setPost(true);
+        Map<String, Object> auth = new HashMap<>();
+        auth.put("Name", S.getName());
+        auth.put("Responsible", S.getResponsible().toString());
+        auth.put("Recipient", S.getRecipient());
+        final String payload = Result.fromContent(auth).toString();
+        req.setRequestBody(payload);
+        req.setContentType("application/json");
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
