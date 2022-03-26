@@ -24,11 +24,25 @@ public class User implements PropertyBusinessObject {
             groups, plainPassword
     );
 
-    public boolean isStudent() { return this.isOfGroup("student"); }
-    public boolean isSuperAdmin() { return this.isOfGroup("super admin"); }
-    public boolean isSiteStaff() { return this.isOfGroup("site staff"); }
-    public boolean isFacultyStaff() { return this.isOfGroup("faculty staff"); }
-    public boolean isTeacher() { return this.isOfGroup("teachers"); }
+    public boolean isStudent() {
+        return this.isOfGroup("student");
+    }
+
+    public boolean isSuperAdmin() {
+        return this.isOfGroup("super admin");
+    }
+
+    public boolean isSiteStaff() {
+        return this.isOfGroup("site staff");
+    }
+
+    public boolean isFacultyStaff() {
+        return this.isOfGroup("faculty staff");
+    }
+
+    public boolean isTeacher() {
+        return this.isOfGroup("teachers");
+    }
 
     private boolean isOfGroup(String groupName) {
         for (Group g : this.groups.asList()) {
@@ -37,9 +51,10 @@ public class User implements PropertyBusinessObject {
         return false;
     }
 
-    public String getFullName (){
+    public String getFullName() {
         return this.first_name + " " + this.last_name;
     }
+
     @Override
     public PropertyIndex getPropertyIndex() {
         return idx;
@@ -69,5 +84,10 @@ public class User implements PropertyBusinessObject {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return this.getFullName();
     }
 }

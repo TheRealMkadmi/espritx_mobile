@@ -48,4 +48,6 @@ public class UserService {
     public static User fetchUserByEmail(String email) {
         return (User) Rest.get(Statics.BASE_URL + "/user/fetch_by_email").acceptJson().jsonContent().queryParam("email", email).getAsProperties(User.class).getResponseData();
     }
+
+
 }

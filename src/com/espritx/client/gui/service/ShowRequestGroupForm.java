@@ -19,6 +19,7 @@ import com.espritx.client.services.Service.RequestService;
 import com.espritx.client.services.Service.ServiceService;
 import com.sun.xml.internal.ws.spi.db.PropertySetterBase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowRequestGroupForm extends BaseForm {
@@ -26,16 +27,13 @@ public class ShowRequestGroupForm extends BaseForm {
         this(Resources.getGlobalResources());
     }
 
-    public ShowRequestGroupForm(Resources resourceObjectInstance){
+    public ShowRequestGroupForm(Resources resourceObjectInstance) {
         setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setInlineStylesTheme(resourceObjectInstance);
         Button AddRequest = new Button("Add Request");
-        AddRequest.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                Form addreq = new AddRequestForm();
-                addreq.show();
-            }
+        AddRequest.addActionListener(evt -> {
+            (new AddRequestForm()).show();
+            ;
         });
         addComponent(AddRequest);
         initUserControls(resourceObjectInstance);
@@ -46,17 +44,12 @@ public class ShowRequestGroupForm extends BaseForm {
 
     private void initUserControls(Resources resourceObjectInstance) {
         //Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
-        List<Request> requestList = RequestService.GetGroupRequests();
+        List<Request> requestList = RequestService.GetGroupRequests(); // original array
+        final List<Request> shadowCopy = new ArrayList<>(requestList); // the one we'll keep manipulating for the display
 
         UiBinding ui = new UiBinding();
         Request prot = new Request();
-        UiBinding.BoundTableModel tb = ui.createTableModel(requestList, prot);
-
-        for (Request r:requestList) {
-            Label l = new Label(r.CreatedAt.toString());
-            add(l);
-        }
-
+        UiBinding.BoundTableModel tb = ui.createTableModel(shadowCopy, prot);
         tb.excludeProperty(prot.id);
         tb.excludeProperty(prot.Attachement);
         tb.excludeProperty(prot.Description);
@@ -68,10 +61,11 @@ public class ShowRequestGroupForm extends BaseForm {
         tb.setEditable(prot.Title, false);
         tb.setEditable(prot.CreatedAt, false);
         tb.setEditable(prot.Type, false);
-        tb.setEditable(prot.Requester.get().first_name, false);
+        tb.setEditable(prot.Requester, false);
         tb.setEditable(prot.Status, false);
 
         SelectableTable t = new SelectableTable(tb);
+
         t.setSortSupported(true);
         t.setScrollVisible(true);
         t.setScrollableY(true);
@@ -80,22 +74,16 @@ public class ShowRequestGroupForm extends BaseForm {
 
         getToolbar().addSearchCommand(e -> {
             String text = (String) e.getSource();
-            /*if (text == null || text.length() == 0) {
-                for (Component cmp : t) {
-                    cmp.setHidden(false);
-                    cmp.setVisible(true);
+            if (text != null) {
+                shadowCopy.clear();
+                for (Request req : requestList) {
+                    if (req.Title.get().contains(text.trim())) {
+                        shadowCopy.add(req);
+                    }
                 }
-            } else {
-                text = text.toLowerCase();
-                for (Component cmp : t) {
-                    MultiButton mb = (MultiButton) cmp;
-                    String line1 = mb.getTextLine1();
-                    boolean show = line1 != null && line1.toLowerCase().contains(text);
-                    mb.setHidden(!show);
-                    mb.setVisible(show);
-                }
+                t.revalidate();
+                t.refresh();
             }
-            t.animateLayout(150);*/
         }, 4);
     }
 }

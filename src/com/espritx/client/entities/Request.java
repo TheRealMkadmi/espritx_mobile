@@ -34,5 +34,6 @@ public class Request implements PropertyBusinessObject {
         Email.setLabel("Email");
         Picture.setLabel("Picture");
         Attachement.setLabel("Attachement");
+        CreatedAt.setLabel("Created At");
     }
 }
