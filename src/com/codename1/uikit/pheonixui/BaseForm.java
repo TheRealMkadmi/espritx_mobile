@@ -33,6 +33,7 @@ import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
 import com.espritx.client.gui.posts.HomeForm;
 import com.espritx.client.gui.service.ShowForm;
+import com.espritx.client.gui.service.ShowRequestGroupForm;
 import com.espritx.client.gui.user.LoginForm;
 import com.espritx.client.gui.user.ShowGroups;
 import com.espritx.client.gui.user.ShowUsers;
@@ -82,6 +83,7 @@ public class BaseForm extends Form {
         if(!AuthenticationService.getAuthenticatedUser().isStudent())
             getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
         getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
+        getToolbar().addCommandToSideMenu("Requests", null, e -> new ShowRequestGroupForm(res).show());
         getToolbar().addCommandToSideMenu("Trending", trendingImage, e -> new TrendingForm(res).show());
         getToolbar().addCommandToSideMenu("Settings", null, e -> {});
         getToolbar().addCommandToSideMenu("Posts", null, e -> new HomeForm().show());
