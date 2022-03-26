@@ -66,7 +66,7 @@ public class GroupForm extends BaseForm {
         InstantUI iui = new InstantUI();
         iui.excludeProperty(this.group.id);
         iui.setMultiChoiceLabels(this.group.groupType, "Super Admin", "Student", "Site Staff", "Faculty Staff", "Teachers");
-        iui.setMultiChoiceValues(this.group.groupType, "Super admin", "Student", "Site staff", "Faculty staff", "Teachers");
+        iui.setMultiChoiceValues(this.group.groupType, "super admin", "student", "site staff", "faculty staff", "teachers");
         iui.excludeProperty(this.group.members);
         Container cnt = iui.createEditUI(group, true);
         cnt.setScrollableY(true);

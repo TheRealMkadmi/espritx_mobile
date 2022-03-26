@@ -50,20 +50,20 @@ public class ServiceService {
                 else
                     S.setName(obj.get("Name").toString());
 
-                HashMap<String,Object>Resp= (HashMap<String, Object>) obj.get("Responsible");
-                Group Res= new Group();
+                HashMap<String, Object> Resp = (HashMap<String, Object>) obj.get("Responsible");
+                Group Res = new Group();
                 Res.getPropertyIndex().populateFromMap(Resp);
                 S.setResponsible(Res);
 
                 ArrayList<HashMap> Rece = (ArrayList<HashMap>) obj.get("Recipient");
-                for (HashMap H:Rece) {
-                    Group Rec= new Group();
+                for (HashMap H : Rece) {
+                    Group Rec = new Group();
                     Rec.getPropertyIndex().populateFromMap(H);
                     S.addRecipient(Rec);
                 }
 
                 ArrayList<HashMap> Reqs = (ArrayList<HashMap>) obj.get("serviceRequests");
-                for (HashMap R:Reqs){
+                for (HashMap R : Reqs) {
                     Request request = new Request();
                     request.getPropertyIndex().populateFromMap(R);
                     S.addRequest(request);

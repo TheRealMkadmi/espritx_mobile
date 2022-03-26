@@ -45,7 +45,7 @@ public class ShowRequestGroupForm extends BaseForm {
     }
 
     private void initUserControls(Resources resourceObjectInstance) {
-        Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
+        //Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
         List<Request> requestList = RequestService.GetGroupRequests();
 
         UiBinding ui = new UiBinding();

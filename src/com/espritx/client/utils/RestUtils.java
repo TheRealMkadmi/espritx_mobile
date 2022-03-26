@@ -1,4 +1,4 @@
-package com.espritx.client.services;
+package com.espritx.client.utils;
 
 import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
@@ -7,7 +7,7 @@ import com.codename1.properties.PropertyBusinessObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractService {
+public class RestUtils {
     public static <T extends PropertyBusinessObject> List<T> fetchListFrom(String url, Class<T> tClass) {
         Response<List<PropertyBusinessObject>> k = Rest.get(url).acceptJson().getAsPropertyList(tClass);
         List<PropertyBusinessObject> res = k.getResponseData();
@@ -17,6 +17,4 @@ public abstract class AbstractService {
         }
         return u;
     }
-
-
 }
