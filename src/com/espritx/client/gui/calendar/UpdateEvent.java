@@ -95,6 +95,7 @@ public class UpdateEvent extends BaseForm {
             prev.showBack();
         });
         installSidemenu(Resources.getGlobalResources());
+        reminder();
         addAll(ltitle,tfTitle,lDescription, tfDescription,lstart, start,lend, end, cbAllday, btnUpdate,btnDelete,btnCancel,sb);
     }
 }

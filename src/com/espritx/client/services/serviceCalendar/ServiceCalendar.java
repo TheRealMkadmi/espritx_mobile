@@ -19,11 +19,10 @@ import com.codename1.ui.events.ActionListener;
 import com.espritx.client.entities.Calendar;
 import com.espritx.client.utils.Statics;
 
+import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -106,6 +105,7 @@ public class ServiceCalendar {
 
     private ArrayList<Calendar> parseEvent(String jsonText) {
         calendar = new ArrayList<>();
+        Timer timer = new Timer();
         JSONParser json = new JSONParser();
         try {
             Map<String, Object> eventslistJson = json.parseJSON(new CharArrayReader(jsonText.toCharArray()));
@@ -114,6 +114,7 @@ public class ServiceCalendar {
             else{
             List<Map<String, Object>> list = (List<Map<String, Object>>) eventslistJson.get("root");
             for (Map<String, Object> obj : list) {
+
                 Float id;
                 Boolean allDay = false;
                 Date start;
@@ -123,6 +124,7 @@ public class ServiceCalendar {
                 String firstname;
                 String lastname;
                 Float userId;
+
                 if (obj.get("start") != null && obj.get("end") != null && obj.get("title").toString() != null && obj.get("description").toString() != null) {
                     start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(obj.get("start").toString());
                     end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(obj.get("end").toString());
@@ -135,7 +137,6 @@ public class ServiceCalendar {
                     if ("true".equals(obj.get("allDay").toString())) {
                         allDay = true;
                     }
-
                     Calendar c = new Calendar(Math.round(id),start, end, title, description, allDay,Math.round(userId),firstname,lastname);
                     calendar.add(c);
                 }

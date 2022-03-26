@@ -5,21 +5,31 @@
  */
 package com.espritx.client.gui.calendar;
 
+import com.codename1.components.MultiButton;
+import com.codename1.components.ToastBar;
 import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.*;
+import com.codename1.ui.Button;
+import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
+import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
+import com.codename1.util.DateUtil;
 import com.espritx.client.entities.Calendar;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -31,52 +41,45 @@ public class ShowEventform extends BaseForm {
 
     public ShowEventform(Form prev){
         final ArrayList<Calendar>[] ev = new ArrayList[]{null};
+
         setTitle("Calendar");
         setLayout(BoxLayout.y());
+
         installSidemenu(Resources.getGlobalResources());
         getToolbar().addMaterialCommandToRightBar("", FontImage.MATERIAL_POST_ADD, (evt) -> {
             new AddEvent(prev).show();
         });
         com.codename1.ui.Calendar cal = new com.codename1.ui.Calendar();
         add(cal);
-        cal.addActionListener((evt) -> {
+        cal.addDayActionListener((evt) -> {
+            Label l = new Label("Today\ns events");
             ev[0] =ServiceCalendar.getInstance().getEventByDate(ServiceCalendar.getInstance().convertt(cal.getDate()));
             for (Calendar c : ev[0]) {
-            Container C1 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            Label start = new Label (c.getStart().toString());
-            Label end = new Label (c.getEnd().toString());
-            Label x = new Label(" ");
-                Button updateButton = new Button("Manage");
-                Style supprimerStyle=new Style(updateButton.getUnselectedStyle());
-                updateButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_UPDATE,supprimerStyle));
+                    Container C1 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+                    MultiButton mb = new MultiButton(c.getTitle());
+                    mb.setTextLine2(c.getStart().toString());
+                    mb.setTextLine3("and ends");
+                    mb.setTextLine4(c.getStart().toString());
+                    FontImage.setMaterialIcon(mb, FontImage.MATERIAL_EVENT);
 
-                updateButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent evt) {
-                        new UpdateEvent(c,prev).show();
-                    }
-                });
+                    Button manageButton = new Button("Manage");
+                    Style supprimerStyle = new Style(manageButton.getUnselectedStyle());
 
-            start.addPointerPressedListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    Dialog.show("Event : "+ c.getTitle(), "Description : " + c.getDescription()+"\nmade by\n "+ c.getFirstname()+" "+c.getLastname(), "OK", null);
-                }
-            });
-            Container C2 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-                if(c.getUserId()== AuthenticationService.getAuthenticatedUser().id.getInt())
-                C2.add(updateButton);
+                    manageButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_EDIT, supprimerStyle));
 
-                C1.add(C2);
-                C1.add(start);
-                C1.add(end);
-                C1.add(x);
+                    manageButton.addActionListener(evt1 -> new UpdateEvent(c, prev).show());
 
-            add(C1);
-        }
+                    mb.addPointerPressedListener(evt12 -> Dialog.show("Event : " + c.getTitle(), "Description : " + c.getDescription() + "\nmade by\n " + c.getFirstname() + " " + c.getLastname(), "OK", null));
+                    C1.add(mb);
+                    if (c.getUserId() == AuthenticationService.getAuthenticatedUser().id.getInt() && c.getStart().after(new Date()))
+                        C1.add(manageButton);
+                    add(C1);
+
+                showBack();
+            }
         });
 
-
+        reminder();
 
     }
 

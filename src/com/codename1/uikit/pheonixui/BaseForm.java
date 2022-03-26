@@ -20,8 +20,15 @@
 package com.codename1.uikit.pheonixui;
 
 import com.codename1.ui.*;
+import com.codename1.ui.Button;
+import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
+import com.codename1.ui.Image;
+import com.codename1.ui.Label;
+import com.codename1.ui.TextField;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.espritx.client.entities.Calendar;
 import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
 import com.espritx.client.gui.posts.HomeForm;
@@ -30,6 +37,13 @@ import com.espritx.client.gui.user.LoginForm;
 import com.espritx.client.gui.user.ShowGroups;
 import com.espritx.client.gui.user.ShowUsers;
 import com.espritx.client.services.User.AuthenticationService;
+import com.espritx.client.services.serviceCalendar.ServiceCalendar;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Utility methods common to forms e.g. for binding the side menu
@@ -85,7 +99,22 @@ public class BaseForm extends Form {
         getToolbar().addComponentToSideMenu(new Label("Detra Mcmunn", "SideCommandNoPad"));
         getToolbar().addComponentToSideMenu(new Label("Long Beach, CA", "SideCommandSmall"));
     }
-
+    public void reminder(){
+        Timer timer = new Timer();
+        ArrayList<com.espritx.client.entities.Calendar> events = ServiceCalendar.getInstance().getAllEvents();
+        for (Calendar c : events){
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Toolkit toolkit = Toolkit.getDefaultToolkit();
+                    toolkit.beep();
+                    Dialog.show("Reminder", c.getTitle()+" is already here!!", new Command("OK"));
+                }
+            };
+            if(c.getStart().after(new Date()))
+                timer.schedule(timerTask,c.getStart());
+        }
+    }
     protected Button makeButton(String name, String text, String uiid) {
         Button button = this.makeButton(name, text);
         button.setUIID(uiid);

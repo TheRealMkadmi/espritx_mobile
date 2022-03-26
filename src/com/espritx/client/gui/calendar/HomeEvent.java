@@ -40,6 +40,8 @@ public class HomeEvent extends BaseForm {
             }
         };
         installSidemenu(Resources.getGlobalResources());
+        reminder();
+
         addAll(btnAddEvent,btnShowEvent);
     }
 }

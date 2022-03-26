@@ -53,7 +53,7 @@ public class AdminEvent extends BaseForm {
                 showBack();
             }
         };
-
+        reminder();
         installSidemenu(Resources.getGlobalResources());
     }
 }
