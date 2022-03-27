@@ -25,6 +25,10 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.espritx.client.gui.posts.AjoutPost;
+import com.espritx.client.gui.posts.HomeForm;
+import com.espritx.client.gui.posts.ListPosts;
+import com.espritx.client.gui.posts.ShowForm;
 import com.espritx.client.gui.user.LoginForm;
 
 
@@ -43,7 +47,9 @@ public class PheonixUI {
             current.show();
             return;
         }
-        new LoginForm(theme).show();
+      new LoginForm(theme).show();
+//new ListPosts(theme).show();
+//new AjoutPost(theme).show();
     }
 
     public void stop() {

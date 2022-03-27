@@ -10,8 +10,10 @@ import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.layouts.BoxLayout;
 import com.espritx.client.entities.Post;
-import java.util.ArrayList;
 import com.espritx.client.services.ServicePost.ServicePost;
+
+import java.util.ArrayList;
+
 
 /**
  *
