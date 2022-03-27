@@ -25,8 +25,6 @@ import com.espritx.client.services.User.GroupService;
 import com.espritx.client.services.User.UserService;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Wahib
@@ -145,9 +143,9 @@ public class GroupForm extends BaseForm {
             if (t.getSelectedRow() > -1) {
                 Integer id = (Integer) t.getModel().getValueAt(t.getSelectedRow(), 0);
                 User u = null;
-                for (User _ : group.members) {
-                    if (_.id.get().equals(id)) {
-                        u = _;
+                for (User _elided : group.members) {
+                    if (_elided.id.get().equals(id)) {
+                        u = _elided;
                         break;
                     }
                 }

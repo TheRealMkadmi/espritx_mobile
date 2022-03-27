@@ -14,8 +14,11 @@ import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.codename1.ui.validation.Validator;
 import com.codename1.uikit.pheonixui.BaseForm;
+import com.codename1.util.DateUtil;
 import com.espritx.client.entities.Calendar;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
+
+import java.util.Date;
 
 
 /**
@@ -50,7 +53,7 @@ public class AddEvent extends BaseForm {
             public void actionPerformed(ActionEvent evt) {
                 boolean status = false;
 
-                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || start.getDate().after(end.getDate()) )
+                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || DateUtil.compare(start.getDate(), new Date()) == 1 )
                     ToastBar.showMessage("Check again", FontImage.MATERIAL_WARNING);
                 else {
 

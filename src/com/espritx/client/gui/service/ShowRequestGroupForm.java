@@ -15,12 +15,8 @@ import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
 import com.espritx.client.entities.Request;
-import com.espritx.client.entities.Service;
-import com.espritx.client.entities.User;
 import com.espritx.client.gui.components.SelectableTable;
 import com.espritx.client.services.Service.RequestService;
-import com.espritx.client.services.Service.ServiceService;
-import com.sun.xml.internal.ws.spi.db.PropertySetterBase;
 
 import java.util.ArrayList;
 import java.util.List;

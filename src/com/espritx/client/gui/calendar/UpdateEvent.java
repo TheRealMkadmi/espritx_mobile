@@ -11,12 +11,15 @@ import com.codename1.ui.plaf.Style;
 import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
+import com.codename1.util.DateUtil;
 import com.espritx.client.entities.Calendar;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
+import java.util.Date;
+
 public class UpdateEvent extends BaseForm {
 
-    public UpdateEvent(Calendar calendar,Form prev) {
+    public UpdateEvent(Calendar calendar, Form prev) {
         setTitle("Update Event");
         setLayout(BoxLayout.y());
 
@@ -37,10 +40,10 @@ public class UpdateEvent extends BaseForm {
         Button btnUpdate = new Button("Update");
         Button btnDelete = new Button("Delete");
         Button btnCancel = new Button("Cancel");
-        Style supprimerStyle=new Style(btnDelete.getUnselectedStyle());
-        btnDelete.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DELETE,supprimerStyle));
-        btnUpdate.setIcon(FontImage.createMaterial(FontImage.MATERIAL_UPDATE,supprimerStyle));
-        btnCancel.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CANCEL,supprimerStyle));
+        Style supprimerStyle = new Style(btnDelete.getUnselectedStyle());
+        btnDelete.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DELETE, supprimerStyle));
+        btnUpdate.setIcon(FontImage.createMaterial(FontImage.MATERIAL_UPDATE, supprimerStyle));
+        btnCancel.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CANCEL, supprimerStyle));
         btnCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -51,15 +54,14 @@ public class UpdateEvent extends BaseForm {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 Dialog dig = new Dialog("Delete event");
-                if(dig.show("Delete","Are u sure abt that?","Yes","No")){
-                        dig.dispose();
-                }
-                else
+                if (dig.show("Delete", "Are u sure abt that?", "Yes", "No")) {
+                    dig.dispose();
+                } else
                     dig.dispose();
 
                 if (ServiceCalendar.getInstance().deleteEvent(calendar.getId())) {
                     Dialog.show("Success", "Event deleted", new Command("OK"));
-                        new ShowEventform(prev).show();
+                    new ShowEventform(prev).show();
                 } else {
                     Dialog.show("ERROR", "Server error", new Command("OK"));
                 }
@@ -70,13 +72,13 @@ public class UpdateEvent extends BaseForm {
             public void actionPerformed(ActionEvent evt) {
                 boolean status = false;
                 int id = calendar.getId();
-                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || start.getDate().after(end.getDate()) )
+                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || DateUtil.compare(start.getDate(), new Date()) == 1)
                     ToastBar.showMessage("Check again", FontImage.MATERIAL_WARNING);
                 else {
                     if (cbAllday.isSelected()) {
                         status = true;
                     }
-                    com.espritx.client.entities.Calendar calendar = new Calendar(id,start.getDate(), end.getDate(), tfTitle.getText(), tfDescription.getText(), status);
+                    com.espritx.client.entities.Calendar calendar = new Calendar(id, start.getDate(), end.getDate(), tfTitle.getText(), tfDescription.getText(), status);
                     if (ServiceCalendar.getInstance().updateEvent(calendar)) {
                         Dialog.show("Success", "Event Updated", new Command("OK"));
                         new ShowEventform(prev).show();
@@ -88,14 +90,14 @@ public class UpdateEvent extends BaseForm {
         });
         ShareButton sb = new ShareButton();
         sb.setText("Share");
-        sb.setTextToShare("We have new Event : "+ calendar.getTitle() +
-                "\nit will be : " +calendar.getStart()+
+        sb.setTextToShare("We have new Event : " + calendar.getTitle() +
+                "\nit will be : " + calendar.getStart() +
                 "\n We are looking forword to meet you");
         getToolbar().addMaterialCommandToRightBar("", FontImage.MATERIAL_ARROW_BACK, (evt) -> {
             prev.showBack();
         });
         installSidemenu(Resources.getGlobalResources());
         reminder();
-        addAll(ltitle,tfTitle,lDescription, tfDescription,lstart, start,lend, end, cbAllday, btnUpdate,btnDelete,btnCancel,sb);
+        addAll(ltitle, tfTitle, lDescription, tfDescription, lstart, start, lend, end, cbAllday, btnUpdate, btnDelete, btnCancel, sb);
     }
 }
