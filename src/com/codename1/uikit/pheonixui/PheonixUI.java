@@ -19,19 +19,13 @@
 
 package com.codename1.uikit.pheonixui;
 
-import com.codename1.ui.*;
 import com.codename1.ui.Dialog;
+import com.codename1.ui.Display;
+import com.codename1.ui.Form;
+import com.codename1.ui.Toolbar;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
-import com.espritx.client.entities.Calendar;
 import com.espritx.client.gui.user.LoginForm;
-import com.espritx.client.services.serviceCalendar.ServiceCalendar;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class PheonixUI {

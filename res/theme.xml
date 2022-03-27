@@ -12,6 +12,10 @@
     <image name="contact-c.png" type="multi"  />
     <image name="dark-rect.png" type="multi"  />
     <image name="expritx_logo.png"  />
+<<<<<<< HEAD
+=======
+    <image name="feed.jpg"  />
+>>>>>>> b1e4f2be9c6658e278cdf24b7b7590f06a1ad096
     <image name="griffith.jpg"  />
     <image name="GroupElement.borderBottom_1.png" type="multi"  />
     <image name="GroupElement.borderBottomL_1.png" type="multi"  />
@@ -345,6 +349,7 @@
         <val key="List.transparency" value="255" />
         <val key="MenuButton.fgColor" value="ffffff" />
         <font key="MenuButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.5" />
+<<<<<<< HEAD
         <val key="MultiButton.align" value="4" />
         <val key="MultiButton.bgImage" value="dark-rect.png" />
         <val key="MultiButton.bgType" value="1" />
@@ -363,6 +368,8 @@
         <val key="MultiLine2.margin" value="0.0,10.0,0.0,0.0" />
         <val key="MultiLine2.padding" value="0.0,0.0,0.0,0.0" />
         <val key="MultiLine2.textDecoration" value="8" />
+=======
+>>>>>>> b1e4f2be9c6658e278cdf24b7b7590f06a1ad096
         <val key="OrangeLine.fgColor" value="eb8b7f" />
         <font key="OrangeLine.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="1.5" />
         <val key="OrangeLine.transparency" value="0" />
