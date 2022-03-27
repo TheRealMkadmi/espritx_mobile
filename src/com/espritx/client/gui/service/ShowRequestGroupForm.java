@@ -28,14 +28,14 @@ public class ShowRequestGroupForm extends BaseForm {
     }
 
     public ShowRequestGroupForm(Resources resourceObjectInstance) {
-        setLayout(new BoxLayout(BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_CENTER));
         setInlineStylesTheme(resourceObjectInstance);
         Button AddRequest = new Button("Add Request");
         AddRequest.addActionListener(evt -> {
             (new AddRequestForm()).show();
             ;
         });
-        addComponent(AddRequest);
+        addComponent(BorderLayout.SOUTH,AddRequest);
         initUserControls(resourceObjectInstance);
         setTitle("Manage Requests of your groups");
         setName("ManageRequests");
@@ -43,9 +43,8 @@ public class ShowRequestGroupForm extends BaseForm {
     }
 
     private void initUserControls(Resources resourceObjectInstance) {
-        //Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
-        List<Request> requestList = RequestService.GetGroupRequests(); // original array
-        final List<Request> shadowCopy = new ArrayList<>(requestList); // the one we'll keep manipulating for the display
+        List<Request> requestList = RequestService.GetGroupRequests();
+        final List<Request> shadowCopy = new ArrayList<>(requestList);
 
         UiBinding ui = new UiBinding();
         Request prot = new Request();
@@ -70,7 +69,7 @@ public class ShowRequestGroupForm extends BaseForm {
         t.setScrollVisible(true);
         t.setScrollableY(true);
         t.setScrollableX(true);
-        addComponent(t);
+        addComponent(BorderLayout.NORTH,t);
 
         getToolbar().addSearchCommand(e -> {
             String text = (String) e.getSource();

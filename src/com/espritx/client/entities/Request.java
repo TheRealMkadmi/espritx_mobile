@@ -11,7 +11,7 @@ public class Request implements PropertyBusinessObject {
     public final Property<Date, Request> UpdatedAt = new Property<>("UpdatedAt", Date.class);
     public final Property<String, Request> Title = new Property<>("Title");
     public final Property<String, Request> Description = new Property<>("Description");
-    public final Property<Service, Request> Type = new Property<>("Type", Service.class);
+    public final Property<Service, Request> Type = new Property<>("Type",Service.class);
     public final Property<String, Request> Email = new Property<>("Email");
     public final Property<String, Request> Picture = new Property<>("Picture");
     public final Property<String, Request> Attachement = new Property<>("Attachement");
