@@ -53,7 +53,7 @@ public class AddEvent extends BaseForm {
             public void actionPerformed(ActionEvent evt) {
                 boolean status = false;
 
-                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || DateUtil.compare(start.getDate(), new Date()) == 1 )
+                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || start.getDate().after(end.getDate()))
                     ToastBar.showMessage("Check again", FontImage.MATERIAL_WARNING);
                 else {
 

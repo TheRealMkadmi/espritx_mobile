@@ -22,7 +22,7 @@ public class HomeForm extends Form  {
         setLayout(BoxLayout.y());
         Button BtnAddPost=new Button("Ajouter post");
         Button BtnShowPost= new Button("Voir les posts");
-        BtnAddPost.addActionListener((evt)->new AddPostForm().show());
+        //BtnAddPost.addActionListener((evt)->new AddPostForm().show());
         BtnShowPost.addActionListener((evt)->{
         
         new ShowForm(this).show();

@@ -152,8 +152,9 @@ public class ServiceCalendar {
     }
 
     public String convertt(Date date) {
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MMM-dd");
-        return sd.format(new Date());
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(sd.format(date));
+        return sd.format(date);
         /*
         int year ;
         int day ;
