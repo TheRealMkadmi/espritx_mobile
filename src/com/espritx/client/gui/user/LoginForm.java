@@ -51,7 +51,7 @@ public class LoginForm extends BaseForm {
         formContainer.addComponent(profilePicture);
 
         ComponentGroup credentialsContainer = makeComponentGroup("CredentialsContainer");
-        TextField emailTextField = makeTextField("EmailTextField", "@esprit.tn e-mail", "test_super_admin_134@esprit.tn");
+        TextField emailTextField = makeTextField("EmailTextField", "@esprit.tn e-mail", "test_super_admin_618@esprit.tn");
         emailTextField.setConstraint(TextField.EMAILADDR);
         credentialsContainer.addComponent(emailTextField);
         TextField passwordTextField = makeTextField("PasswordTextField", "Password", "12345");

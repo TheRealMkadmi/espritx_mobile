@@ -28,18 +28,18 @@ import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.espritx.client.entities.Calendar;
+import com.codename1.util.DateUtil;
 import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
 import com.espritx.client.gui.posts.HomeForm;
 import com.espritx.client.gui.service.ShowForm;
+import com.espritx.client.gui.service.ShowRequestGroupForm;
 import com.espritx.client.gui.user.LoginForm;
 import com.espritx.client.gui.user.ShowGroups;
 import com.espritx.client.gui.user.ShowUsers;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -77,11 +77,12 @@ public class BaseForm extends Form {
         inbox.setUIID("SideCommand");
         inboxButton.addActionListener(e -> new InboxForm().show());
         getToolbar().addComponentToSideMenu(inbox);
-        //getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new CalendarForm(res).show());
         getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new HomeEvent().show());
         if(!AuthenticationService.getAuthenticatedUser().isStudent())
             getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
+        getToolbar().addCommandToSideMenu("Map", null, e -> { });
         getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
+        getToolbar().addCommandToSideMenu("Requests", null, e -> new ShowRequestGroupForm(res).show());
         getToolbar().addCommandToSideMenu("Trending", trendingImage, e -> new TrendingForm(res).show());
         getToolbar().addCommandToSideMenu("Settings", null, e -> {});
         getToolbar().addCommandToSideMenu("Posts", null, e -> new HomeForm().show());
@@ -99,22 +100,23 @@ public class BaseForm extends Form {
         getToolbar().addComponentToSideMenu(new Label("Detra Mcmunn", "SideCommandNoPad"));
         getToolbar().addComponentToSideMenu(new Label("Long Beach, CA", "SideCommandSmall"));
     }
+
     public void reminder(){
         Timer timer = new Timer();
         ArrayList<com.espritx.client.entities.Calendar> events = ServiceCalendar.getInstance().getAllEvents();
-        for (Calendar c : events){
+        for (com.espritx.client.entities.Calendar c : events){
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Toolkit toolkit = Toolkit.getDefaultToolkit();
-                    toolkit.beep();
                     Dialog.show("Reminder", c.getTitle()+" is already here!!", new Command("OK"));
                 }
             };
-            if(c.getStart().after(new Date()))
+            if(DateUtil.compare(c.getStart(), new Date()) == 1){
                 timer.schedule(timerTask,c.getStart());
+            }
         }
     }
+
     protected Button makeButton(String name, String text, String uiid) {
         Button button = this.makeButton(name, text);
         button.setUIID(uiid);

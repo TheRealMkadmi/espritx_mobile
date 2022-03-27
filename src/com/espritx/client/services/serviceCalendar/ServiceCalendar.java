@@ -11,15 +11,16 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
+import com.codename1.l10n.DateFormat;
 import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.util.DateUtil;
 import com.espritx.client.entities.Calendar;
 import com.espritx.client.utils.Statics;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -71,7 +72,7 @@ public class ServiceCalendar {
     public ArrayList<Calendar> getEventByDate(String date) {
 
         req = new ConnectionRequest();
-        String url = Statics.BASE_URL + "/events/"+date;
+        String url = Statics.BASE_URL + "/events/" + date;
         req.setUrl(url);
         req.setPost(false);
         req.addResponseListener(new ActionListener<NetworkEvent>() {
@@ -109,38 +110,38 @@ public class ServiceCalendar {
         JSONParser json = new JSONParser();
         try {
             Map<String, Object> eventslistJson = json.parseJSON(new CharArrayReader(jsonText.toCharArray()));
-            if(eventslistJson.size()==0)
+            if (eventslistJson.size() == 0)
                 ToastBar.showMessage("NO DATA FOR THIS DAY", FontImage.MATERIAL_DANGEROUS);
-            else{
-            List<Map<String, Object>> list = (List<Map<String, Object>>) eventslistJson.get("root");
-            for (Map<String, Object> obj : list) {
+            else {
+                List<Map<String, Object>> list = (List<Map<String, Object>>) eventslistJson.get("root");
+                for (Map<String, Object> obj : list) {
 
-                Float id;
-                Boolean allDay = false;
-                Date start;
-                Date end;
-                String title;
-                String description;
-                String firstname;
-                String lastname;
-                Float userId;
+                    Float id;
+                    Boolean allDay = false;
+                    Date start;
+                    Date end;
+                    String title;
+                    String description;
+                    String firstname;
+                    String lastname;
+                    Float userId;
 
-                if (obj.get("start") != null && obj.get("end") != null && obj.get("title").toString() != null && obj.get("description").toString() != null) {
-                    start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(obj.get("start").toString());
-                    end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(obj.get("end").toString());
-                    title = obj.get("title").toString();
-                    description = obj.get("description").toString();
-                    id = Float.parseFloat(obj.get("id").toString());
-                    userId = Float.parseFloat(obj.get("userId").toString());
-                    firstname = obj.get("Userfirstname").toString();
-                    lastname = obj.get("Userlastname").toString();
-                    if ("true".equals(obj.get("allDay").toString())) {
-                        allDay = true;
+                    if (obj.get("start") != null && obj.get("end") != null && obj.get("title").toString() != null && obj.get("description").toString() != null) {
+                        start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(obj.get("start").toString());
+                        end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(obj.get("end").toString());
+                        title = obj.get("title").toString();
+                        description = obj.get("description").toString();
+                        id = Float.parseFloat(obj.get("id").toString());
+                        userId = Float.parseFloat(obj.get("userId").toString());
+                        firstname = obj.get("Userfirstname").toString();
+                        lastname = obj.get("Userlastname").toString();
+                        if ("true".equals(obj.get("allDay").toString())) {
+                            allDay = true;
+                        }
+                        Calendar c = new Calendar(Math.round(id), start, end, title, description, allDay, Math.round(userId), firstname, lastname);
+                        calendar.add(c);
                     }
-                    Calendar c = new Calendar(Math.round(id),start, end, title, description, allDay,Math.round(userId),firstname,lastname);
-                    calendar.add(c);
                 }
-            }
             }
         } catch (IOException ex) {
             System.err.println("iopException");
@@ -150,7 +151,10 @@ public class ServiceCalendar {
         return calendar;
     }
 
-    public String convertt(Date date){
+    public String convertt(Date date) {
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MMM-dd");
+        return sd.format(new Date());
+        /*
         int year ;
         int day ;
         int month ;
@@ -239,16 +243,17 @@ public class ServiceCalendar {
         }
         String e = aam+"-"+chhar+"-"+yawmon;
         return e;
+         */
     }
 
-    public boolean deleteEvent(int id){
-        String url=Statics.BASE_URL+"/events/delete/"+id;
+    public boolean deleteEvent(int id) {
+        String url = Statics.BASE_URL + "/events/delete/" + id;
         req = new ConnectionRequest();
         req.setUrl(url);
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
-                resultOK = req.getResponseCode()==200;
+                resultOK = req.getResponseCode() == 200;
                 req.removeResponseListener(this);
             }
         });
@@ -256,8 +261,8 @@ public class ServiceCalendar {
         return resultOK;
     }
 
-    public boolean updateEvent(Calendar calendar){
-        String url=Statics.BASE_URL+"/events/update/"+calendar.getId();
+    public boolean updateEvent(Calendar calendar) {
+        String url = Statics.BASE_URL + "/events/update/" + calendar.getId();
         req = new ConnectionRequest();
         req.setUrl(url);
         req.addArgument("start", calendar.getStart().toString());

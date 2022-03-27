@@ -6,6 +6,7 @@ import com.codename1.processing.Result;
 import com.codename1.properties.PropertyBusinessObject;
 import com.espritx.client.entities.Group;
 import com.espritx.client.entities.User;
+import com.espritx.client.utils.RestUtils;
 import com.espritx.client.utils.Statics;
 
 import java.util.ArrayList;
@@ -19,13 +20,7 @@ import java.util.Map;
 
 public class UserService {
     public static List<User> GetAll() {
-        Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/user").acceptJson().getAsPropertyList(User.class);
-        List<PropertyBusinessObject> res = k.getResponseData();
-        List<User> u = new ArrayList<>(); // why can't streams be used in android build?!
-        for (PropertyBusinessObject r : res) {
-            u.add((User) r);
-        }
-        return u;
+        return RestUtils.fetchListFrom(Statics.BASE_URL + "/user", User.class);
     }
 
     public static Map Create(User u) {
@@ -53,4 +48,6 @@ public class UserService {
     public static User fetchUserByEmail(String email) {
         return (User) Rest.get(Statics.BASE_URL + "/user/fetch_by_email").acceptJson().jsonContent().queryParam("email", email).getAsProperties(User.class).getResponseData();
     }
+
+
 }

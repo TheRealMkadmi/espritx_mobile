@@ -25,12 +25,8 @@ import com.espritx.client.entities.Calendar;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -71,7 +67,7 @@ public class ShowEventform extends BaseForm {
 
                     mb.addPointerPressedListener(evt12 -> Dialog.show("Event : " + c.getTitle(), "Description : " + c.getDescription() + "\nmade by\n " + c.getFirstname() + " " + c.getLastname(), "OK", null));
                     C1.add(mb);
-                    if (c.getUserId() == AuthenticationService.getAuthenticatedUser().id.getInt() && c.getStart().after(new Date()))
+                    if (c.getUserId() == AuthenticationService.getAuthenticatedUser().id.getInt() && DateUtil.compare(c.getStart(), new Date()) == 1)
                         C1.add(manageButton);
                     add(C1);
 

@@ -44,6 +44,8 @@ public class ShowUsers extends BaseForm {
         list.setInlineStylesTheme(resourceObjectInstance);
         int size = Display.getInstance().convertToPixels(8, true);
         EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
+
+
         for (User user : userList) {
             MultiButton mb = new MultiButton(user.first_name.get() + " " + user.last_name.get());
             mb.setInlineStylesTheme(resourceObjectInstance);

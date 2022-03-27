@@ -84,7 +84,7 @@ public class TrendingForm extends BaseForm {
     protected com.codename1.ui.Label gui_Label_1_1_1 = new com.codename1.ui.Label();
 
 
-// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+// <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initGuiBuilderComponents(com.codename1.ui.util.Resources resourceObjectInstance) {
         setLayout(new com.codename1.ui.layouts.BoxLayout(com.codename1.ui.layouts.BoxLayout.Y_AXIS));
         setInlineStylesTheme(resourceObjectInstance);

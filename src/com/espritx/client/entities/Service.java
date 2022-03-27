@@ -17,6 +17,11 @@ public class Service {
     ArrayList<Group> Recipient;
     ArrayList<Request> ServiceRequests;
 
+    @Override
+    public String toString() {
+        return Name ;
+    }
+
     public Service() {
         Recipient = new ArrayList<>();
         ServiceRequests = new ArrayList<>();
