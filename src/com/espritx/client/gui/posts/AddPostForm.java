@@ -7,7 +7,7 @@
 package com.espritx.client.gui.posts;
 
 import com.codename1.components.ToastBar;
-import com.codename1.googlemaps.MapContainer;
+//import com.codename1.googlemaps.MapContainer;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author mouna
  */
-public class AddPostForm extends Form  {
+/*public class AddPostForm extends Form  {
             
          Form f = new Form("Map");
   MapContainer cnt = null;
@@ -159,7 +159,7 @@ String ch="";
                            Dialog.show("Success","Connection accepted",new Command("OK"));
                         }else
                             Dialog.show("ERROR", "Server error", new Command("OK"));
-*/                    
+
 } catch (NumberFormatException e) {
                         Dialog.show("ERROR", "Status must be a number", new Command("OK"));
                     }
@@ -194,4 +194,4 @@ String ch="";
     //    getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
     }
     
-}
+}*/
