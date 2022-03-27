@@ -2,6 +2,7 @@ package com.espritx.client.gui.service;
 
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.MultiButton;
+import com.codename1.properties.InstantUI;
 import com.codename1.properties.PropertyBase;
 import com.codename1.properties.UiBinding;
 import com.codename1.ui.*;
@@ -9,6 +10,8 @@ import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
 import com.espritx.client.entities.Request;
@@ -72,13 +75,46 @@ public class ShowRequestGroupForm extends BaseForm {
         addComponent(BorderLayout.NORTH,t);
 
         getToolbar().addSearchCommand(e -> {
+            Label l =new Label("Select a search criteria");
+            Picker p=new Picker();
+            p.setType(Display.PICKER_TYPE_STRINGS);
+            p.setStrings("Title","Requester","Created At");
+            p.setSelectedString("Title");
+            Container a= FlowLayout.encloseCenter(l,p);
+            a.setLayout(BoxLayout.y());
+            add(BorderLayout.CENTER,a);
+
+            int critval = 0;
+            String crit=p.getSelectedString();
+            if (crit.equals("Requester"))
+                critval = 1;
+            else if (crit.equals("Created At"))
+                critval = 2;
+
             String text = (String) e.getSource();
             if (text != null) {
                 shadowCopy.clear();
-                for (Request req : requestList) {
-                    if (req.Title.get().contains(text.trim())) {
-                        shadowCopy.add(req);
-                    }
+                switch (critval){
+                    case 1:
+                        for (Request req : requestList) {
+                            if (req.Requester.get().toString().contains(text.trim())) {
+                                shadowCopy.add(req);
+                            }
+                        }
+                        break;
+                    case 2:
+                        for (Request req : requestList) {
+                            if (req.CreatedAt.get().toString().contains(text.trim())) {
+                                shadowCopy.add(req);
+                            }
+                        }
+                        break;
+                    default:
+                        for (Request req : requestList) {
+                            if (req.Title.get().contains(text.trim())) {
+                                shadowCopy.add(req);
+                            }
+                        }
                 }
                 t.revalidate();
                 t.refresh();

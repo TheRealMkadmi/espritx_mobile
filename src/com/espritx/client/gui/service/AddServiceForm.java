@@ -104,7 +104,7 @@ public class AddServiceForm extends BaseForm {
                 }
             }
         });
-        addAll(tfName,b, Reciep, list, btnValider);
+        addAll(tfName,Respo,b, Reciep, list, btnValider);
         Form f=new ShowForm();
         getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e -> f.show());
         setTitle("Add Service");
