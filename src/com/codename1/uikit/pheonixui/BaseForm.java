@@ -108,10 +108,13 @@ public class BaseForm extends Form {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Dialog.show("Reminder", c.getTitle()+" is already here!!", new Command("OK"));
+                    Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
                 }
             };
-            if(DateUtil.compare(c.getStart(), new Date()) == 1){
+            c.getStart().setMinutes(c.getStart().getMinutes()-15);
+            System.out.println(c.getStart());
+            if(c.getStart().equals(new Date())){
+
                 timer.schedule(timerTask,c.getStart());
             }
         }
