@@ -53,7 +53,7 @@ public class AddEvent extends BaseForm {
             public void actionPerformed(ActionEvent evt) {
                 boolean status = false;
 
-                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || start.getDate().after(end.getDate()))
+                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || DateUtil.compare(start.getDate(),end.getDate())==1)
                     ToastBar.showMessage("Check again", FontImage.MATERIAL_WARNING);
                 else {
 
@@ -74,7 +74,7 @@ public class AddEvent extends BaseForm {
         getToolbar().addMaterialCommandToRightBar("", FontImage.MATERIAL_ARROW_BACK, (evt) -> {
             prev.showBack();
         });
-        reminder();
+        //reminder();
         installSidemenu(Resources.getGlobalResources());
         addAll(ltitle,tfTitle,lDescription, tfDescription,lstart, start,lend, end, cbAllday, btnAdd);
     }

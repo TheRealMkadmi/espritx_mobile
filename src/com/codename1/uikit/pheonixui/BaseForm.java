@@ -99,6 +99,7 @@ public class BaseForm extends Form {
         getToolbar().addComponentToSideMenu(new Label(res.getImage("profile_image.png"), "Container"));
         getToolbar().addComponentToSideMenu(new Label("Detra Mcmunn", "SideCommandNoPad"));
         getToolbar().addComponentToSideMenu(new Label("Long Beach, CA", "SideCommandSmall"));
+        reminder();
     }
 
     public void reminder(){
@@ -111,10 +112,10 @@ public class BaseForm extends Form {
                     Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
                 }
             };
-            c.getStart().setMinutes(c.getStart().getMinutes()-15);
-            System.out.println(c.getStart());
-            if(c.getStart().equals(new Date())){
-
+            //(DateUtil.compare(c.getStart(),new Date())==1) it wont work like the onne inside the if statement
+            if(c.getStart().after(new Date())){
+                c.getStart().setMinutes(c.getStart().getMinutes()-15);
+                //java.awt.Toolkit.getDefaultToolkit().beep();
                 timer.schedule(timerTask,c.getStart());
             }
         }
