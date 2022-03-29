@@ -84,7 +84,7 @@ public class BaseForm extends Form {
         });
         getToolbar().addComponentToSideMenu(inbox);
         getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new HomeEvent().show());
-        if (!authenticatedUser.isStudent())
+        if(!AuthenticationService.getAuthenticatedUser().isStudent())
             getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
         getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
         getToolbar().addCommandToSideMenu("Requests", null, e -> new ShowRequestGroupForm(res).show());
@@ -105,21 +105,21 @@ public class BaseForm extends Form {
         getToolbar().addComponentToSideMenu(new Label(authenticatedUser.email.get(), "SideCommandSmall"));
     }
 
-    public void reminder() {
+    public void reminder(){
         Timer timer = new Timer();
         ArrayList<com.espritx.client.entities.Calendar> events = ServiceCalendar.getInstance().getAllEvents();
-        for (com.espritx.client.entities.Calendar c : events) {
+        for (com.espritx.client.entities.Calendar c : events){
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Dialog.show("Reminder 15 min left", c.getTitle() + " is almost here!!", new Command("OK"));
+                    Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
                 }
             };
-            c.getStart().setMinutes(c.getStart().getMinutes() - 15);
+            c.getStart().setMinutes(c.getStart().getMinutes()-15);
             System.out.println(c.getStart());
-            if (c.getStart().equals(new Date())) {
+            if(c.getStart().equals(new Date())){
 
-                timer.schedule(timerTask, c.getStart());
+                timer.schedule(timerTask,c.getStart());
             }
         }
     }

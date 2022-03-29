@@ -75,7 +75,7 @@ public class ShowEventform extends BaseForm {
             }
         });
 
-        reminder();
+        //reminder();
 
     }
 
