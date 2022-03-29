@@ -47,7 +47,7 @@ public class LoginForm extends BaseForm {
         Label profilePicture = new Label();
         profilePicture.setUIID("CenterLabel");
         profilePicture.setInlineStylesTheme(resourceObjectInstance);
-        profilePicture.setIcon(resourceObjectInstance.getImage("profile_image.png"));
+        profilePicture.setIcon(resourceObjectInstance.getImage("logo.png"));
         formContainer.addComponent(profilePicture);
 
         ComponentGroup credentialsContainer = makeComponentGroup("CredentialsContainer");

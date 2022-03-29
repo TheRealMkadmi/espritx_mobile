@@ -1,6 +1,11 @@
 package com.espritx.client.entities;
 
 import com.codename1.properties.*;
+import com.codename1.ui.Display;
+import com.codename1.ui.EncodedImage;
+import com.codename1.ui.FontImage;
+import com.codename1.ui.URLImage;
+import com.espritx.client.utils.StringUtils;
 
 import java.util.Objects;
 
@@ -16,12 +21,13 @@ public class User implements PropertyBusinessObject {
     public final Property<String, User> phoneNumber = new Property<>("phoneNumber");
     public final Property<String, User> identityDocumentNumber = new Property<>("identityDocumentNumber");
     public final Property<String, User> plainPassword = new Property<>("plainPassword");
+    public final Property<String, User> about = new Property<>("about");
     public final ListProperty<Group, User> groups = new ListProperty<>("groups", Group.class);
 
     public final PropertyIndex idx = new PropertyIndex(this, "User",
-            id, avatarFile, first_name, last_name, email, phoneNumber, classe, userStatus,
+            id, avatarFile, first_name, last_name, email, phoneNumber, classe, userStatus, about,
             identityType, identityDocumentNumber,
-            groups, plainPassword
+            groups,  plainPassword
     );
 
     public boolean isStudent() {
@@ -71,6 +77,7 @@ public class User implements PropertyBusinessObject {
         identityType.setLabel("Identity Document Type");
         identityDocumentNumber.setLabel("Identity Document Number");
         plainPassword.setLabel("Plain Password");
+        about.setLabel("About");
     }
 
     @Override
@@ -79,6 +86,21 @@ public class User implements PropertyBusinessObject {
         if (!(o instanceof User)) return false;
         User user = (User) o;
         return id.getInt() == user.id.getInt();
+    }
+
+    public EncodedImage getEncodedAvatar() {
+        return this.getEncodedAvatar(6);
+    }
+
+    public EncodedImage getEncodedAvatar(int _size) {
+        int size = Display.getInstance().convertToPixels(_size, true);
+        EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
+        if (avatarFile.get() != null) {
+            String[] fragments = StringUtils.split(this.avatarFile.get(), "/");
+            String storageName = fragments[fragments.length - 1];
+            URLImage photo = URLImage.createToStorage(placeholder, storageName, avatarFile.get());
+            return photo;
+        } else return placeholder;
     }
 
     @Override

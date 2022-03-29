@@ -21,6 +21,9 @@ public class AuthenticationService {
         }
         return authenticatedUser;
     }
+    public static void updateAuthenticatedUser(User user) {
+        authenticatedUser = user;
+    }
 
     public static String attemptGetToken(String email, String password) throws Exception {
         String loginUrl = Statics.BASE_URL + "/login_check";

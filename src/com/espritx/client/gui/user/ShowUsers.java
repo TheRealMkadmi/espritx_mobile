@@ -42,14 +42,12 @@ public class ShowUsers extends BaseForm {
         Container list = new Container(BoxLayout.y());
         list.setScrollableY(true);
         list.setInlineStylesTheme(resourceObjectInstance);
-        int size = Display.getInstance().convertToPixels(8, true);
-        EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
 
 
         for (User user : userList) {
-            MultiButton mb = new MultiButton(user.first_name.get() + " " + user.last_name.get());
+            MultiButton mb = new MultiButton(user.getFullName());
             mb.setInlineStylesTheme(resourceObjectInstance);
-            mb.setIcon(placeholder);
+            mb.setIcon(user.getEncodedAvatar(10));
             mb.setUIIDLine1("SlightlySmallerFontLabelLeft");
             mb.setTextLine2(user.email.get());
             mb.setUIIDLine2("RedLabel");
@@ -58,17 +56,6 @@ public class ShowUsers extends BaseForm {
             });
             list.addComponent(mb);
             mb.putClientProperty("id", user.id.getInt());
-            if (user.avatarFile.get() != null) {
-                Display.getInstance().scheduleBackgroundTask(() -> {
-                    Display.getInstance().callSerially(() -> {
-                        String[] fragments = StringUtils.split(user.avatarFile.get(), "/");
-                        String storageName = fragments[fragments.length - 1];
-                        URLImage photo = URLImage.createToStorage(placeholder, storageName, user.avatarFile.get());
-                        mb.setIcon(photo.scaled(size, size));
-                        mb.revalidate();
-                    });
-                });
-            }
         }
         addComponent(list);
         getToolbar().addSearchCommand(e -> {

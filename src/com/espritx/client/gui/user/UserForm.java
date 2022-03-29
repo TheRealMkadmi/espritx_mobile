@@ -57,6 +57,7 @@ public class UserForm extends BaseForm {
         InstantUI iui = new InstantUI();
         iui.excludeProperty(this.user.id);
         iui.excludeProperty(this.user.avatarFile);
+        iui.excludeProperty(this.user.about);
         iui.setMultiChoiceLabels(this.user.userStatus, "Active", "Pending", "Inactive", "Restricted");
         iui.setMultiChoiceValues(this.user.userStatus, "active", "pending", "inactive", "restricted");
         iui.setMultiChoiceLabels(this.user.identityType, "ID Card", "Passport", "N/A");

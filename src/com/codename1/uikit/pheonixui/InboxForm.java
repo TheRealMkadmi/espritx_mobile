@@ -67,7 +67,6 @@ public class InboxForm extends BaseForm {
 
         installSidemenu(resourceObjectInstance);
 
-        getToolbar().addCommandToRightBar("", resourceObjectInstance.getImage("toolbar-profile-pic.png"), e -> {});
 
         gui_Label_5.setShowEvenIfBlank(true);
         gui_Label_6.setShowEvenIfBlank(true);
