@@ -19,6 +19,8 @@
 
 package com.codename1.uikit.pheonixui;
 
+import com.codename1.media.Media;
+import com.codename1.media.MediaManager;
 import com.codename1.ui.*;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
@@ -42,6 +44,7 @@ import com.espritx.client.gui.user.ShowUsers;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -119,16 +122,21 @@ public class BaseForm extends Form {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
+                    Media m = null;
+                    try {
+                        m = MediaManager.createBackgroundMedia("../res/theme/bell.mp3");
+                        m.play();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Dialog.show("Reminder", c.getTitle()+" is here!!", new Command("OK"));
                 }
             };
-
-            System.out.println(c.getStart());
-            if(DateUtil.compare(c.getStart(),(new Date()))==1){
-                c.getStart().setMinutes(c.getStart().getMinutes()-15);
+            if(c.getStart().after(new Date())){
                 timer.schedule(timerTask,c.getStart());
             }
         }
+
     }
 
     protected Button makeButton(String name, String text, String uiid) {

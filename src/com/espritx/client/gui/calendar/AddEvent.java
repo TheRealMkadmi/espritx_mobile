@@ -6,6 +6,7 @@
 package com.espritx.client.gui.calendar;
 
 import com.codename1.components.ToastBar;
+import com.codename1.messaging.Message;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -16,8 +17,12 @@ import com.codename1.ui.validation.Validator;
 import com.codename1.uikit.pheonixui.BaseForm;
 import com.codename1.util.DateUtil;
 import com.espritx.client.entities.Calendar;
+import com.espritx.client.entities.User;
+import com.espritx.client.services.User.UserService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 
@@ -48,6 +53,12 @@ public class AddEvent extends BaseForm {
                 prev.show();
             }
         };
+             List<User> ListOfUsers = UserService.GetAll();
+             ArrayList<String> ListOfUsersEmail = new ArrayList<>();
+        for (User i:ListOfUsers
+             ) {
+            ListOfUsersEmail.add(i.email.get());
+        }
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -56,13 +67,18 @@ public class AddEvent extends BaseForm {
                 if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || DateUtil.compare(start.getDate(),end.getDate())==1)
                     ToastBar.showMessage("Check again", FontImage.MATERIAL_WARNING);
                 else {
-
                     if (cbAllday.isSelected()) {
                         status = true;
                     }
+
                     Calendar calendar = new Calendar(start.getDate(), end.getDate(), tfTitle.getText(), tfDescription.getText(), status);
                     if (ServiceCalendar.getInstance().addEvent(calendar)) {
                         Dialog.show("Success", "Event Added", new Command("OK"));
+                        Message m = new Message("We have a new event, the "+ ServiceCalendar.getInstance().convertt(calendar.getStart())+" go and check it out");
+
+                        for (String a : ListOfUsersEmail) {
+                            Display.getInstance().sendMessage(new String[] {a}, "We have a new event", m);
+                        }
                     } else {
                         Dialog.show("ERROR", "Server error", new Command("OK"));
                     }

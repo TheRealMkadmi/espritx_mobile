@@ -6,16 +6,10 @@
 package com.espritx.client.gui.calendar;
 
 import com.codename1.components.MultiButton;
-import com.codename1.components.ToastBar;
-import com.codename1.l10n.ParseException;
-import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.*;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
-import com.codename1.ui.Label;
-import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
@@ -25,8 +19,12 @@ import com.espritx.client.entities.Calendar;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
+
 
 /**
  *
@@ -47,15 +45,16 @@ public class ShowEventform extends BaseForm {
         });
         com.codename1.ui.Calendar cal = new com.codename1.ui.Calendar();
         add(cal);
+        final DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        Container C1 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
         cal.addDayActionListener((evt) -> {
-            Label l = new Label("Today\ns events");
             ev[0] =ServiceCalendar.getInstance().getEventByDate(ServiceCalendar.getInstance().convertt(cal.getDate()));
             for (Calendar c : ev[0]) {
-                    Container C1 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
                     MultiButton mb = new MultiButton(c.getTitle());
-                    mb.setTextLine2(c.getStart().toString());
+                    mb.setTextLine2(df2.format(c.getStart()));
                     mb.setTextLine3("and ends");
-                    mb.setTextLine4(c.getStart().toString());
+                    mb.setTextLine4(df2.format(c.getEnd()));
                     FontImage.setMaterialIcon(mb, FontImage.MATERIAL_EVENT);
 
                     Button manageButton = new Button("Manage");
@@ -65,15 +64,16 @@ public class ShowEventform extends BaseForm {
 
                     manageButton.addActionListener(evt1 -> new UpdateEvent(c, prev).show());
 
-                    mb.addPointerPressedListener(evt12 -> Dialog.show("Event : " + c.getTitle(), "Description : " + c.getDescription() + "\nmade by\n " + c.getFirstname() + " " + c.getLastname(), "OK", null));
+                    mb.addActionListener(evt12 -> Dialog.show("Event : " + c.getTitle(), "Description : " + c.getDescription() + "\nmade by\n " + c.getFirstname() + " " + c.getLastname(), "OK", null));
                     C1.add(mb);
                     if (c.getUserId() == AuthenticationService.getAuthenticatedUser().id.getInt() && DateUtil.compare(c.getStart(), new Date()) == 1)
                         C1.add(manageButton);
-                    add(C1);
 
-                showBack();
+
             }
         });
+        add(C1);
+        showBack();
 
 
     }

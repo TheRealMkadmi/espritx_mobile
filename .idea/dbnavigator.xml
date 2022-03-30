@@ -37,6 +37,13 @@
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="7a6cfa8e-6d2d-453c-9843-6a97bc5e1615" />
   </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="7a6cfa8e-6d2d-453c-9843-6a97bc5e1615" dataset="espritx.event" active-filter-id="18b14a4b-a775-4e99-b127-9342d38d89cb">
+      <filter id="18b14a4b-a775-4e99-b127-9342d38d89cb" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
+  </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
   </component>

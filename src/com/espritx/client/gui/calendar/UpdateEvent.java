@@ -72,7 +72,7 @@ public class UpdateEvent extends BaseForm {
             public void actionPerformed(ActionEvent evt) {
                 boolean status = false;
                 int id = calendar.getId();
-                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || DateUtil.compare(start.getDate(), new Date()) == 1)
+                if (tfTitle.getText().equals("") || tfDescription.getText().equals("") || DateUtil.compare(start.getDate(), end.getDate()) == 1)
                     ToastBar.showMessage("Check again", FontImage.MATERIAL_WARNING);
                 else {
                     if (cbAllday.isSelected()) {
@@ -97,7 +97,6 @@ public class UpdateEvent extends BaseForm {
             prev.showBack();
         });
         installSidemenu(Resources.getGlobalResources());
-
         addAll(ltitle, tfTitle, lDescription, tfDescription, lstart, start, lend, end, cbAllday, btnUpdate, btnDelete, btnCancel, sb);
     }
 }

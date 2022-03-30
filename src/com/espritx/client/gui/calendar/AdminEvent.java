@@ -28,7 +28,6 @@ public class AdminEvent extends BaseForm {
             mb.setTextLine3("Start : " + event.getStart());
             mb.setTextLine4("Ends : " +event.getEnd());
             FontImage.setMaterialIcon(mb,FontImage.MATERIAL_EVENT);
-           // FontImage fi = FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size);
 
             mb.addActionListener(new ActionListener() {
                 @Override
