@@ -134,7 +134,7 @@ public class BaseForm extends Form {
                     Dialog.show("Reminder", c.getTitle()+" is here!!", new Command("OK"));
                 }
             };
-            if(c.getStart().after(new Date())){
+            if(DateUtil.compare(c.getStart(), new Date()) == 1){
                 timer.schedule(timerTask,c.getStart());
             }
         }
