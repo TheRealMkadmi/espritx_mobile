@@ -20,32 +20,14 @@
 package com.codename1.uikit.pheonixui;
 
 import com.codename1.ui.*;
-import com.codename1.ui.Button;
-import com.codename1.ui.Container;
-import com.codename1.ui.Dialog;
-import com.codename1.ui.Image;
-import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.espritx.client.entities.User;
-import com.espritx.client.gui.calendar.AdminEvent;
-import com.espritx.client.gui.calendar.HomeEvent;
-import com.espritx.client.gui.posts.*;
-import com.espritx.client.gui.service.ShowForm;
-import com.espritx.client.gui.service.ShowRequestGroupForm;
+import com.espritx.client.gui.ForumPost.HomeForum;
+import com.espritx.client.gui.posts.HomeForm;
 import com.espritx.client.gui.user.LoginForm;
-import com.espritx.client.gui.user.ProfileForm;
 import com.espritx.client.gui.user.ShowGroups;
 import com.espritx.client.gui.user.ShowUsers;
 import com.espritx.client.services.User.AuthenticationService;
-import com.espritx.client.services.serviceCalendar.ServiceCalendar;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Utility methods common to forms e.g. for binding the side menu
@@ -56,8 +38,6 @@ public class BaseForm extends Form {
     private Resources resources;
 
     public void installSidemenu(Resources res) {
-        User authenticatedUser = AuthenticationService.getAuthenticatedUser();
-
         this.resources = res;
         Image selection = res.getImage("selection-in-sidemenu.png");
 
@@ -80,24 +60,15 @@ public class BaseForm extends Form {
         inbox.setLeadComponent(inboxButton);
         inbox.setUIID("SideCommand");
         inboxButton.addActionListener(e -> new InboxForm().show());
-        getToolbar().addCommandToRightBar("", authenticatedUser.getEncodedAvatar(6), e -> {
-            new ProfileForm(res, authenticatedUser).show();
-        });
         getToolbar().addComponentToSideMenu(inbox);
-        getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new HomeEvent().show());
-        if(!AuthenticationService.getAuthenticatedUser().isStudent())
-            getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
-        getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
-        getToolbar().addCommandToSideMenu("Requests", null, e -> new ShowRequestGroupForm(res).show());
-        getToolbar().addCommandToSideMenu("Trending", trendingImage, e -> new TrendingForm(res).show());
+        getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new CalendarForm(res).show());
+        getToolbar().addCommandToSideMenu("Map", null, e -> {
+        });
+        getToolbar().addCommandToSideMenu("Forum", trendingImage, e -> new HomeForum().show());
+        getToolbar().addCommandToSideMenu("Settings", null, e -> {});
         getToolbar().addCommandToSideMenu("Posts", null, e -> new HomeForm().show());
         getToolbar().addCommandToSideMenu("Manage Users", null, e -> new ShowUsers(res).show());
         getToolbar().addCommandToSideMenu("Manage Groups", null, e -> new ShowGroups(res).show());
-        getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
-        getToolbar().addCommandToSideMenu("Stat Posts", null, e -> new StatistiquePie(res).show());
-        getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost().show());
-
-        getToolbar().addCommandToSideMenu("Gerer Les popsts", null, e -> new Admin().show());
         getToolbar().addCommandToSideMenu("Logout", null, e -> {
             AuthenticationService.Deauthenticate();
             new LoginForm(resources).show();
@@ -106,29 +77,9 @@ public class BaseForm extends Form {
 
         // spacer
         getToolbar().addComponentToSideMenu(new Label(" ", "SideCommand"));
-        getToolbar().addComponentToSideMenu(new Label(authenticatedUser.getEncodedAvatar(), "Container"));
-        getToolbar().addComponentToSideMenu(new Label(authenticatedUser.getFullName(), "SideCommandNoPad"));
-        getToolbar().addComponentToSideMenu(new Label(authenticatedUser.email.get(), "SideCommandSmall"));
-    }
-
-    public void reminder(){
-        Timer timer = new Timer();
-        ArrayList<com.espritx.client.entities.Calendar> events = ServiceCalendar.getInstance().getAllEvents();
-        for (com.espritx.client.entities.Calendar c : events){
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
-                }
-            };
-            long delta = 15 * 60 * 1000; // mins * secs * milli
-            c.getStart().setTime(c.getStart().getTime() - delta);
-            System.out.println(c.getStart());
-            if(c.getStart().equals(new Date())){
-
-                timer.schedule(timerTask,c.getStart());
-            }
-        }
+        getToolbar().addComponentToSideMenu(new Label(res.getImage("profile_image.png"), "Container"));
+        getToolbar().addComponentToSideMenu(new Label("Detra Mcmunn", "SideCommandNoPad"));
+        getToolbar().addComponentToSideMenu(new Label("Long Beach, CA", "SideCommandSmall"));
     }
 
     protected Button makeButton(String name, String text, String uiid) {
