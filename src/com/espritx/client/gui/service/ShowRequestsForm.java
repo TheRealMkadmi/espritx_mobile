@@ -33,7 +33,7 @@ public class ShowRequestsForm extends BaseForm {
         });
         addComponent(BorderLayout.SOUTH,AddRequest);
         initUserControls(resourceObjectInstance);
-        setTitle("Manage Requests of your groups");
+        setTitle("Manage all requests");
         setName("ManageRequests");
         installSidemenu(resourceObjectInstance);
     }

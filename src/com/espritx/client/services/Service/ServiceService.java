@@ -79,7 +79,7 @@ public class ServiceService {
 
     public ArrayList<Service> getAllServices() {
         req = new ConnectionRequest();
-        String url = Statics.BASE_URL + "/service/show/";
+        String url = Statics.BASE_URL + "/service/show";
         System.out.println("===>" + url);
         req.setUrl(url);
         req.setPost(false);

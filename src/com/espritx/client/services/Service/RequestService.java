@@ -20,7 +20,7 @@ import java.util.Map;
 public class RequestService {
     public static List<Request> GetAll() {
         Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/showAll").acceptJson().getAsPropertyList(Request.class);
-        String str= Rest.get(Statics.BASE_URL + "/request/showService").acceptJson().getAsString().getResponseData();
+        String str= Rest.get(Statics.BASE_URL + "/request/showAll").acceptJson().getAsString().getResponseData();
         int i=0;
         List<PropertyBusinessObject> res = k.getResponseData();
         List<Request> RequestList = new ArrayList<>();
@@ -36,7 +36,7 @@ public class RequestService {
 
     public static List<Request> GetUserRequests() {
         Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/showUser").acceptJson().getAsPropertyList(Request.class);
-        String str= Rest.get(Statics.BASE_URL + "/request/showService").acceptJson().getAsString().getResponseData();
+        String str= Rest.get(Statics.BASE_URL + "/request/showUser").acceptJson().getAsString().getResponseData();
         int i=0;
         List<PropertyBusinessObject> res = k.getResponseData();
         List<Request> RequestList = new ArrayList<>();
@@ -50,9 +50,9 @@ public class RequestService {
         return RequestList;
     }
 
-    public static List<Request> GetServiceRequests() {
-        Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/showService").acceptJson().getAsPropertyList(Request.class);
-        String str= Rest.get(Statics.BASE_URL + "/request/showService").acceptJson().getAsString().getResponseData();
+    public static List<Request> GetServiceRequests(Service s) {
+        Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/"+s.getId()+"/showService").acceptJson().getAsPropertyList(Request.class);
+        String str= Rest.get(Statics.BASE_URL + "/request/"+s.getId()+"/showService").acceptJson().getAsString().getResponseData();
         int i=0;
         List<PropertyBusinessObject> res = k.getResponseData();
         List<Request> RequestList = new ArrayList<>();
@@ -80,6 +80,11 @@ public class RequestService {
             i++;
         }
         return RequestList;
+    }
+
+    public static Request GetRequest(Request R) {
+        PropertyBusinessObject k = (PropertyBusinessObject) Rest.get(Statics.BASE_URL + "/request/" + R.id + "/delete").acceptJson().getAsProperties(Request.class);
+        return (Request) k;
     }
 
     public static Service parseService(String str,int i){

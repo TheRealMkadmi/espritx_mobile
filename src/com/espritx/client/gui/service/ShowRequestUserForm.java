@@ -1,10 +1,7 @@
 package com.espritx.client.gui.service;
 
 import com.codename1.properties.UiBinding;
-import com.codename1.ui.Button;
-import com.codename1.ui.Container;
-import com.codename1.ui.Display;
-import com.codename1.ui.Label;
+import com.codename1.ui.*;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
@@ -33,9 +30,11 @@ public class ShowRequestUserForm extends BaseForm {
         });
         addComponent(BorderLayout.SOUTH,AddRequest);
         initUserControls(resourceObjectInstance);
-        setTitle("Manage Requests of your groups");
-        setName("ManageRequests");
+        setTitle("Your Requests");
+        setName("ManageUserRequests");
         installSidemenu(resourceObjectInstance);
+        Form f=new AddRequestForm();
+        getToolbar().addMaterialCommandToRightBar("", FontImage.MATERIAL_ADD, e -> f.show());
     }
 
     private void initUserControls(Resources resourceObjectInstance) {

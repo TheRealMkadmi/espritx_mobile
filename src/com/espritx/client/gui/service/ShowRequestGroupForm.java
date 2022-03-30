@@ -37,7 +37,7 @@ public class ShowRequestGroupForm extends BaseForm {
         addComponent(BorderLayout.SOUTH,AddRequest);
         initUserControls(resourceObjectInstance);
         setTitle("Manage Requests of your groups");
-        setName("ManageRequests");
+        setName("ManageGroupRequests");
         installSidemenu(resourceObjectInstance);
     }
 

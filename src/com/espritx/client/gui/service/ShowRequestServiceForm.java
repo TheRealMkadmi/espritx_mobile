@@ -12,6 +12,7 @@ import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
 import com.espritx.client.entities.Request;
+import com.espritx.client.entities.Service;
 import com.espritx.client.gui.components.SelectableTable;
 import com.espritx.client.services.Service.RequestService;
 
@@ -19,11 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowRequestServiceForm extends BaseForm {
+
     public ShowRequestServiceForm() {
         this(Resources.getGlobalResources());
     }
 
-    public ShowRequestServiceForm(Resources resourceObjectInstance) {
+    public ShowRequestServiceForm(Resources resourceObjectInstance) {}
+
+    public ShowRequestServiceForm(Resources resourceObjectInstance, Service s) {
         setLayout(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_CENTER));
         setInlineStylesTheme(resourceObjectInstance);
         Button AddRequest = new Button("Add Request");
@@ -32,14 +36,14 @@ public class ShowRequestServiceForm extends BaseForm {
             ;
         });
         addComponent(BorderLayout.SOUTH,AddRequest);
-        initUserControls(resourceObjectInstance);
-        setTitle("Manage Requests of your groups");
-        setName("ManageRequests");
+        initUserControls(resourceObjectInstance,s);
+        setTitle("Requests of service"+s.getName()  );
+        setName("ManageServiceRequests");
         installSidemenu(resourceObjectInstance);
     }
 
-    private void initUserControls(Resources resourceObjectInstance) {
-        List<Request> requestList = RequestService.GetServiceRequests();
+    private void initUserControls(Resources resourceObjectInstance, Service s) {
+        List<Request> requestList = RequestService.GetServiceRequests(s);
         final List<Request> shadowCopy = new ArrayList<>(requestList);
 
         UiBinding ui = new UiBinding();
