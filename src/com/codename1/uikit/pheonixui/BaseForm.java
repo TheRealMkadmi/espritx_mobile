@@ -31,7 +31,7 @@ import com.codename1.ui.util.Resources;
 import com.espritx.client.entities.User;
 import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
-import com.espritx.client.gui.posts.HomeForm;
+import com.espritx.client.gui.posts.*;
 import com.espritx.client.gui.service.ShowForm;
 import com.espritx.client.gui.service.ShowRequestGroupForm;
 import com.espritx.client.gui.user.LoginForm;
@@ -42,6 +42,7 @@ import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -92,6 +93,11 @@ public class BaseForm extends Form {
         getToolbar().addCommandToSideMenu("Posts", null, e -> new HomeForm().show());
         getToolbar().addCommandToSideMenu("Manage Users", null, e -> new ShowUsers(res).show());
         getToolbar().addCommandToSideMenu("Manage Groups", null, e -> new ShowGroups(res).show());
+        getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
+        getToolbar().addCommandToSideMenu("Stat Posts", null, e -> new StatistiquePie(res).show());
+        getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost().show());
+
+        getToolbar().addCommandToSideMenu("Gerer Les popsts", null, e -> new Admin().show());
         getToolbar().addCommandToSideMenu("Logout", null, e -> {
             AuthenticationService.Deauthenticate();
             new LoginForm(resources).show();
@@ -115,7 +121,8 @@ public class BaseForm extends Form {
                     Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
                 }
             };
-            c.getStart().setMinutes(c.getStart().getMinutes()-15);
+            long delta = 15 * 60 * 1000; // mins * secs * milli
+            c.getStart().setTime(c.getStart().getTime() - delta);
             System.out.println(c.getStart());
             if(c.getStart().equals(new Date())){
 

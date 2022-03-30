@@ -148,16 +148,21 @@ for (Map<String, Object> c : listofMaps2){
 
                         String content = obj.get("content").toString();
                      //   'post'=>$idPc,
+                        String nom=obj.get("nom").toString();
+                        String prenom=obj.get("prenom").toString();
 
                           String lati=obj.get("latitude").toString();
                         String longi=obj.get("longitude").toString();
+                        String mail=obj.get("email").toString();
                         Boolean isValid = Boolean.parseBoolean(obj.get("isValid").toString());
                         // String isValid=obj.get("isValid").toString();
                         float idUser = Float.parseFloat(obj.get("userId").toString());
 
 
                         dateString = new SimpleDateFormat("y-m-d").parse(obj.get("createdAt").toString());
-
+p.setNom(nom);
+p.setPrenom(prenom);
+p.setEmail(mail);
                         p.setTotalPost(Math.round(totalP));
                         p.setTotalcomments(Math.round(totalComments));
                         p.setCreated_at(dateString);
@@ -181,7 +186,7 @@ p.setPost(Math.round(iddpc));*/
                         p.setContent(content);
                            p.setLatitude(lati);
                          p.setLongitude(longi);
-                        p.setIsValid(isValid);
+                        p.setValid(isValid);
                         result.add(p);
 
                     }
@@ -292,7 +297,7 @@ p.setPost(Math.round(iddpc));*/
         String url = Statics.BASE_URL + "/updatePost/" + post.getId();
         req.addArgument("title", post.getTitle());
         req.addArgument("content", post.getContent() + "");
-        req.addArgument("isValid", post.getIsValid() + "");
+        req.addArgument("isValid", post.getValid() + "");
 
         req.setUrl(url);
 
