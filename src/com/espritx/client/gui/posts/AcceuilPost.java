@@ -7,15 +7,11 @@ package com.espritx.client.gui.posts;
 
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.MultiButton;
-import com.codename1.io.Log;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.uikit.pheonixui.BaseForm;
 import com.espritx.client.entities.Post;
 import com.espritx.client.services.ServicePost.ServicePost;
-
-import javax.annotation.Resources;
-import java.io.IOException;
 import java.util.List;
 
 /**

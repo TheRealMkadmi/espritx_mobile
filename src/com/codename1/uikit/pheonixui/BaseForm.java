@@ -42,6 +42,7 @@ import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -120,7 +121,8 @@ public class BaseForm extends Form {
                     Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
                 }
             };
-            c.getStart().setMinutes(c.getStart().getMinutes()-15);
+            long delta = 15 * 60 * 1000; // mins * secs * milli
+            c.getStart().setTime(c.getStart().getTime() - delta);
             System.out.println(c.getStart());
             if(c.getStart().equals(new Date())){
 

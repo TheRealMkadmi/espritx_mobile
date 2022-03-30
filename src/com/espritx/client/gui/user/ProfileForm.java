@@ -21,7 +21,6 @@ import com.codename1.uikit.pheonixui.BaseForm;
 import com.espritx.client.entities.User;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.User.ProfileService;
-import com.espritx.client.services.User.UserService;
 
 import java.util.ArrayList;
 
@@ -77,6 +76,7 @@ public class ProfileForm extends BaseForm {
             };
 
             if (FileChooser.isAvailable()) {
+
                 FileChooser.showOpenDialog(".png,image/png,.jpg,image/jpg,.jpeg", callback);
             } else {
                 Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
