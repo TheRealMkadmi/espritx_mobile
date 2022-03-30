@@ -122,14 +122,14 @@ public class BaseForm extends Form {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Media m = null;
+                    /*Media m = null;
                     try {
                         m = MediaManager.createBackgroundMedia("../res/theme/bell.mp3");
                         m.play();
                         //java.awt.Toolkit.getDefaultToolkit().beep();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                     Dialog.show("Reminder", c.getTitle()+" is here!!", new Command("OK"));
                 }
             };
