@@ -115,4 +115,42 @@ public class ServiceService {
         NetworkManager.getInstance().addToQueueAndWait(req);
         return resultOK;
     }
+
+    public boolean updateService(Service S){
+        String url = Statics.BASE_URL + "/service/"+S.getId()+"/edit";
+        req.setUrl(url);
+        req.setPost(true);
+        Map<String, Object> auth = new HashMap<>();
+        auth.put("Name", S.getName());
+        auth.put("Responsible", S.getResponsible().toString());
+        auth.put("Recipient", S.getRecipient());
+        final String payload = Result.fromContent(auth).toString();
+        req.setRequestBody(payload);
+        req.setContentType("application/json");
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOK = req.getResponseCode() == 200;
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOK;
+    }
+
+    public boolean deleteService(Service S){
+        String url = Statics.BASE_URL + "/service/"+S.getId()+"/delete";
+        req.setUrl(url);
+        req.setPost(true);
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOK = req.getResponseCode() == 204;
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOK;
+    }
+
 }

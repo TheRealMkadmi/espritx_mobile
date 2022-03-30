@@ -114,4 +114,17 @@ public class RequestService {
         }
         return S;
     }
+
+    public static Map CreateRequest(Request R) {
+        return Rest.post(Statics.BASE_URL + "/request/add/").body(R).jsonContent().acceptJson().getAsJsonMap().getResponseData();
+    }
+
+    public static Map UpdateRequest(Request R) {
+        return Rest.patch(Statics.BASE_URL + "/request/" + R.id + "/delete").body(R).jsonContent().acceptJson().getAsJsonMap().getResponseData();
+    }
+
+    public static Map DeleteRequest(Request R) {
+        return Rest.delete(Statics.BASE_URL + "/request/" + R.id + "/edit").jsonContent().acceptJson().getAsJsonMap().getResponseData();
+    }
+
 }

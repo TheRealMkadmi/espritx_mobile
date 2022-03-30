@@ -34,6 +34,23 @@ private int post;
     private int nblikes;
     private int totalPost;
     private int totalcomments;
+    private String email;
+
+    public Boolean getValid() {
+        return isValid;
+    }
+
+    public void setValid(Boolean valid) {
+        isValid = valid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public int getTotalcomments() {
         return totalcomments;
@@ -140,13 +157,13 @@ private int post;
 
 
 
-    public Post(String title, String content, String latitude, String longitude,String image , int id) {
+    public Post(String title, String content, String latitude, String longitude, int id) {
         this.title = title;
         this.content = content;
         this.longitude = longitude;
         this.latitude = latitude;
 
-        this.image=image;
+
         this.id=id;
     }
 
@@ -181,20 +198,7 @@ private int post;
     }
 
 
-    public Boolean getIsValid() {
-        return isValid;
-    }
 
-    public void setIsValid(Boolean isValid) {
-        this.isValid = isValid;
-    }
-
-   
-
-
-
-
-  
     public Date getCreated_at() {
         return created_at;
     }

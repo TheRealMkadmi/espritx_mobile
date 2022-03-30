@@ -31,7 +31,7 @@ import com.codename1.ui.util.Resources;
 import com.espritx.client.entities.User;
 import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
-import com.espritx.client.gui.posts.HomeForm;
+import com.espritx.client.gui.posts.*;
 import com.espritx.client.gui.service.ShowForm;
 import com.espritx.client.gui.service.ShowRequestGroupForm;
 import com.espritx.client.gui.user.LoginForm;
@@ -92,6 +92,11 @@ public class BaseForm extends Form {
         getToolbar().addCommandToSideMenu("Posts", null, e -> new HomeForm().show());
         getToolbar().addCommandToSideMenu("Manage Users", null, e -> new ShowUsers(res).show());
         getToolbar().addCommandToSideMenu("Manage Groups", null, e -> new ShowGroups(res).show());
+        getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
+        getToolbar().addCommandToSideMenu("Stat Posts", null, e -> new StatistiquePie(res).show());
+        getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost().show());
+
+        getToolbar().addCommandToSideMenu("Gerer Les popsts", null, e -> new Admin().show());
         getToolbar().addCommandToSideMenu("Logout", null, e -> {
             AuthenticationService.Deauthenticate();
             new LoginForm(resources).show();
