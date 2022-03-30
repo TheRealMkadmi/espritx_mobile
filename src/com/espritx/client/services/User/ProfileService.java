@@ -14,7 +14,6 @@ public class ProfileService {
     public static User edit_profile(User newUserData, String avatarPath) throws IOException {
         MimeTypeMap mimeTypeMap = new MimeTypeMap();
         MultipartRequest updateProfileRequest = new MultipartRequest();
-        updateProfileRequest.addData("avatarFile", "dummy".getBytes(), "text/plain");
         updateProfileRequest.addData("avatarFile", avatarPath, mimeTypeMap.getMimeType(FileUtils.getFileExtension(avatarPath)));
         updateProfileRequest.addArgumentNoEncoding("userProfile", newUserData.getPropertyIndex().toJSON());
         updateProfileRequest.setPost(true);
