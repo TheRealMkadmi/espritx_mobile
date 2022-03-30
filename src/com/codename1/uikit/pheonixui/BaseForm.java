@@ -28,6 +28,7 @@ import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.codename1.util.DateUtil;
 import com.espritx.client.entities.User;
 import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
@@ -42,7 +43,6 @@ import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -109,6 +109,7 @@ public class BaseForm extends Form {
         getToolbar().addComponentToSideMenu(new Label(authenticatedUser.getEncodedAvatar(), "Container"));
         getToolbar().addComponentToSideMenu(new Label(authenticatedUser.getFullName(), "SideCommandNoPad"));
         getToolbar().addComponentToSideMenu(new Label(authenticatedUser.email.get(), "SideCommandSmall"));
+        reminder();
     }
 
     public void reminder(){
@@ -121,11 +122,10 @@ public class BaseForm extends Form {
                     Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
                 }
             };
-            long delta = 15 * 60 * 1000; // mins * secs * milli
-            c.getStart().setTime(c.getStart().getTime() - delta);
-            System.out.println(c.getStart());
-            if(c.getStart().equals(new Date())){
 
+            System.out.println(c.getStart());
+            if(DateUtil.compare(c.getStart(),(new Date()))==1){
+                c.getStart().setMinutes(c.getStart().getMinutes()-15);
                 timer.schedule(timerTask,c.getStart());
             }
         }

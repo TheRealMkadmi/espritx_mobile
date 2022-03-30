@@ -74,7 +74,6 @@ public class AddEvent extends BaseForm {
         getToolbar().addMaterialCommandToRightBar("", FontImage.MATERIAL_ARROW_BACK, (evt) -> {
             prev.showBack();
         });
-        //reminder();
         installSidemenu(Resources.getGlobalResources());
         addAll(ltitle,tfTitle,lDescription, tfDescription,lstart, start,lend, end, cbAllday, btnAdd);
     }
