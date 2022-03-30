@@ -19,7 +19,7 @@ public class ShowForm extends BaseForm {
         this(Resources.getGlobalResources());
     }
 
-    public ShowForm(Resources resourceObjectInstance){
+    public ShowForm(Resources resourceObjectInstance) {
         setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setInlineStylesTheme(resourceObjectInstance);
         Button AddService = new Button("Add Service");
@@ -45,10 +45,17 @@ public class ShowForm extends BaseForm {
         list.setInlineStylesTheme(resourceObjectInstance);
         for (Service s : serviceList) {
             MultiButton mb = new MultiButton(s.getName());
-            if(s.getServiceRequests()==null){
+            if (s.getServiceRequests() == null) {
                 mb.setTextLine2("0");
-            }else
-            {mb.setTextLine2(String.valueOf(s.getServiceRequests().size()));}
+            } else {
+                mb.setTextLine2(String.valueOf(s.getServiceRequests().size()));
+            }
+            mb.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    new ShowRequestServiceForm(resourceObjectInstance, s).show();
+                }
+            });
             list.addComponent(mb);
         }
         addComponent(list);

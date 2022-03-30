@@ -2,6 +2,8 @@ package com.espritx.client.gui.service;
 
 import com.codename1.properties.UiBinding;
 import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
@@ -65,6 +67,29 @@ public class ShowRequestUserForm extends BaseForm {
         t.setScrollableY(true);
         t.setScrollableX(true);
         addComponent(BorderLayout.NORTH,t);
+
+
+
+        Button Edit =new Button();
+        Edit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (t.getSelectedRow() > -1) {
+                    Integer id = (Integer) t.getModel().getValueAt(t.getSelectedRow(), 0);
+                    Request r = null;
+                    for (Request req : requestList) {
+                        if (req.id.get().equals(id)) {
+                            r = req;
+                            break;
+                        }
+                    }
+                    assert r != null;
+                    new AddRequestForm(resourceObjectInstance,r);
+                    t.clearSelectedRow().refresh();
+                }
+            }
+        });
+        add(BorderLayout.CENTER,Edit);
 
         getToolbar().addSearchCommand(e -> {
             Label l =new Label("Select a search criteria");

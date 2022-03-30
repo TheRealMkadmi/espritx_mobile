@@ -25,7 +25,9 @@ public class ShowRequestServiceForm extends BaseForm {
         this(Resources.getGlobalResources());
     }
 
-    public ShowRequestServiceForm(Resources resourceObjectInstance) {}
+    public ShowRequestServiceForm(Resources resourceObjectInstance) {
+        this(resourceObjectInstance, new Service());
+    }
 
     public ShowRequestServiceForm(Resources resourceObjectInstance, Service s) {
         setLayout(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_CENTER));
