@@ -126,6 +126,7 @@ public class BaseForm extends Form {
                     try {
                         m = MediaManager.createBackgroundMedia("../res/theme/bell.mp3");
                         m.play();
+                        //java.awt.Toolkit.getDefaultToolkit().beep();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
