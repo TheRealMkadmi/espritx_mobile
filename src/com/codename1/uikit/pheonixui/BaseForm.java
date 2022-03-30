@@ -19,6 +19,8 @@
 
 package com.codename1.uikit.pheonixui;
 
+import com.codename1.media.Media;
+import com.codename1.media.MediaManager;
 import com.codename1.ui.*;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
@@ -28,7 +30,9 @@ import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.codename1.util.DateUtil;
 import com.espritx.client.entities.User;
+import com.espritx.client.gui.ForumPost.HomeForum;
 import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
 import com.espritx.client.gui.posts.*;
@@ -41,8 +45,8 @@ import com.espritx.client.gui.user.ShowUsers;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.services.serviceCalendar.ServiceCalendar;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -96,7 +100,7 @@ public class BaseForm extends Form {
         getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
         getToolbar().addCommandToSideMenu("Stat Posts", null, e -> new StatistiquePie(res).show());
         getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost().show());
-
+        getToolbar().addCommandToSideMenu("Forum", trendingImage, e -> new HomeForum().show());
         getToolbar().addCommandToSideMenu("Gerer Les popsts", null, e -> new Admin().show());
         getToolbar().addCommandToSideMenu("Logout", null, e -> {
             AuthenticationService.Deauthenticate();
@@ -109,6 +113,7 @@ public class BaseForm extends Form {
         getToolbar().addComponentToSideMenu(new Label(authenticatedUser.getEncodedAvatar(), "Container"));
         getToolbar().addComponentToSideMenu(new Label(authenticatedUser.getFullName(), "SideCommandNoPad"));
         getToolbar().addComponentToSideMenu(new Label(authenticatedUser.email.get(), "SideCommandSmall"));
+        reminder();
     }
 
     public void reminder(){
@@ -118,17 +123,22 @@ public class BaseForm extends Form {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Dialog.show("Reminder 15 min left", c.getTitle()+" is almost here!!", new Command("OK"));
+                    /*Media m = null;
+                    try {
+                        m = MediaManager.createBackgroundMedia("../res/theme/bell.mp3");
+                        m.play();
+                        //java.awt.Toolkit.getDefaultToolkit().beep();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                    Dialog.show("Reminder", c.getTitle()+" is here!!", new Command("OK"));
                 }
             };
-            long delta = 15 * 60 * 1000; // mins * secs * milli
-            c.getStart().setTime(c.getStart().getTime() - delta);
-            System.out.println(c.getStart());
-            if(c.getStart().equals(new Date())){
-
+            if(c.getStart().after(new Date())){
                 timer.schedule(timerTask,c.getStart());
             }
         }
+
     }
 
     protected Button makeButton(String name, String text, String uiid) {

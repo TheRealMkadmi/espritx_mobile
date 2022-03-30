@@ -280,7 +280,11 @@ is divided into following sections:
                     <compilerarg path="@{apgeneratedsrcdir}"/>
                     <compilerarg line="${ap.proc.none.internal}"/>
                     <customize/>
-                </javac>
+                <withKotlin>
+            <compilerarg value="-no-stdlib"/>
+            <compilerarg value="-no-reflect"/>
+            <compilerarg value="-no-jdk"/>
+        </withKotlin></javac>
             </sequential>
         </macrodef>
     </target>
@@ -313,7 +317,11 @@ is divided into following sections:
                     <compilerarg line="${javac.profile.cmd.line.arg}"/>
                     <compilerarg line="${javac.compilerargs}"/>
                     <customize/>
-                </javac>
+                <withKotlin>
+            <compilerarg value="-no-stdlib"/>
+            <compilerarg value="-no-reflect"/>
+            <compilerarg value="-no-jdk"/>
+        </withKotlin></javac>
             </sequential>
         </macrodef>
     </target>
