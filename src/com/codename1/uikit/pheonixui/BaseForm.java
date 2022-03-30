@@ -32,6 +32,7 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import com.codename1.util.DateUtil;
 import com.espritx.client.entities.User;
+import com.espritx.client.gui.ForumPost.HomeForum;
 import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
 import com.espritx.client.gui.posts.*;
@@ -99,7 +100,7 @@ public class BaseForm extends Form {
         getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
         getToolbar().addCommandToSideMenu("Stat Posts", null, e -> new StatistiquePie(res).show());
         getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost().show());
-
+        getToolbar().addCommandToSideMenu("Forum", trendingImage, e -> new HomeForum().show());
         getToolbar().addCommandToSideMenu("Gerer Les popsts", null, e -> new Admin().show());
         getToolbar().addCommandToSideMenu("Logout", null, e -> {
             AuthenticationService.Deauthenticate();
