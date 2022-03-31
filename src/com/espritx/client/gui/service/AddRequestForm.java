@@ -144,37 +144,12 @@ public class AddRequestForm extends BaseForm {
             };
 
             if (FileChooser.isAvailable()) {
-
                 FileChooser.showOpenDialog(".png,image/png,.jpg,image/jpg,.jpeg", callback);
             } else {
                 Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
             }
         });
         pictureContainer.add(scaleImageButton);
-
-        /*final String[] newFilePath = new String[1];
-        Container FileContainer = new Container(BoxLayout.x());
-        pictureContainer.setName("Picture Container");
-        Label filePickerStatus1 = new Label("No file chosen.");
-        FileContainer.add(filePickerStatus1);
-        Image icon1 = FontImage.createMaterial(FontImage.MATERIAL_ADD, new Style());
-        ScaleImageButton scaleImageButton1 = new ScaleImageButton(icon1);
-        scaleImageButton1.addActionListener((evt) -> {
-            ActionListener callback = e -> {
-                if (e != null && e.getSource() != null) {
-                    newFilePath[0] = (String) e.getSource();
-                    filePickerStatus.setText("Selected File");
-                }
-            };
-
-            if (FileChooser.isAvailable()) {
-
-                FileChooser.showOpenDialog(".pdf", callback);
-            } else {
-                Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
-            }
-        });
-        FileContainer.add(scaleImageButton1);*/
 
         this.RequestService = new RequestService();
         this.request = instance;
@@ -220,7 +195,7 @@ public class AddRequestForm extends BaseForm {
             d.removeComponent(radioButtonList);
         });
 
-        cnt.addAll(Type,b,pictureContainer);
+        cnt.addAll(Type, b, pictureContainer);
 
         addComponent(BorderLayout.CENTER, cnt);
 
@@ -230,7 +205,7 @@ public class AddRequestForm extends BaseForm {
             try {
                 Service TypeSer = (Service) radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex());
                 request.Type.set(TypeSer);
-                this.RequestService.UpdateRequest(request,newPicturePath[0]);
+                com.espritx.client.services.Service.RequestService.UpdateRequest(request, newPicturePath[0], null);
             } catch (Exception e) {
                 Log.p(e.getMessage(), Log.ERROR);
                 dlg.dispose();

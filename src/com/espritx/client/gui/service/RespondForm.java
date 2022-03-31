@@ -29,14 +29,15 @@ public class RespondForm extends BaseForm {
         this(Resources.getGlobalResources());
     }
 
-    public RespondForm(Resources resourceObjectInstance){
-        this(Resources.getGlobalResources(),new Request());
+    public RespondForm(Resources resourceObjectInstance) {
+        this(Resources.getGlobalResources(), new Request());
     }
 
     public RespondForm(Resources resourceObjectInstance, Request instance) {
         setLayout(new BorderLayout());
 
-        final String[] newPicturePath = new String[1];
+        final String[] attachmentsArray = new String[1];
+        // start upload
         Container pictureContainer = new Container(BoxLayout.x());
         instance.getEncodedPic(6);
         pictureContainer.add(instance.getEncodedPic(6));
@@ -44,48 +45,27 @@ public class RespondForm extends BaseForm {
         Label filePickerStatus = new Label("No file chosen.");
         pictureContainer.add(filePickerStatus);
         Image icon = FontImage.createMaterial(FontImage.MATERIAL_ADD, new Style());
-        ScaleImageButton scaleImageButton = new ScaleImageButton(icon);
-        scaleImageButton.addActionListener((evt) -> {
+
+        // select image
+        ScaleImageButton addImageButton = new ScaleImageButton(icon);
+        addImageButton.addActionListener((evt) -> {
             ActionListener callback = e -> {
                 if (e != null && e.getSource() != null) {
-                    newPicturePath[0] = (String) e.getSource();
-                    filePickerStatus.setText("Selected File");
+                    attachmentsArray[0] = (String) e.getSource();
+                    filePickerStatus.setText("Selected Picture");
                 }
             };
 
             if (FileChooser.isAvailable()) {
-
                 FileChooser.showOpenDialog(".png,image/png,.jpg,image/jpg,.jpeg", callback);
             } else {
                 Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
             }
         });
-        pictureContainer.add(scaleImageButton);
+        pictureContainer.add(addImageButton);
+        // end upload
 
-        /*final String[] newFilePath = new String[1];
-        Container FileContainer = new Container(BoxLayout.x());
-        pictureContainer.setName("Picture Container");
-        Label filePickerStatus1 = new Label("No file chosen.");
-        FileContainer.add(filePickerStatus1);
-        Image icon1 = FontImage.createMaterial(FontImage.MATERIAL_ADD, new Style());
-        ScaleImageButton scaleImageButton1 = new ScaleImageButton(icon1);
-        scaleImageButton1.addActionListener((evt) -> {
-            ActionListener callback = e -> {
-                if (e != null && e.getSource() != null) {
-                    newFilePath[0] = (String) e.getSource();
-                    filePickerStatus.setText("Selected File");
-                }
-            };
-
-            if (FileChooser.isAvailable()) {
-
-                FileChooser.showOpenDialog(".pdf", callback);
-            } else {
-                Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
-            }
-        });
-        FileContainer.add(scaleImageButton1);*/
-
+        // construction
         this.RequestService = new RequestService();
         this.request = instance;
         instance.getPropertyIndex().registerExternalizable();
@@ -98,9 +78,10 @@ public class RespondForm extends BaseForm {
         iui.excludeProperty(this.request.UpdatedAt);
         iui.excludeProperty(this.request.Picture);
         iui.excludeProperty(this.request.Attachement);
-        iui.excludeProperty(this.request.Status);
         iui.excludeProperty(this.request.Requester);
         iui.excludeProperty(this.request.Type);
+        iui.setMultiChoiceLabels(this.request.Status, "Hold", "Deny", "Done");
+        iui.setMultiChoiceValues(this.request.Status, "processing", "denied", "done");
         Container cnt = iui.createEditUI(request, true);
         cnt.setScrollableY(true);
         cnt.setInlineStylesTheme(resourceObjectInstance);
@@ -129,7 +110,7 @@ public class RespondForm extends BaseForm {
             d.removeComponent(radioButtonList);
         });
 
-        cnt.addAll(Type,b,pictureContainer);
+        cnt.addAll(Type, b, pictureContainer);
 
         addComponent(BorderLayout.CENTER, cnt);
 
@@ -139,7 +120,7 @@ public class RespondForm extends BaseForm {
             try {
                 Service TypeSer = (Service) radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex());
                 request.Type.set(TypeSer);
-                this.RequestService.UpdateRequest(request,newPicturePath[0]);
+                this.RequestService.UpdateRequest(request, attachmentsArray[0], ""); // fix me
             } catch (Exception e) {
                 Log.p(e.getMessage(), Log.ERROR);
                 dlg.dispose();

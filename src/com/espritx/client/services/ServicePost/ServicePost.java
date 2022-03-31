@@ -16,9 +16,7 @@ import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.events.ActionListener;
 import com.espritx.client.entities.Commentaire;
 import com.espritx.client.entities.Post;
-import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.utils.Statics;
-import javafx.geometry.Pos;
 
 import java.io.IOException;
 import java.util.ArrayList;

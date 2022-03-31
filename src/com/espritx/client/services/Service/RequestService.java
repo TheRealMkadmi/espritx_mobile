@@ -23,13 +23,13 @@ import java.util.Map;
 public class RequestService {
     public static List<Request> GetAll() {
         Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/showAll").acceptJson().getAsPropertyList(Request.class);
-        String str= Rest.get(Statics.BASE_URL + "/request/showAll").acceptJson().getAsString().getResponseData();
-        int i=0;
+        String str = Rest.get(Statics.BASE_URL + "/request/showAll").acceptJson().getAsString().getResponseData();
+        int i = 0;
         List<PropertyBusinessObject> res = k.getResponseData();
         List<Request> RequestList = new ArrayList<>();
         for (PropertyBusinessObject r : res) {
-            Request req = (Request)r;
-            Service ser=parseService(str,i);
+            Request req = (Request) r;
+            Service ser = parseService(str, i);
             req.Type.set(ser);
             RequestList.add(req);
             i++;
@@ -39,13 +39,13 @@ public class RequestService {
 
     public static List<Request> GetUserRequests() {
         Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/showUser").acceptJson().getAsPropertyList(Request.class);
-        String str= Rest.get(Statics.BASE_URL + "/request/showUser").acceptJson().getAsString().getResponseData();
-        int i=0;
+        String str = Rest.get(Statics.BASE_URL + "/request/showUser").acceptJson().getAsString().getResponseData();
+        int i = 0;
         List<PropertyBusinessObject> res = k.getResponseData();
         List<Request> RequestList = new ArrayList<>();
         for (PropertyBusinessObject r : res) {
-            Request req = (Request)r;
-            Service ser=parseService(str,i);
+            Request req = (Request) r;
+            Service ser = parseService(str, i);
             req.Type.set(ser);
             RequestList.add(req);
             i++;
@@ -54,14 +54,14 @@ public class RequestService {
     }
 
     public static List<Request> GetServiceRequests(Service s) {
-        Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/"+s.getId()+"/showService").acceptJson().getAsPropertyList(Request.class);
-        String str= Rest.get(Statics.BASE_URL + "/request/"+s.getId()+"/showService").acceptJson().getAsString().getResponseData();
-        int i=0;
+        Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/" + s.getId() + "/showService").acceptJson().getAsPropertyList(Request.class);
+        String str = Rest.get(Statics.BASE_URL + "/request/" + s.getId() + "/showService").acceptJson().getAsString().getResponseData();
+        int i = 0;
         List<PropertyBusinessObject> res = k.getResponseData();
         List<Request> RequestList = new ArrayList<>();
         for (PropertyBusinessObject r : res) {
-            Request req = (Request)r;
-            Service ser=parseService(str,i);
+            Request req = (Request) r;
+            Service ser = parseService(str, i);
             req.Type.set(ser);
             RequestList.add(req);
             i++;
@@ -71,13 +71,13 @@ public class RequestService {
 
     public static List<Request> GetGroupRequests() {
         Response<List<PropertyBusinessObject>> k = Rest.get(Statics.BASE_URL + "/request/showGroup").acceptJson().getAsPropertyList(Request.class);
-        String str= Rest.get(Statics.BASE_URL + "/request/showGroup").acceptJson().getAsString().getResponseData();
-        int i=0;
+        String str = Rest.get(Statics.BASE_URL + "/request/showGroup").acceptJson().getAsString().getResponseData();
+        int i = 0;
         List<PropertyBusinessObject> res = k.getResponseData();
         List<Request> RequestList = new ArrayList<>();
         for (PropertyBusinessObject r : res) {
-            Request req = (Request)r;
-            Service ser=parseService(str,i);
+            Request req = (Request) r;
+            Service ser = parseService(str, i);
             req.Type.set(ser);
             RequestList.add(req);
             i++;
@@ -90,7 +90,7 @@ public class RequestService {
         return (Request) k;
     }
 
-    public static Service parseService(String str,int i){
+    public static Service parseService(String str, int i) {
         Service S = new Service();
         try {
             JSONParser j = new JSONParser();
@@ -98,8 +98,8 @@ public class RequestService {
                     j.parseJSON(new CharArrayReader(str.toCharArray()));
 
             List<Map<String, Object>> list2 = (List<Map<String, Object>>) servicesListJson.get("root");
-            Map<String,Object> list=(Map<String, Object>) list2.get(i);
-            Map<String, Object> list1 =(Map<String, Object>) list.get("Type");
+            Map<String, Object> list = (Map<String, Object>) list2.get(i);
+            Map<String, Object> list1 = (Map<String, Object>) list.get("Type");
             float id = Float.parseFloat(list1.get("id").toString());
             S.setId((int) id);
             if (list1.get("Name") == null)
@@ -127,14 +127,15 @@ public class RequestService {
         return Rest.post(Statics.BASE_URL + "/request/add/").body(R).jsonContent().acceptJson().getAsJsonMap().getResponseData();
     }
 
-    public static void UpdateRequest(Request R,String picturePath) throws IOException {
+    public static void UpdateRequest(Request R, String picturePath, String attachmentPath) throws IOException {
         //return Rest.patch(Statics.BASE_URL + "/request/" + R.id + "/delete").body(R).jsonContent().acceptJson().getAsJsonMap().getResponseData();
         MimeTypeMap mimeTypeMap = new MimeTypeMap();
         MultipartRequest updateProfileRequest = new MultipartRequest();
         updateProfileRequest.addData("PictureFile", picturePath, mimeTypeMap.getMimeType(FileUtils.getFileExtension(picturePath)));
+        updateProfileRequest.addData("AttachementsFile", attachmentPath, mimeTypeMap.getMimeType(FileUtils.getFileExtension(picturePath)));
         updateProfileRequest.addArgumentNoEncoding("Request", R.getPropertyIndex().toJSON());
         updateProfileRequest.setPost(true);
-        updateProfileRequest.setUrl(Statics.BASE_URL + "/request/" + R.id + "/edit");
+        updateProfileRequest.setUrl(Statics.BASE_URL + "/request/edit/" + R.id);
         NetworkManager.getInstance().addToQueueAndWait(updateProfileRequest);
     }
 
