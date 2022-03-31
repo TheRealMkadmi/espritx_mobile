@@ -2,13 +2,16 @@ package com.espritx.client.services.Service;
 
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.JSONParser;
+import com.codename1.io.MultipartRequest;
+import com.codename1.io.NetworkManager;
 import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
 import com.codename1.properties.PropertyBusinessObject;
 import com.espritx.client.entities.Group;
 import com.espritx.client.entities.Request;
 import com.espritx.client.entities.Service;
-import com.espritx.client.entities.User;
+import com.espritx.client.utils.FileUtils;
+import com.espritx.client.utils.MimeTypeMap;
 import com.espritx.client.utils.Statics;
 
 import java.io.IOException;
@@ -124,12 +127,19 @@ public class RequestService {
         return Rest.post(Statics.BASE_URL + "/request/add/").body(R).jsonContent().acceptJson().getAsJsonMap().getResponseData();
     }
 
-    public static Map UpdateRequest(Request R) {
-        return Rest.patch(Statics.BASE_URL + "/request/" + R.id + "/delete").body(R).jsonContent().acceptJson().getAsJsonMap().getResponseData();
+    public static void UpdateRequest(Request R,String picturePath) throws IOException {
+        //return Rest.patch(Statics.BASE_URL + "/request/" + R.id + "/delete").body(R).jsonContent().acceptJson().getAsJsonMap().getResponseData();
+        MimeTypeMap mimeTypeMap = new MimeTypeMap();
+        MultipartRequest updateProfileRequest = new MultipartRequest();
+        updateProfileRequest.addData("PictureFile", picturePath, mimeTypeMap.getMimeType(FileUtils.getFileExtension(picturePath)));
+        updateProfileRequest.addArgumentNoEncoding("Request", R.getPropertyIndex().toJSON());
+        updateProfileRequest.setPost(true);
+        updateProfileRequest.setUrl(Statics.BASE_URL + "/request/" + R.id + "/edit");
+        NetworkManager.getInstance().addToQueueAndWait(updateProfileRequest);
     }
 
     public static Map DeleteRequest(Request R) {
-        return Rest.delete(Statics.BASE_URL + "/request/" + R.id + "/edit").jsonContent().acceptJson().getAsJsonMap().getResponseData();
+        return Rest.delete(Statics.BASE_URL + "/request/" + R.id + "/delete").jsonContent().acceptJson().getAsJsonMap().getResponseData();
     }
 
 }

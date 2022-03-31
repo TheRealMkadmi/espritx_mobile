@@ -1,6 +1,11 @@
 package com.espritx.client.entities;
 
 import com.codename1.properties.*;
+import com.codename1.ui.Display;
+import com.codename1.ui.EncodedImage;
+import com.codename1.ui.FontImage;
+import com.codename1.ui.URLImage;
+import com.espritx.client.utils.StringUtils;
 
 import java.util.Date;
 
@@ -35,5 +40,31 @@ public class Request implements PropertyBusinessObject {
         Picture.setLabel("Picture");
         Attachement.setLabel("Attachement");
         CreatedAt.setLabel("Created At");
+    }
+    public EncodedImage getEncodedPic() {
+        return this.getEncodedPic(6);
+    }
+
+    public EncodedImage getEncodedPic(int _size) {
+        int size = Display.getInstance().convertToPixels(_size, true);
+        EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_IMAGE, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
+        /*if (Picture.get() != null) {
+            String[] fragments = StringUtils.split(this.Picture.get(), "/");
+            String storageName = fragments[fragments.length - 1];
+            URLImage photo = URLImage.createToStorage(placeholder, storageName, Picture.get());
+            return photo;
+        } else return placeholder;*/
+        return placeholder;
+    }
+
+    public EncodedImage getEncodedFile(int _size) {
+        int size = Display.getInstance().convertToPixels(_size, true);
+        EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
+        if (Picture.get() != null) {
+            String[] fragments = StringUtils.split(this.Picture.get(), "/");
+            String storageName = fragments[fragments.length - 1];
+            URLImage photo = URLImage.createToStorage(placeholder, storageName, Picture.get());
+            return photo;
+        } else return placeholder;
     }
 }
