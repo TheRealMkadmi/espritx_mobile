@@ -10,9 +10,8 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
 import com.espritx.client.entities.ForumPost;
-import com.espritx.client.entities.Post;
 import com.espritx.client.services.ServiceForum.serviceForumPost;
-import com.espritx.client.services.ServicePost.ServicePost;
+
 
 import java.util.List;
 
@@ -66,7 +65,9 @@ public class SearchForumPost extends BaseForm {
             }
         }, 4);
         hi.show();
+
         installSidemenu(Resources.getGlobalResources());
     }
+
 
 }
