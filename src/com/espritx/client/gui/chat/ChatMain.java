@@ -39,9 +39,9 @@ public class ChatMain extends BaseForm {
 
     }
     public ChatMain(Resources resourceObjectInstance,Conversation c1) {
-        installSidemenu(resourceObjectInstance);
-System.out.println(c1);
-            ServiceConversation s2=new ServiceConversation();
+  /*installSidemenu(resourceObjectInstance);*/
+ System.out.println(c1);
+           ServiceConversation s2=new ServiceConversation();
             List<Conversation> lu=new ArrayList<>();
             lu= s2.afficher_conver();
             lu=   s2.Filter_conver(lu);
@@ -49,8 +49,8 @@ ServiceMessages s1=new ServiceMessages();
             List<Message>listeMessage=new ArrayList<>();
 listeMessage = s1.afficher_message();
 
-            UIManager.initNamedTheme("/theme", "Theme");
-            ChatRoomView.ViewModel room = new ChatRoomView.ViewModel();
+           UIManager.initNamedTheme("/theme", "Theme");
+                ChatRoomView.ViewModel room = new ChatRoomView.ViewModel();
             // Make up some dummy times for the chat messages.
 
             long SECOND = 1000l;
@@ -66,7 +66,6 @@ listeMessage = s1.afficher_message();
             String kramerThumb = "https://weblite.ca/cn1tests/radchat/kramer.jpg";
 String ImageThumb="https://cdn.pixabay.com/photo/2016/11/29/12/13/fence-1869401_640.jpg";
             t += HOUR;
-           /* System.out.println("testing messages:"+listeMessage.get(0));*/
             for (Message msg : listeMessage){
                 if (msg.Conversationid.getInt()==c1.id.getInt()){
                     if(msg.author.get().id.getInt()==(AuthenticationService.getAuthenticatedUser().id.getInt())){
@@ -93,8 +92,8 @@ String ImageThumb="https://cdn.pixabay.com/photo/2016/11/29/12/13/fence-1869401_
                         ChatBubbleView.ViewModel message = new ChatBubbleView.ViewModel();
                         message.messageText(textFieldContents);
                         message.date(new Date());
-                        message.isOwn(true); // Indicates that this is sent by "this" user
-                        // so bubble is on right side of room view.
+                        message.isOwn(true);
+
 
                         // Now add the message
                         room.addMessages(message);
@@ -103,7 +102,7 @@ String ImageThumb="https://cdn.pixabay.com/photo/2016/11/29/12/13/fence-1869401_
                         m.content.set(textFieldContents);
                         m.Conversationid.set(c1.id.getInt());
 s1.Add_Message(m);
-                        // Clear the text field contents
+
                         room.inputBuffer("");
                     }
 
