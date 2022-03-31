@@ -56,6 +56,7 @@ public class AjoutPost extends BaseForm {
     Form current;
 MapContainer cnt = null;
     public AjoutPost(Resources res) {
+        setLayout(new BoxLayout(BoxLayout.Y_AXIS));
        // super("Feed", BoxLayout.y());
         installSidemenu(res);
         Toolbar tb = new Toolbar(true);
@@ -180,7 +181,7 @@ MapContainer cnt = null;
         titlestyle.setMarginUnit(Style.UNIT_TYPE_DIPS);
         titlestyle.setMargin(Component.BOTTOM, 3);
        // title.setUIID("TextFieldBlack");
-        addStringValue("title", title);
+        addStringValue("titre", title);
 
         TextField content = new TextField("", "Taper le contenu de post",40, TextArea.ANY);
 
@@ -198,7 +199,7 @@ MapContainer cnt = null;
         contentstyle.setMarginUnit(Style.UNIT_TYPE_DIPS);
         contentstyle.setMargin(Component.BOTTOM, 3);
         // title.setUIID("TextFieldBlack");
-        addStringValue("content", content);
+        addStringValue("Contenu", content);
 
 
 

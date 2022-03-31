@@ -89,6 +89,8 @@ public class BaseForm extends Form {
         });
         getToolbar().addComponentToSideMenu(inbox);
         getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new HomeEvent().show());
+        getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
+        getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost());
         if(!AuthenticationService.getAuthenticatedUser().isStudent())
             getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
         getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
@@ -98,10 +100,12 @@ public class BaseForm extends Form {
         getToolbar().addCommandToSideMenu("Manage Users", null, e -> new ShowUsers(res).show());
         getToolbar().addCommandToSideMenu("Manage Groups", null, e -> new ShowGroups(res).show());
         getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
+        getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost());
+        getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
         getToolbar().addCommandToSideMenu("Stat Posts", null, e -> new StatistiquePie(res).show());
-        getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost().show());
+        getToolbar().addCommandToSideMenu("Gerer Les posts", null, e -> new Admin().show());
         getToolbar().addCommandToSideMenu("Forum", trendingImage, e -> new HomeForum().show());
-        getToolbar().addCommandToSideMenu("Gerer Les popsts", null, e -> new Admin().show());
+        getToolbar().addCommandToSideMenu("Gerer Les posts", null, e -> new Admin().show());
         getToolbar().addCommandToSideMenu("Logout", null, e -> {
             AuthenticationService.Deauthenticate();
             new LoginForm(resources).show();

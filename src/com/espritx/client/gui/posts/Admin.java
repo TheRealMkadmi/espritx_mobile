@@ -59,17 +59,56 @@ public class Admin extends BaseForm {
 
 
         for (Post p: posts) {
+            String ch = p.getCreated_at().toString();
+            MultiButton mb = new MultiButton(p.getTitle()+ " Crée le " + ch.substring(7, 9) + " " + ch.substring(4, 7));
+//mb.add("Crée par "+p.getEmail());
+            MultiButton mb2 = new MultiButton(" Crée par " + p.getEmail());
+            MultiButton mb3 = new MultiButton(" " + p.getContent());
+            MultiButton mb5 = new MultiButton("Nombre de commentaires " + p.getNbCommentaire());
+            String etat="";
 
-            MultiButton mb = new MultiButton(p.getTitle()+ " creé le " +p.getCreated_at() );
+            if(p.getValid() == true){
+                etat=" approuvé";
 
+            }
+            else{
+                etat ="non approuvé";
+            }
 
+            MultiButton mb4 = new MultiButton(" etat " + etat);
 
 
             mb.setInlineStylesTheme(resourceObjectInstance);
-            mb.setIcon(placeholder);
+
             mb.setUIIDLine1("SlightlySmallerFontLabelLeft");
 
             mb.setUIIDLine2("RedLabel");
+
+
+            mb2.setInlineStylesTheme(resourceObjectInstance);
+
+            mb2.setUIIDLine1("SlightlySmallerFontLabelLeft");
+
+            mb2.setUIIDLine2("RedLabel");
+
+            mb3.setInlineStylesTheme(resourceObjectInstance);
+
+            mb3.setUIIDLine1("SlightlySmallerFontLabelLeft");
+
+            mb3.setUIIDLine2("RedLabel");
+
+            mb4.setInlineStylesTheme(resourceObjectInstance);
+
+            mb4.setUIIDLine1("SlightlySmallerFontLabelLeft");
+
+            mb4.setUIIDLine2("RedLabel");
+
+
+            mb5.setInlineStylesTheme(resourceObjectInstance);
+
+            mb5.setUIIDLine1("SlightlySmallerFontLabelLeft");
+
+            mb5.setUIIDLine2("RedLabel");
 
 
 
@@ -164,8 +203,8 @@ public class Admin extends BaseForm {
 
           //  list.add(BorderLayout.CENTER,BoxLayout.encloseY(BoxLayout.encloseX(mb),BoxLayout.encloseX(lSupprimer)));
 
-            list.addComponent(mb);
-            list.add(BoxLayout.encloseX(lSupprimer,lModifier,sb));
+            list.add(BoxLayout.encloseY(mb,mb2,mb3,mb4,mb5));
+            list.add(BoxLayout.encloseXRight(lSupprimer,lModifier,sb));
 
       //      mb.putClientProperty("id", p.getId());
 

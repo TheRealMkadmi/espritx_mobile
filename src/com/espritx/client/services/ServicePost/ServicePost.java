@@ -14,9 +14,11 @@ import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
 
 import com.codename1.ui.events.ActionListener;
+import com.espritx.client.entities.Commentaire;
 import com.espritx.client.entities.Post;
 import com.espritx.client.services.User.AuthenticationService;
 import com.espritx.client.utils.Statics;
+import javafx.geometry.Pos;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,6 +85,48 @@ public class ServicePost {
     }
 
 
+
+
+
+    public boolean AddCommentaire(Commentaire c, Post p) throws ParseException {
+
+
+        String url = Statics.BASE_URL + "/comment/newwApi/"+p.getId();
+
+        req.setUrl(url);
+        req.setPost(false);
+
+        req.addArgument("content", c.getMessage() + "");
+
+
+
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+
+                System.out.println("Ajout en cours ....");
+                String str = new String(req.getResponseData());
+                System.out.println("données==" + str);
+
+                resultOK = req.getResponseCode() == 200;
+                req.removeResponseListener(this);
+
+
+            }
+        });
+
+
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOK;
+    }
+
+
+
+
+
+
+
+
     public ArrayList<Post> getAllpost() {
 
         String url = Statics.BASE_URL + "/post/all";
@@ -138,10 +182,13 @@ public class ServicePost {
                         List<Map<String, Object>> listofMaps2 = (List<Map<String, Object>>) obj.get("commentaires");
 for (Map<String, Object> c : listofMaps2){
     String message= c.get("commentaire").toString();
+    System.out.println("******************************************"+message);
     p.setCommentaire(message);
 
 
 }
+
+
 
 
                         //    String commentaire = obj.get("commentaire").toString();
@@ -205,6 +252,58 @@ p.setPost(Math.round(iddpc));*/
 
 
     }
+
+
+
+    public ArrayList<Commentaire> afficherAllComments() {
+
+        ArrayList<Commentaire> result2 = new ArrayList<>();
+        String url = Statics.BASE_URL + "/Commmm/all";
+        req.setUrl(url);
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+
+                JSONParser jsonp;
+                jsonp = new JSONParser();
+                try {
+
+                    Map<String, Object> mapPost = jsonp.parseJSON(new CharArrayReader(new String(req.getResponseData()).toCharArray()));
+
+                    List<Map<String, Object>> listofMaps = (List<Map<String, Object>>) mapPost.get("root");
+                    for (Map<String, Object> obj : listofMaps) {
+                        Commentaire com = new Commentaire();
+
+
+                            float id = Float.parseFloat(obj.get("postId").toString());
+                            String message= obj.get("commentaire").toString();
+                        String nom= obj.get("nom").toString();
+                        String prenom= obj.get("prenom").toString();
+                       com.setNom(nom);
+                       com.setPrenom(prenom);
+                            com.setIdPost(Math.round(id));
+                            com.setMessage(message);
+
+                        result2.add(com);
+
+                    }
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
+
+
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return result2;
+
+
+    }
+
+
 
 
     private ArrayList<Post> parsePost(String jsonText) throws IOException {

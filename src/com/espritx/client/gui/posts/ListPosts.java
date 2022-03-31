@@ -19,9 +19,11 @@ import static com.codename1.ui.Component.LEFT;
 
 import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.*;
+import com.codename1.ui.plaf.RoundBorder;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
+import com.espritx.client.entities.Commentaire;
 import com.espritx.client.entities.Post;
 import com.espritx.client.services.ServicePost.ServicePost;
 import com.espritx.client.services.User.AuthenticationService;
@@ -33,15 +35,17 @@ import java.util.Date;
  *
  * @author mouna
  */
+
 public class ListPosts extends BaseForm  {
     Form current;
 
 
 
     public ListPosts(Resources res){
+        installSidemenu(res);
        //super("Feed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
-
+        setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setToolbar(tb);
         getTitleArea().setUIID("Container");
         setTitle("Ajouter Post");
@@ -102,10 +106,13 @@ public class ListPosts extends BaseForm  {
         ButtonGroup barGroup = new ButtonGroup();
         RadioButton mesListes = RadioButton.createToggle("Mes publications", barGroup);
         mesListes.setUIID("SelectBar");
+
         RadioButton liste = RadioButton.createToggle("Autres", barGroup);
         liste.setUIID("SelectBar");
         RadioButton partage = RadioButton.createToggle("poster", barGroup);
         partage.setUIID("SelectBar");
+       // RadioButton chercher = RadioButton.createToggle("Cherecher", barGroup);
+        //chercher.setUIID("SelectBar");
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
         liste.addActionListener((e) -> {
             ListPosts a= new ListPosts(res);
@@ -113,6 +120,8 @@ public class ListPosts extends BaseForm  {
 
             refreshTheme();
         });
+
+
 
         mesListes.addActionListener((e) -> {
            MesPosts a= new MesPosts(res);
@@ -126,7 +135,7 @@ public class ListPosts extends BaseForm  {
             refreshTheme();
         });
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(3, mesListes, liste, partage),
+                GridLayout.encloseIn(4, mesListes, liste, partage),
                 FlowLayout.encloseBottom(arrow)
         ));
 
@@ -145,6 +154,7 @@ public class ListPosts extends BaseForm  {
         bindButtonSelection(mesListes, arrow);
         bindButtonSelection(liste, arrow);
         bindButtonSelection(partage, arrow);
+
         // special case for rotation
         addOrientationListener(e -> {
             updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
@@ -152,7 +162,19 @@ public class ListPosts extends BaseForm  {
 
        
         ArrayList<Post> list=ServicePost.getInstance().afficherAllPosts();
+        ArrayList<Commentaire> listCommentaires = ServicePost.getInstance().afficherAllComments();
+
+
+
+
+
+        // title.setUIID("TextFieldBlack");
+
+
+
+
         for(Post p:list) {
+
             if (p.getValid() == true) {
                 String urlImage = "feed.jpg";
                 Image placeholder = Image.createImage(1, 1);
@@ -161,10 +183,125 @@ public class ListPosts extends BaseForm  {
                 URLImage urlim = URLImage.createToStorage(enc, urlImage, urlImage, URLImage.RESIZE_SCALE);
 
 
-                addButton(urlim, p, res);
+
+
+
+                ButtonGroup barGroup3 = new ButtonGroup();
+                RadioButton AjouterCommentaire= RadioButton.createToggle(" Commenter ...",barGroup3);
+
+
+                TextField title1 = new TextField("Commenter ....");
+                AjouterCommentaire.addActionListener((evt) -> {
+
+                    try {
+
+                        if (title1.getText().equals("") ) {
+
+                            Dialog.show("Cher utilisateur merci de verifier les données", "", "Annuler", "OK");
+
+                        } else {
+
+                            InfiniteProgress ip = new InfiniteProgress();;// loading after insert data
+                            final Dialog idialog = ip.showInfiniteBlocking();
+                            //  Post p = new Post(title.getText(), content.getText(), String.valueOf(lati), String.valueOf(longi));
+
+                            Commentaire c =new Commentaire(title1.getText());
+
+                            System.out.println("donnees==" + c);
+
+                            // taw bech n3ayet lel  methode mte3 l'ajout ili mawjouda  f service bech najem nzid lel base
+                            ServicePost.getInstance().AddCommentaire(c,p);
+                            // na7i loading ba3d me3mlt l'ajout
+                            idialog.dispose();
+                            // nrefreshi
+                            ToastBar.showMessage(" cher user votre commentaire est bien ajouté", FontImage.MATERIAL_PLACE);
+
+                            new ListPosts(res).show();
+
+
+
+
+
+
+
+
+
+
+
+                            refreshTheme();
+
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                    }
+
+                });
+
+             //   AjouterCommentaire.setUIID("SelectBar");
+
+                ButtonGroup barGroup2 = new ButtonGroup();
+                RadioButton nbComm= RadioButton.createToggle(p.getNbCommentaire()+" Commentaires", barGroup2);
+
+                nbComm.setUIID("SelectBar");
+
+
+
+
+
+
+                TextArea gui_Text_Area_4 = new TextArea();
+                Button gui_Button_4 = new Button();
+                gui_Text_Area_4.setText("Commentaires");
+                gui_Text_Area_4.setUIID("SlightlySmallerFontLabelLeft");
+                gui_Text_Area_4.setInlineStylesTheme(res);
+                gui_Text_Area_4.setName("Text_Area_4");
+                gui_Text_Area_4.setEditable(false);
+                gui_Button_4.setText("");
+                gui_Button_4.setUIID("Label");
+                gui_Button_4.setInlineStylesTheme(res);
+                gui_Button_4.setName("Button_4");
+
+                    addButton(urlim, p, res);
+                add(nbComm);
+               add( title1);
+                add(AjouterCommentaire);
+
+                add(gui_Text_Area_4);
+
+              //  add(gui_Button_4);
+                }
+
+
+
+            for (Commentaire c : listCommentaires) {
+if(p.getId()==c.getIdPost()) {
+    MultiButton gui_Multi_Button_3 = new MultiButton();
+
+    gui_Multi_Button_3.setUIID("Label");
+    gui_Multi_Button_3.setInlineStylesTheme(res);
+    gui_Multi_Button_3.setName("Multi_Button_3");
+
+    gui_Multi_Button_3.setPropertyValue("line1", c.getNom()+" "+c.getPrenom());
+    gui_Multi_Button_3.setPropertyValue("line2", c.getMessage());
+    gui_Multi_Button_3.setPropertyValue("uiid1", "Label");
+    gui_Multi_Button_3.setPropertyValue("uiid2", "RedLabel");
+
+
+    //  cnt.add(comm);
+
+    add(gui_Multi_Button_3);
+
+
+}
 
             }
+
+
         }
+
     
     }
     
@@ -231,10 +368,9 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
         l.getParent().repaint();
 
     }
-
     private void addButton(Image img,Post p,Resources res) {
 
-        MapContainer  cnt1 = new MapContainer("AIzaSyCy-fMWerzvXcPCV0FDI07hW2DAzs_mnpY");
+        MapContainer cnt1 = new MapContainer("AIzaSyCy-fMWerzvXcPCV0FDI07hW2DAzs_mnpY");
 
 
         // create a String
@@ -250,38 +386,38 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
         FontImage im = FontImage.createMaterial(FontImage.MATERIAL_PLACE, s, Display.getInstance().convertToPixels(3));
 
 
-        btnMoveCamera.addActionListener(e->{
+        btnMoveCamera.addActionListener(e -> {
             cnt1.setCameraPosition(new Coord(lat, lon));
 
             cnt1.clearMapLayers();
             cnt1.addMarker(
                     EncodedImage.createFromImage(im, false),
                     cnt1.getCoordAtPosition(e.getX(), e.getY()),
-                    ""+cnt1.getCameraPosition().toString(),
+                    "" + cnt1.getCameraPosition().toString(),
                     "",
-                    e3->{
-                        ToastBar.showMessage("You clicked "+cnt1.getName(), FontImage.MATERIAL_PLACE);
+                    e3 -> {
+                        ToastBar.showMessage("You clicked " + cnt1.getName(), FontImage.MATERIAL_PLACE);
                     })
             ;
 
         });
 
-        cnt1.addTapListener(e->{
+        cnt1.addTapListener(e -> {
 
 
             cnt1.clearMapLayers();
             cnt1.addMarker(
                     EncodedImage.createFromImage(im, false),
                     cnt1.getCoordAtPosition(e.getX(), e.getY()),
-                    ""+cnt1.getCameraPosition().toString(),
+                    "" + cnt1.getCameraPosition().toString(),
                     "",
-                    e3->{
-                        ToastBar.showMessage("You clicked "+cnt1.getName(), FontImage.MATERIAL_PLACE);
+                    e3 -> {
+                        ToastBar.showMessage("You clicked " + cnt1.getName(), FontImage.MATERIAL_PLACE);
                     }
             );
             ConnectionRequest r = new ConnectionRequest();
             r.setPost(false);
-            r.setUrl("http://maps.google.com/maps/api/geocode/json?latlng="+cnt1.getCameraPosition().getLatitude()+","+cnt1.getCameraPosition().getLongitude()+"&oe=utf8&sensor=false");
+            r.setUrl("http://maps.google.com/maps/api/geocode/json?latlng=" + cnt1.getCameraPosition().getLatitude() + "," + cnt1.getCameraPosition().getLongitude() + "&oe=utf8&sensor=false");
 
 
             NetworkManager.getInstance().addToQueueAndWait(r);
@@ -291,29 +427,19 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
-        int height=Display.getInstance().convertToPixels(1f);
-        int width=Display.getInstance().convertToPixels(1f);
-        Button image= new Button(img.fill(width, height));
+        int height = Display.getInstance().convertToPixels(1f);
+        int width = Display.getInstance().convertToPixels(1f);
+        Button image = new Button(img.fill(width, height));
         image.setUIID("Label");
 
-        Container cnt = BorderLayout.south(image) ;
+        Container cnt = BorderLayout.south(image);
+
 
         TextArea gui_Text_Area_1 = new TextArea();
         Button gui_Button_1 = new Button();
         MultiButton gui_Multi_Button_1 = new MultiButton();
 
-        TextArea i=new TextArea(""+p.getId());
+        TextArea i = new TextArea("" + p.getId());
         i.setUIID("NewsTopLine");
         i.setEditable(false);
 
@@ -330,17 +456,13 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
 
 
         MultiButton gui_LA = new MultiButton();
-        String ch=p.getCreated_at().toString();
+        String ch = p.getCreated_at().toString();
         gui_LA.setUIID("Label");
         gui_LA.setInlineStylesTheme(res);
         gui_LA.setName("gui_LA");
-        gui_LA.setText("Crée le "+ ch.substring(7,9)+" "+ch.substring(4,7));
+        gui_LA.setText("Crée le " + ch.substring(7, 9) + " " + ch.substring(4, 7));
 
         gui_LA.setPropertyValue("uiid1", "Label");
-
-
-
-
 
 
         // /////////////////////Content///////////////////
@@ -355,39 +477,32 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
         gui_Button_1.setName("Button_1");
 
 
+        //  int height=Display.getInstance().convertToPixels(11.5f);
+        //    TextArea ta=new TextArea(p.getTitle());
+        //   ta.setUIID("NewsTopLine");
+        // ta.setEditable(false);
 
 
-
-
-
-              //  int height=Display.getInstance().convertToPixels(11.5f);
-           //    TextArea ta=new TextArea(p.getTitle());
-             //   ta.setUIID("NewsTopLine");
-               // ta.setEditable(false);
-                
-                
-                
-                Label titletxt = new Label("title"+p.getTitle(),"NewsTopLine2");
-        TextArea content=new TextArea(p.getContent().toString());
+        Label titletxt = new Label("title" + p.getTitle(), "NewsTopLine2");
+        TextArea content = new TextArea(p.getContent().toString());
         content.setUIID("NewsTopLine");
         content.setEditable(false);
 
-                   TextArea da=new TextArea(p.getCreated_at().toString());
-                da.setUIID("NewsTopLine");
-                da.setEditable(false);
+        TextArea da = new TextArea(p.getCreated_at().toString());
+        da.setUIID("NewsTopLine");
+        da.setEditable(false);
 
 
+        Label datetxt = new Label("created_at" + p.getCreated_at().toString(), "NewsTopLine2");
 
-                Label datetxt = new Label("created_at"+p.getCreated_at() .toString(),"NewsTopLine2");
-                
-                
-                                 TextArea valid=new TextArea(p.getCreated_at().toString());
-                valid.setUIID("NewsTopLine");
-                valid.setEditable(false);
-           
-                Label validtxt = new Label(""+p.getValid().toString(),"NewsTopLine2");
-                 //   if(isValid)
-        if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
+
+        TextArea valid = new TextArea(p.getCreated_at().toString());
+        valid.setUIID("NewsTopLine");
+        valid.setEditable(false);
+
+        Label validtxt = new Label("" + p.getValid().toString(), "NewsTopLine2");
+        //   if(isValid)
+        if (p.getIdUser() == AuthenticationService.getAuthenticatedUser().id.getInt()) {
             if (p.getValid() == true) {
                 validtxt.setText("approuvée");
             } else {
@@ -398,13 +513,10 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
 
         }
 
-                
 
+        Label lSupprimer = new Label(" ");
 
-
-        Label lSupprimer=new Label(" ");
-
-        if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
+        if (p.getIdUser() == AuthenticationService.getAuthenticatedUser().id.getInt()) {
 
             lSupprimer.setUIID("NewsTopLine2");
             Style supprimerStyle = new Style(lSupprimer.getUnselectedStyle());
@@ -438,7 +550,7 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
         }
         Label lModifier = new Label(" ");
 
-        if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
+        if (p.getIdUser() == AuthenticationService.getAuthenticatedUser().id.getInt()) {
             lModifier.setUIID("NewsTopLine2");
             Style modifierStyle = new Style(lModifier.getUnselectedStyle());
             FontImage modifierImage = FontImage.createMaterial(FontImage.MATERIAL_MODE_EDIT, modifierStyle);
@@ -448,6 +560,10 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
 
 
             lModifier.addPointerPressedListener(l -> {
+
+                InfiniteProgress ip = new InfiniteProgress();;// loading after insert data
+                final Dialog idialog = ip.showInfiniteBlocking();
+                idialog.dispose();
                 new UpdatePost(res, p).show();
 
             });
@@ -455,14 +571,38 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
         }
 
 
+        ///////////////////////Comments
+
+
+        TextArea gui_Text_Area_2 = new TextArea();
+        Button gui_Button_2 = new Button();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         ShareButton sb = new ShareButton();
         if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
             sb.setText("Share");
         }
 
-        cnt.add(BorderLayout.CENTER,BoxLayout.encloseY(BoxLayout.encloseY( gui_Multi_Button_1,  gui_LA),BoxLayout.encloseX(gui_Text_Area_1,gui_Button_1) , BoxLayout.encloseY(BoxLayout.encloseX(lSupprimer,validtxt,sb,lModifier))
+        cnt.add(BorderLayout.CENTER, BoxLayout.encloseY(   BoxLayout.encloseY(BoxLayout.encloseY( gui_Multi_Button_1,  gui_LA),BoxLayout.encloseX(gui_Text_Area_1,gui_Button_1)) , BoxLayout.encloseY(BoxLayout.encloseXCenter(lSupprimer,validtxt,sb,lModifier))
 
         ));
+        //cnt1.add(BorderLayout.south( BoxLayout.encloseY(
+           //     BoxLayout.encloseY(BoxLayout.encloseX(gui_Text_Area_2,gui_Button_2)))));
+
+
 
         Container root = new Container();
      //   int height1=Display.getInstance().convertToPixels(100f);
@@ -476,7 +616,6 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
             add( btnMoveCamera);}
 
     }
-    
-  
+
 
 }

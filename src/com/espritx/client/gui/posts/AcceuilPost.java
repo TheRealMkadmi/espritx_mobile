@@ -7,11 +7,15 @@ package com.espritx.client.gui.posts;
 
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.MultiButton;
+import com.codename1.io.Log;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
 import com.espritx.client.entities.Post;
 import com.espritx.client.services.ServicePost.ServicePost;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -27,7 +31,7 @@ public class AcceuilPost extends BaseForm {
 
 
         int fiveMM = Display.getInstance().convertToPixels(5);
-       // final Image finalDuke = duke.scaledWidth(fiveMM);
+        // final Image finalDuke = duke.scaledWidth(fiveMM);
         Toolbar.setGlobalToolbar(true);
         Form hi = new Form("Search", BoxLayout.y());
         hi.add(new InfiniteProgress());

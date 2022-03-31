@@ -1,6 +1,8 @@
 package com.espritx.client.gui.posts;
 
+import com.codename1.components.FloatingActionButton;
 import com.codename1.components.FloatingHint;
+import com.codename1.components.InfiniteProgress;
 import com.codename1.googlemaps.MapContainer;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.BoxLayout;
@@ -17,6 +19,7 @@ public class UpdatePost  extends BaseForm{
         Form current;
 
     public UpdatePost(Resources res, Post p) {
+        setLayout(new BoxLayout(BoxLayout.Y_AXIS));
 installSidemenu(res);
 
       //  super("Feed", BoxLayout.y());
@@ -84,6 +87,10 @@ installSidemenu(res);
         });
         Button btnAnnuler = new Button("Annuler");
         btnAnnuler.addActionListener(e -> {
+
+            InfiniteProgress ip = new InfiniteProgress();;// loading after insert data
+            final Dialog idialog = ip.showInfiniteBlocking();
+            idialog.dispose();
             new ListPosts(res).show();
         });
 
@@ -97,8 +104,9 @@ installSidemenu(res);
         Label l5 = new Label("");
 
         Label l1 = new Label();
-
-        Container contente = BoxLayout.encloseY(
+        Container contente;
+        if(AuthenticationService.getAuthenticatedUser().isStudent()){
+        contente = BoxLayout.encloseY(
                 l1, l2,
                 new FloatingHint(title),
 
@@ -108,9 +116,21 @@ installSidemenu(res);
                 btnAnnuler
 
 
-        );
-        if(p.getIdUser()  != AuthenticationService.getAuthenticatedUser().id.getInt()) {
-            contente.add(BoxLayout.encloseY(etatCombo));
+        );}
+        else{
+
+          contente = BoxLayout.encloseY(
+                    l1, l2,
+                    new FloatingHint(title),
+
+                    new FloatingHint(content),
+                    etatCombo,
+
+                    btnModifier,
+                    btnAnnuler
+
+
+            );
         }
 
 
