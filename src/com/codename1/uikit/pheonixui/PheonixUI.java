@@ -33,7 +33,7 @@ public class PheonixUI {
     private Resources theme;
 
     public void init(Object context) {
-        theme = UIManager.initFirstTheme("/theme");
+        theme = UIManager.initFirstTheme("/theme_legacy");
         Toolbar.setGlobalToolbar(true);
         UIManager.getInstance().setBundle(theme.getL10N("l1", "en"));
     }
