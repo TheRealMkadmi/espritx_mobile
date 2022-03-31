@@ -99,6 +99,8 @@ public class GroupForm extends BaseForm {
         getToolbar().addMaterialCommandToRightBar("", FontImage.MATERIAL_ADD, e -> {
             Dialog d = new Dialog("Add a User to " + group.display_name);
             d.setLayout(new BorderLayout());
+            d.showBack();
+
             final DefaultListModel<String> options = new DefaultListModel<>();
             AutoCompleteTextField ac = new AutoCompleteTextField(options) {
                 @Override

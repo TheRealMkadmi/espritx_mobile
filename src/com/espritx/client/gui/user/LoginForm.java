@@ -10,6 +10,9 @@ import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ToastBar;
 import com.codename1.fingerprint.Fingerprint;
 import com.codename1.io.Log;
+import com.codename1.social.GoogleConnect;
+import com.codename1.social.Login;
+import com.codename1.social.LoginCallback;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
@@ -67,20 +70,24 @@ public class LoginForm extends BaseForm {
         passwordTextField.setConstraint(TextField.PASSWORD);
         credentialsContainer.addComponent(passwordTextField);
         formContainer.addComponent(credentialsContainer);
-        Button loginButton = makeButton("SignInButton", "Sign In");
-        CheckBox remember_biometrically = new CheckBox("Remember biometrically");
-        remember_biometrically.setSelected(false);
+        formContainer.add(BoxLayout.encloseXCenter(new CheckBox("Remember me?")));
+
+        /* Biometric Login **/
+        CheckBox save_account_to_device = new CheckBox("Save to device");
+        save_account_to_device.setSelected(false);
         if (Fingerprint.isAvailable()) {
-            formContainer.add(remember_biometrically);
+            formContainer.add(BoxLayout.encloseXCenter(save_account_to_device));
             FloatingActionButton fab = FloatingActionButton.createBadge("Biometric Login");
+            formContainer.add(BoxLayout.encloseXCenter(fab));
             fab.addActionListener(evt -> {
                 Fingerprint.getPassword(
-                        "Get selected account from device",  // Message to display in auth dialog
+                        "Get account from device",  // Message to display in auth dialog
                         authenticationBucket
                 ).onResult((password, err) -> {
                     if (err != null) {
                         Log.e(err);
                         Log.p("Failed to get password: " + err.getMessage());
+                        ToastBar.showErrorMessage("Failed to get password: " + err.getMessage());
                     } else {
                         Log.p("The password was " + password);
                         String[] fragments = StringUtils.split(password, CREDENTIAL_SEPERATOR);
@@ -97,8 +104,12 @@ public class LoginForm extends BaseForm {
                     }
                 });
             });
+            formContainer.add(fab);
         }
+        /* end biometric login */
 
+        /* Start login button */
+        Button loginButton = makeButton("SignInButton", "Sign In");
         loginButton.addActionListener(evt -> {
             Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
             try {
@@ -107,7 +118,7 @@ public class LoginForm extends BaseForm {
                 String token = email + CREDENTIAL_SEPERATOR + password;
                 AuthenticationService.Authenticate(email, password);
                 dlg.dispose();
-                if (remember_biometrically.isSelected()) {
+                if (save_account_to_device.isSelected()) {
                     Fingerprint.addPassword(
                             "Save account to device", // Message to display in authentication dialog
                             authenticationBucket,
@@ -129,9 +140,42 @@ public class LoginForm extends BaseForm {
                 Dialog.show("error", e.getMessage(), "ok", null);
             }
         });
-
         formContainer.addComponent(loginButton);
+        /* end login button */
+
+        /* start Google Login */
+        Button loginwg = makeButton("googleSignin", "Sign In with Google");
+        loginwg.addActionListener((evt -> {
+            Login gc = GoogleConnect.getInstance();
+            gc.setClientId("786928689663-6f51bkknetf779gv8m89ivq1kgcrqudk.apps.googleusercontent.com");
+            gc.setRedirectURI("http://localhost:8000/connect/google/check");
+            gc.setClientSecret("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");
+
+            // Sets a LoginCallback listener
+            gc.setCallback(new LoginCallback() {
+                public void loginSuccessful() {
+                    System.out.println(0);
+                    ;// we can now start fetching stuff from Google+!
+                }
+
+                public void loginFailed(String errorMessage) {
+                    System.out.println(0);
+                }
+            });
+
+            if (!gc.isUserLoggedIn()) {
+                gc.doLogin();
+            } else {
+                // get the token and now you can query the Google API
+                String token = gc.getAccessToken().getToken();
+                Log.p(token);
+                // NOTE: On Android, this token will be null unless you provide valid
+                // client ID and secrets.
+            }
+        }));
+        formContainer.addComponent(loginwg);
+
+
         formContainer.addComponent(makeButton("ForgotPasswordContainer", "Forgot your Password?", "CenterLabelSmall"));
-        addComponent(BorderLayout.SOUTH, makeButton("RegisterButton", "Create New Account", "CenterLabel"));
     }
 }
