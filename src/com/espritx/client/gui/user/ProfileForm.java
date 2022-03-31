@@ -76,7 +76,6 @@ public class ProfileForm extends BaseForm {
             };
 
             if (FileChooser.isAvailable()) {
-
                 FileChooser.showOpenDialog(".png,image/png,.jpg,image/jpg,.jpeg", callback);
             } else {
                 Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);

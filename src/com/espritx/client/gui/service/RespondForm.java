@@ -29,8 +29,8 @@ public class RespondForm extends BaseForm {
         this(Resources.getGlobalResources());
     }
 
-    public RespondForm(Resources resourceObjectInstance){
-        this(Resources.getGlobalResources(),new Request());
+    public RespondForm(Resources resourceObjectInstance) {
+        this(Resources.getGlobalResources(), new Request());
     }
 
     public RespondForm(Resources resourceObjectInstance, Request instance) {
@@ -59,6 +59,8 @@ public class RespondForm extends BaseForm {
             } else {
                 Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
             }
+
+
         });
         pictureContainer.add(scaleImageButton);
 
@@ -129,7 +131,7 @@ public class RespondForm extends BaseForm {
             d.removeComponent(radioButtonList);
         });
 
-        cnt.addAll(Type,b,pictureContainer);
+        cnt.addAll(Type, b, pictureContainer);
 
         addComponent(BorderLayout.CENTER, cnt);
 
@@ -139,7 +141,7 @@ public class RespondForm extends BaseForm {
             try {
                 Service TypeSer = (Service) radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex());
                 request.Type.set(TypeSer);
-                this.RequestService.UpdateRequest(request,newPicturePath[0]);
+                this.RequestService.UpdateRequest(request, newPicturePath[0]);
             } catch (Exception e) {
                 Log.p(e.getMessage(), Log.ERROR);
                 dlg.dispose();

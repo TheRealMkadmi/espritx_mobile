@@ -1,7 +1,7 @@
 package com.espritx.client.gui.service;
 
 import com.codename1.components.*;
-import com.codename1.ext.filechooser.FileChooser;
+//import com.codename1.ext.filechooser.FileChooser;
 import com.codename1.io.Log;
 import com.codename1.properties.InstantUI;
 import com.codename1.ui.*;
@@ -142,13 +142,15 @@ public class AddRequestForm extends BaseForm {
                     filePickerStatus.setText("Selected File");
                 }
             };
-
+/*
             if (FileChooser.isAvailable()) {
 
                 FileChooser.showOpenDialog(".png,image/png,.jpg,image/jpg,.jpeg", callback);
             } else {
                 Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
             }
+
+ */
         });
         pictureContainer.add(scaleImageButton);
 
