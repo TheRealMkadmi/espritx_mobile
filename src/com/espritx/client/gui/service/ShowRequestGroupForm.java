@@ -78,7 +78,7 @@ public class ShowRequestGroupForm extends BaseForm {
         addComponent(BorderLayout.NORTH, t);
 
         Button Edit = new Button();
-        Edit.setText("Edit");
+        Edit.setText("Respond");
         Edit.setInlineStylesTheme(resourceObjectInstance);
         Edit.addActionListener(new ActionListener() {
             @Override
@@ -94,7 +94,7 @@ public class ShowRequestGroupForm extends BaseForm {
                     }
                     assert r != null;
                     t.clearSelectedRow();
-                    new AddRequestForm(resourceObjectInstance, r).show();
+                    new RespondForm(resourceObjectInstance, r).show();
                 }
             }
         });
