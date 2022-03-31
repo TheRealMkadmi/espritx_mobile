@@ -9,7 +9,28 @@ public class Commentaire {
     private int idPost;
     private String message;
     private Date created_at;
+    private String nom;
+    private String prenom;
 
+    public Commentaire(String message) {
+        this.message=message;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
 
     public Date getCreated_at() {
         return created_at;

@@ -1,129 +1,39 @@
 package com.espritx.client.gui.service;
 
-import com.codename1.components.*;
+import com.codename1.components.InfiniteProgress;
+import com.codename1.components.RadioButtonList;
+import com.codename1.components.ScaleImageButton;
 import com.codename1.ext.filechooser.FileChooser;
 import com.codename1.io.Log;
 import com.codename1.properties.InstantUI;
 import com.codename1.ui.*;
-import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.list.DefaultListModel;
 import com.codename1.ui.plaf.Style;
-import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
-import com.espritx.client.entities.Group;
 import com.espritx.client.entities.Request;
 import com.espritx.client.entities.Service;
-import com.espritx.client.entities.User;
-import com.espritx.client.gui.user.ShowUsers;
 import com.espritx.client.services.Service.RequestService;
 import com.espritx.client.services.Service.ServiceService;
-import com.espritx.client.services.User.GroupService;
-import com.espritx.client.services.User.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AddRequestForm extends BaseForm {
+public class RespondForm extends BaseForm {
     private Request request;
-    private RequestService RequestService;
+    private com.espritx.client.services.Service.RequestService RequestService;
 
-    public AddRequestForm() {
+    public RespondForm() {
         this(Resources.getGlobalResources());
     }
 
-    public AddRequestForm(Resources resourceObjectInstance) {
-        setLayout(new BoxLayout(BoxLayout.Y_AXIS));
-        setInlineStylesTheme(resourceObjectInstance);
-        setTitle("Ask a request");
-        setLayout(BoxLayout.y());
-
-        TextField tfTitle = new TextField("", "Request Title");
-
-        TextField tfDesc = new TextField("", "Request Description");
-
-        List<Service> serviceList = ServiceService.getInstance().getAllServices();
-
-        Label Type = new Label("Request Type");
-
-        RadioButtonList radioButtonList = new RadioButtonList(new DefaultListModel());
-        radioButtonList.setLayout(BoxLayout.y());
-        for (Service S : serviceList) {
-            radioButtonList.getMultiListModel().addItem(S);
-        }
-
-        Button b = new Button("Pick A Service");
-        b.addActionListener(e -> {
-            Dialog d = new Dialog();
-            d.setLayout(BoxLayout.y());
-            d.getContentPane().setScrollableY(true);
-            d.add(radioButtonList);
-            radioButtonList.addActionListener(ee -> {
-                b.setText(radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex()).toString());
-                d.dispose();
-            });
-            d.showPopupDialog(b);
-            d.removeComponent(radioButtonList);
-        });
-
-        TextField tfEmail = new TextField("", "Email to receive answer on.");
-
-        Label tfHint = new Label("Default value: your email");
-
-        Button btnValider = new Button("Ask Request");
-
-        btnValider.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (tfTitle.getText().length() == 0)
-                    Dialog.show("Alert", "Please add a Request Title", new Command("Sorry"));
-                else if (tfDesc.getText().length() == 0)
-                    Dialog.show("Alert", "Please describe your request", new Command("Right now!"));
-                else if ((radioButtonList.getModel().getSelectedIndex()) == 0)
-                    Dialog.show("Alert", "Please add a responsible for the service", new Command("On it"));
-                else {
-                    Service Type = (Service) radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex());
-
-                    Request req = new Request();
-                    req.Title.set(tfTitle.getText());
-                    req.Description.set(tfDesc.getText());
-                    req.Type.set(Type);
-                    if (tfEmail.getText().length() != 0)
-                        req.Email.set(tfEmail.getText());
-                    else req.Email.set("");
-                    try {
-                        RequestService.CreateRequest(req);
-                        Dialog success = new Dialog("Success");
-                        success.setLayout(BoxLayout.y());
-                        Button btn = new Button("Great");
-                        btn.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                                Form f = new ShowRequestUserForm();
-                                f.show();
-                            }
-                        });
-
-                        success.add(new SpanLabel("Request sent successfully", "DialogBody"));
-                        success.add(btn);
-                        success.show();
-                    } catch (Exception e) {
-                        Log.p(e.getMessage(), Log.ERROR);
-                        Dialog.show("error", e.getMessage(), "ok", null);
-                    }
-                }
-            }
-        });
-        addAll(tfTitle, tfDesc, Type, b, tfEmail, tfHint, btnValider);
-        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e -> new ShowRequestUserForm().show());
-        setTitle("Add Request");
-        setName("AddRequest");
+    public RespondForm(Resources resourceObjectInstance){
+        this(Resources.getGlobalResources(),new Request());
     }
 
-    public AddRequestForm(Resources resourceObjectInstance, Request instance) {
+    public RespondForm(Resources resourceObjectInstance, Request instance) {
         setLayout(new BorderLayout());
 
         final String[] newPicturePath = new String[1];
@@ -189,7 +99,6 @@ public class AddRequestForm extends BaseForm {
         iui.excludeProperty(this.request.Picture);
         iui.excludeProperty(this.request.Attachement);
         iui.excludeProperty(this.request.Status);
-        iui.excludeProperty(this.request.Response);
         iui.excludeProperty(this.request.Requester);
         iui.excludeProperty(this.request.Type);
         Container cnt = iui.createEditUI(request, true);

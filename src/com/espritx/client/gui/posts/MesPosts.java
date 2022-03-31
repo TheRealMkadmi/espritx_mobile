@@ -22,6 +22,7 @@ import com.codename1.ui.layouts.*;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
+import com.espritx.client.entities.Commentaire;
 import com.espritx.client.entities.Post;
 import com.espritx.client.services.ServicePost.ServicePost;
 import com.espritx.client.services.User.AuthenticationService;
@@ -37,14 +38,11 @@ public class MesPosts extends BaseForm  {
     Form current;
 
 
+
     public MesPosts(Resources res){
-
-installSidemenu(res);
-
-
-    //    super("Feed", BoxLayout.y());
+        //super("Feed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
-
+        setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setToolbar(tb);
         getTitleArea().setUIID("Container");
         setTitle("Ajouter Post");
@@ -110,14 +108,17 @@ installSidemenu(res);
         RadioButton partage = RadioButton.createToggle("poster", barGroup);
         partage.setUIID("SelectBar");
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
+        liste.addActionListener((e) -> {
+            ListPosts a= new ListPosts(res);
+            a.show();
 
+            refreshTheme();
+        });
 
         mesListes.addActionListener((e) -> {
-            InfiniteProgress ip = new InfiniteProgress();
-            final Dialog ipDlg = ip.showInifiniteBlocking();
+            MesPosts a= new MesPosts(res);
+            a.show();
 
-            //  ListReclamationForm a = new ListReclamationForm(res);
-            //  a.show();
             refreshTheme();
         });
         partage.addActionListener((e) -> {
@@ -152,20 +153,80 @@ installSidemenu(res);
 
 
         ArrayList<Post> list=ServicePost.getInstance().afficherAllPosts();
+        ArrayList<Commentaire> listCommentaires = ServicePost.getInstance().afficherAllComments();
+
+
+
+
         for(Post p:list) {
             if (p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
+
+
                 String urlImage = "feed.jpg";
-                Image placeholder = Image.createImage(120, 120);
+                Image placeholder = Image.createImage(1, 1);
                 EncodedImage enc = EncodedImage.createFromImage(placeholder, false);
 
                 URLImage urlim = URLImage.createToStorage(enc, urlImage, urlImage, URLImage.RESIZE_SCALE);
 
 
+
+
+
+
+                ButtonGroup barGroup2 = new ButtonGroup();
+                RadioButton nbComm= RadioButton.createToggle(p.getNbCommentaire()+" Commentaires", barGroup2);
+
+                nbComm.setUIID("SelectBar");
+
+
+
+
+
+
+                TextArea gui_Text_Area_4 = new TextArea();
+                Button gui_Button_4 = new Button();
+                gui_Text_Area_4.setText("Commentaires");
+                gui_Text_Area_4.setUIID("SlightlySmallerFontLabelLeft");
+                gui_Text_Area_4.setInlineStylesTheme(res);
+                gui_Text_Area_4.setName("Text_Area_4");
+                gui_Text_Area_4.setEditable(false);
+                gui_Button_4.setText("");
+                gui_Button_4.setUIID("Label");
+                gui_Button_4.setInlineStylesTheme(res);
+                gui_Button_4.setName("Button_4");
+
                 addButton(urlim, p, res);
-                ScaleImageLabel image = new ScaleImageLabel(urlim);
-                Container containerImg = new Container();
-                image.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
+                add(nbComm);
+                add(gui_Text_Area_4);
+
+                //  add(gui_Button_4);
             }
+
+
+
+            for (Commentaire c : listCommentaires) {
+                if(p.getId()==c.getIdPost()) {
+                    MultiButton gui_Multi_Button_3 = new MultiButton();
+
+                    gui_Multi_Button_3.setUIID("Label");
+                    gui_Multi_Button_3.setInlineStylesTheme(res);
+                    gui_Multi_Button_3.setName("Multi_Button_3");
+
+                    gui_Multi_Button_3.setPropertyValue("line1", c.getNom()+" "+c.getPrenom());
+                    gui_Multi_Button_3.setPropertyValue("line2", c.getMessage());
+                    gui_Multi_Button_3.setPropertyValue("uiid1", "Label");
+                    gui_Multi_Button_3.setPropertyValue("uiid2", "RedLabel");
+
+
+                    //  cnt.add(comm);
+
+                    add(gui_Multi_Button_3);
+
+                }
+
+            }
+
+
         }
 
     }
@@ -233,10 +294,9 @@ installSidemenu(res);
         l.getParent().repaint();
 
     }
-
     private void addButton(Image img,Post p,Resources res) {
 
-        MapContainer  cnt1 = new MapContainer("AIzaSyCy-fMWerzvXcPCV0FDI07hW2DAzs_mnpY");
+        MapContainer cnt1 = new MapContainer("AIzaSyCy-fMWerzvXcPCV0FDI07hW2DAzs_mnpY");
 
 
         // create a String
@@ -252,38 +312,38 @@ installSidemenu(res);
         FontImage im = FontImage.createMaterial(FontImage.MATERIAL_PLACE, s, Display.getInstance().convertToPixels(3));
 
 
-        btnMoveCamera.addActionListener(e->{
+        btnMoveCamera.addActionListener(e -> {
             cnt1.setCameraPosition(new Coord(lat, lon));
 
             cnt1.clearMapLayers();
             cnt1.addMarker(
                     EncodedImage.createFromImage(im, false),
                     cnt1.getCoordAtPosition(e.getX(), e.getY()),
-                    ""+cnt1.getCameraPosition().toString(),
+                    "" + cnt1.getCameraPosition().toString(),
                     "",
-                    e3->{
-                        ToastBar.showMessage("You clicked "+cnt1.getName(), FontImage.MATERIAL_PLACE);
+                    e3 -> {
+                        ToastBar.showMessage("You clicked " + cnt1.getName(), FontImage.MATERIAL_PLACE);
                     })
             ;
 
         });
 
-        cnt1.addTapListener(e->{
+        cnt1.addTapListener(e -> {
 
 
             cnt1.clearMapLayers();
             cnt1.addMarker(
                     EncodedImage.createFromImage(im, false),
                     cnt1.getCoordAtPosition(e.getX(), e.getY()),
-                    ""+cnt1.getCameraPosition().toString(),
+                    "" + cnt1.getCameraPosition().toString(),
                     "",
-                    e3->{
-                        ToastBar.showMessage("You clicked "+cnt1.getName(), FontImage.MATERIAL_PLACE);
+                    e3 -> {
+                        ToastBar.showMessage("You clicked " + cnt1.getName(), FontImage.MATERIAL_PLACE);
                     }
             );
             ConnectionRequest r = new ConnectionRequest();
             r.setPost(false);
-            r.setUrl("http://maps.google.com/maps/api/geocode/json?latlng="+cnt1.getCameraPosition().getLatitude()+","+cnt1.getCameraPosition().getLongitude()+"&oe=utf8&sensor=false");
+            r.setUrl("http://maps.google.com/maps/api/geocode/json?latlng=" + cnt1.getCameraPosition().getLatitude() + "," + cnt1.getCameraPosition().getLongitude() + "&oe=utf8&sensor=false");
 
 
             NetworkManager.getInstance().addToQueueAndWait(r);
@@ -293,56 +353,82 @@ installSidemenu(res);
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
-        int height=Display.getInstance().convertToPixels(50f);
-        int width=Display.getInstance().convertToPixels(100f);
-        Button image= new Button(img.fill(width, height));
+        int height = Display.getInstance().convertToPixels(1f);
+        int width = Display.getInstance().convertToPixels(1f);
+        Button image = new Button(img.fill(width, height));
         image.setUIID("Label");
 
-        Container cnt = BorderLayout.south(image) ;
+        Container cnt = BorderLayout.south(image);
 
 
-        TextArea i=new TextArea(""+p.getId());
+        TextArea gui_Text_Area_1 = new TextArea();
+        Button gui_Button_1 = new Button();
+        MultiButton gui_Multi_Button_1 = new MultiButton();
+
+        TextArea i = new TextArea("" + p.getId());
         i.setUIID("NewsTopLine");
         i.setEditable(false);
+
+        //// ////////////////////Nom ////////////////
+
+        gui_Multi_Button_1.setUIID("Label");
+        gui_Multi_Button_1.setInlineStylesTheme(res);
+        gui_Multi_Button_1.setName("Multi_Button_1");
+        gui_Multi_Button_1.setIcon(res.getImage("contact-c.png"));
+        gui_Multi_Button_1.setPropertyValue("line1", p.getNom());
+        gui_Multi_Button_1.setPropertyValue("line2", p.getEmail());
+        gui_Multi_Button_1.setPropertyValue("uiid1", "Label");
+        gui_Multi_Button_1.setPropertyValue("uiid2", "RedLabel");
+
+
+        MultiButton gui_LA = new MultiButton();
+        String ch = p.getCreated_at().toString();
+        gui_LA.setUIID("Label");
+        gui_LA.setInlineStylesTheme(res);
+        gui_LA.setName("gui_LA");
+        gui_LA.setText("Crée le " + ch.substring(7, 9) + " " + ch.substring(4, 7));
+
+        gui_LA.setPropertyValue("uiid1", "Label");
+
+
+        // /////////////////////Content///////////////////
+        gui_Text_Area_1.setText(p.getContent());
+        gui_Text_Area_1.setUIID("SlightlySmallerFontLabelLeft");
+        gui_Text_Area_1.setInlineStylesTheme(res);
+        gui_Text_Area_1.setName("Text_Area_1");
+        gui_Text_Area_1.setEditable(false);
+        gui_Button_1.setText("");
+        gui_Button_1.setUIID("Label");
+        gui_Button_1.setInlineStylesTheme(res);
+        gui_Button_1.setName("Button_1");
+
+
         //  int height=Display.getInstance().convertToPixels(11.5f);
-        TextArea ta=new TextArea(p.getTitle());
-        ta.setUIID("NewsTopLine");
-        ta.setEditable(false);
+        //    TextArea ta=new TextArea(p.getTitle());
+        //   ta.setUIID("NewsTopLine");
+        // ta.setEditable(false);
 
 
-
-        Label titletxt = new Label("title"+p.getTitle(),"NewsTopLine2");
-        TextArea content=new TextArea(p.getContent().toString());
+        Label titletxt = new Label("title" + p.getTitle(), "NewsTopLine2");
+        TextArea content = new TextArea(p.getContent().toString());
         content.setUIID("NewsTopLine");
         content.setEditable(false);
 
-        TextArea da=new TextArea(p.getCreated_at().toString());
+        TextArea da = new TextArea(p.getCreated_at().toString());
         da.setUIID("NewsTopLine");
         da.setEditable(false);
 
 
+        Label datetxt = new Label("created_at" + p.getCreated_at().toString(), "NewsTopLine2");
 
-        Label datetxt = new Label("created_at"+p.getCreated_at() .toString(),"NewsTopLine2");
 
-
-        TextArea valid=new TextArea(p.getCreated_at().toString());
+        TextArea valid = new TextArea(p.getCreated_at().toString());
         valid.setUIID("NewsTopLine");
         valid.setEditable(false);
 
-        Label validtxt = new Label(""+p.getValid().toString(),"NewsTopLine2");
+        Label validtxt = new Label("" + p.getValid().toString(), "NewsTopLine2");
         //   if(isValid)
-        if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
+        if (p.getIdUser() == AuthenticationService.getAuthenticatedUser().id.getInt()) {
             if (p.getValid() == true) {
                 validtxt.setText("approuvée");
             } else {
@@ -354,12 +440,9 @@ installSidemenu(res);
         }
 
 
+        Label lSupprimer = new Label(" ");
 
-
-
-        Label lSupprimer=new Label(" ");
-
-        if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
+        if (p.getIdUser() == AuthenticationService.getAuthenticatedUser().id.getInt()) {
 
             lSupprimer.setUIID("NewsTopLine2");
             Style supprimerStyle = new Style(lSupprimer.getUnselectedStyle());
@@ -393,7 +476,7 @@ installSidemenu(res);
         }
         Label lModifier = new Label(" ");
 
-        if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
+        if (p.getIdUser() == AuthenticationService.getAuthenticatedUser().id.getInt()) {
             lModifier.setUIID("NewsTopLine2");
             Style modifierStyle = new Style(lModifier.getUnselectedStyle());
             FontImage modifierImage = FontImage.createMaterial(FontImage.MATERIAL_MODE_EDIT, modifierStyle);
@@ -410,21 +493,49 @@ installSidemenu(res);
         }
 
 
+        ///////////////////////Comments
+
+
+        TextArea gui_Text_Area_2 = new TextArea();
+        Button gui_Button_2 = new Button();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         ShareButton sb = new ShareButton();
-        if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt()) {
+        if(p.getIdUser()  == AuthenticationService.getAuthenticatedUser().id.getInt() && p.getValid() == true) {
             sb.setText("Share");
         }
-        cnt.add(BorderLayout.CENTER,BoxLayout.encloseY(BoxLayout.encloseX(i),BoxLayout.encloseX(ta),BoxLayout.encloseX(content),BoxLayout.encloseY(BoxLayout.encloseX(da)) , BoxLayout.encloseY(BoxLayout.encloseX(lSupprimer,validtxt,sb,lModifier))
+
+        cnt.add(BorderLayout.CENTER, BoxLayout.encloseY(   BoxLayout.encloseY(BoxLayout.encloseY( gui_Multi_Button_1,  gui_LA),BoxLayout.encloseX(gui_Text_Area_1,gui_Button_1)) , BoxLayout.encloseY(BoxLayout.encloseX(lSupprimer,validtxt,sb,lModifier))
 
         ));
+        //cnt1.add(BorderLayout.south( BoxLayout.encloseY(
+        //     BoxLayout.encloseY(BoxLayout.encloseX(gui_Text_Area_2,gui_Button_2)))));
+
+
 
         Container root = new Container();
         //   int height1=Display.getInstance().convertToPixels(100f);
         // int width2=Display.getInstance().convertToPixels(10f);
         //cnt1.setPreferredSize(new Dimension(width2,height1));
-        add( cnt1);
-        add( btnMoveCamera);
+
+
         add(cnt);
+        if(p.getLongitude() != null && p.getLatitude() != null){
+            add( cnt1);
+            add( btnMoveCamera);}
 
     }
 
