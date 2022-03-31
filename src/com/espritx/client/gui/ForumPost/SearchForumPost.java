@@ -7,8 +7,11 @@ import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.util.Resources;
 import com.codename1.uikit.pheonixui.BaseForm;
+import com.espritx.client.entities.ForumPost;
 import com.espritx.client.entities.Post;
+import com.espritx.client.services.ServiceForum.serviceForumPost;
 import com.espritx.client.services.ServicePost.ServicePost;
 
 import java.util.List;
@@ -16,30 +19,29 @@ import java.util.List;
 public class SearchForumPost extends BaseForm {
     public SearchForumPost(){
 
-        int fiveMM = Display.getInstance().convertToPixels(5);
-        // final Image finalDuke = duke.scaledWidth(fiveMM);
+
         Toolbar.setGlobalToolbar(true);
         Form hi = new Form("Search", BoxLayout.y());
-        hi.add(new InfiniteProgress());
+        hi.add(new InfiniteProgress()); //actualisation
         Display.getInstance().scheduleBackgroundTask(()-> {
-            // this will take a while...
-            List<Post> posts= ServicePost.getInstance().afficherAllPosts();
+
+            List<ForumPost > posts= serviceForumPost.getInstance().getAllPosts();
             Display.getInstance().callSerially(() -> {
                 hi.removeAll();
-                for(Post c : posts) {
+                for(ForumPost  c : posts) {
                     MultiButton m = new MultiButton();
-                    m.setTextLine1(c.getTitle());
-                    m.setTextLine2(c.getContent());
+                    m.setTextLine1(c.getSlug());
+                    m.setTextLine2(c.getBody());
 
 
-                    //    m.setIcon(finalDuke);
+
 
                     hi.add(m);
                 }
                 hi.revalidate();
             });
         });
-
+        //mise en page de la fct recherche
         hi.getToolbar().addSearchCommand(e -> {
             String text = (String)e.getSource();
             if(text == null || text.length() == 0) {
@@ -64,5 +66,7 @@ public class SearchForumPost extends BaseForm {
             }
         }, 4);
         hi.show();
+        installSidemenu(Resources.getGlobalResources());
     }
+
 }

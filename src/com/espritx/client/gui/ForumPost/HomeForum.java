@@ -11,12 +11,13 @@ public class HomeForum extends BaseForm {
         setLayout(BoxLayout.y());
         Button btnAdd = new Button("Add Blog");
         Button btnShow = new Button("Show Forum");
+        Button btnSearch = new Button("Search ");
         btnAdd.addActionListener((evt -> new AddForumPost(this).show()));
         btnShow.addActionListener((evt -> new ShowForum(this).show()));
-
+        btnSearch.addActionListener((evt -> new SearchForumPost() .show()));
 
         installSidemenu(Resources.getGlobalResources());
-        addAll(btnAdd,btnShow);
+        addAll(btnAdd,btnShow,btnSearch);
 
 
     }

@@ -31,7 +31,7 @@ public class serviceForumPost {
 
     public boolean addPost(ForumPost post) {
 
-        String url = Statics.BASE_URL + "/forum/add_post_blog_api?title=" + ForumPost.getSlug() + "&content=" + ForumPost.getBody();
+        String url = Statics.BASE_URL + "/addb?title=" + post.getSlug() + "&content=" + post .getBody();
         req.setUrl(url);
 
         req.setPost(false);
