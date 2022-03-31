@@ -48,4 +48,6 @@ public class ForumPost {
                 ", body='" + body + '\'' +
                 '}';
     }
+
+
 }

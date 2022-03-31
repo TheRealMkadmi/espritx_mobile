@@ -35,6 +35,7 @@ import com.espritx.client.entities.User;
 import com.espritx.client.gui.ForumPost.HomeForum;
 import com.espritx.client.gui.calendar.AdminEvent;
 import com.espritx.client.gui.calendar.HomeEvent;
+import com.espritx.client.gui.chat.ConversationsShow;
 import com.espritx.client.gui.posts.*;
 import com.espritx.client.gui.service.ShowForm;
 import com.espritx.client.gui.service.ShowRequestGroupForm;
@@ -89,6 +90,7 @@ public class BaseForm extends Form {
         });
         getToolbar().addComponentToSideMenu(inbox);
         getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new HomeEvent().show());
+        getToolbar().addCommandToSideMenu("Chat", null, e -> new ConversationsShow(res).show());
         getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
         getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost());
         if(!AuthenticationService.getAuthenticatedUser().isStudent())
