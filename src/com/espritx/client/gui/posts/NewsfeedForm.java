@@ -49,7 +49,7 @@ import com.codename1.uikit.pheonixui.BaseForm;
 /**
  * The newsfeed form
  *
- * @author Shai Almog
+ * @author  mouna
  */
 public class NewsfeedForm extends BaseForm {
 
