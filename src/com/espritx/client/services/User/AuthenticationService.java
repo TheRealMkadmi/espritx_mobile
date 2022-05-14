@@ -5,6 +5,7 @@ import com.codename1.io.NetworkManager;
 import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
 import com.codename1.processing.Result;
+import com.codename1.ui.Display;
 import com.espritx.client.entities.User;
 import com.espritx.client.utils.Statics;
 
@@ -48,8 +49,18 @@ public class AuthenticationService {
         return getAuthenticatedUser();
     }
 
+    public static User SetAuthenticatedToken(String token){
+        NetworkManager.getInstance().addDefaultHeader("Authorization", "Bearer " + token);
+        return getAuthenticatedUser();
+    }
+
     public static void Deauthenticate(){
         authenticatedUser = null;
         NetworkManager.getInstance().addDefaultHeader("Authorization", "" );
+    }
+
+    public static void StartDeviceAuthrorization(){
+        String code = Rest.get(Statics.DOMAIN + "/authenticate_device/start").acceptJson().getAsJsonMap().getResponseData().get("code").toString();
+        Display.getInstance().execute(Statics.DOMAIN + "/authenticated-device-authorization/mobile/" + code);
     }
 }

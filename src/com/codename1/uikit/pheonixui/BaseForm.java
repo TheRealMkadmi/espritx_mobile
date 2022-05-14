@@ -38,7 +38,6 @@ import com.espritx.client.gui.calendar.HomeEvent;
 import com.espritx.client.gui.posts.*;
 import com.espritx.client.gui.service.ShowForm;
 import com.espritx.client.gui.service.ShowRequestGroupForm;
-import com.espritx.client.gui.service.ShowRequestUserForm;
 import com.espritx.client.gui.user.LoginForm;
 import com.espritx.client.gui.user.ProfileForm;
 import com.espritx.client.gui.user.ShowGroups;
@@ -90,23 +89,24 @@ public class BaseForm extends Form {
         });
         getToolbar().addComponentToSideMenu(inbox);
         getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new HomeEvent().show());
+        getToolbar().addCommandToSideMenu("Chat", null, e -> new ListPosts(res).show());
+        getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
+        getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost());
         if(!AuthenticationService.getAuthenticatedUser().isStudent())
             getToolbar().addCommandToSideMenu("Manage Events", calendarImage, e -> new AdminEvent().show());
         getToolbar().addCommandToSideMenu("Service", null, e -> new ShowForm(res).show());
-        getToolbar().addCommandToSideMenu("My requests", null, e -> new ShowRequestUserForm(res).show());
         getToolbar().addCommandToSideMenu("Requests", null, e -> new ShowRequestGroupForm(res).show());
+        getToolbar().addCommandToSideMenu("Trending", trendingImage, e -> new TrendingForm(res).show());
+        getToolbar().addCommandToSideMenu("Posts", null, e -> new HomeForm().show());
         getToolbar().addCommandToSideMenu("Manage Users", null, e -> new ShowUsers(res).show());
         getToolbar().addCommandToSideMenu("Manage Groups", null, e -> new ShowGroups(res).show());
-
         getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
         getToolbar().addCommandToSideMenu("Chercher Posts", null, e -> new AcceuilPost());
         getToolbar().addCommandToSideMenu("Acceuil Posts", null, e -> new ListPosts(res).show());
         getToolbar().addCommandToSideMenu("Stat Posts", null, e -> new StatistiquePie(res).show());
         getToolbar().addCommandToSideMenu("Gerer Les posts", null, e -> new Admin().show());
-
         getToolbar().addCommandToSideMenu("Forum", trendingImage, e -> new HomeForum().show());
         getToolbar().addCommandToSideMenu("Gerer Les posts", null, e -> new Admin().show());
-
         getToolbar().addCommandToSideMenu("Logout", null, e -> {
             AuthenticationService.Deauthenticate();
             new LoginForm(resources).show();

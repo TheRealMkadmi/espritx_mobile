@@ -144,7 +144,7 @@ public class LoginForm extends BaseForm {
         /* start Google Login */
         Button loginwg = makeButton("googleSignin", "Single Sign On");
         loginwg.addActionListener((evt -> {
-            new AuthenticationBrowserComponentForm().show();
+            AuthenticationService.StartDeviceAuthrorization();
         }));
         formContainer.addComponent(loginwg);
 

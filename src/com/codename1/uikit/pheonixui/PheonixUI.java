@@ -19,13 +19,15 @@
 
 package com.codename1.uikit.pheonixui;
 
-import com.codename1.ui.Dialog;
-import com.codename1.ui.Display;
-import com.codename1.ui.Form;
-import com.codename1.ui.Toolbar;
+import com.codename1.ui.*;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.codename1.util.StringUtil;
 import com.espritx.client.gui.user.LoginForm;
+import com.espritx.client.gui.user.ShowUsers;
+import com.espritx.client.services.User.AuthenticationService;
+
+import java.util.List;
 
 
 public class PheonixUI {
@@ -39,6 +41,24 @@ public class PheonixUI {
     }
 
     public void start() {
+        String arg = CN.getProperty("AppArg", null);
+        if(arg != null) {
+            if(arg.contains("//")) {
+                List<String> strs = StringUtil.tokenize(arg, "/");
+                arg = strs.get(strs.size() - 1);
+                while(arg.startsWith("/")) {
+                    arg = arg.substring(1);
+                }
+            }
+            if(arg.startsWith("token-")) {
+                String token = arg.substring(6);
+                AuthenticationService.SetAuthenticatedToken(token);
+                CN.callSerially(() ->
+                        (new ShowUsers()).show()
+                );
+            }
+            return;
+        }
         if (current != null) {
             current.show();
             return;
