@@ -74,7 +74,6 @@ public class ProfileForm extends BaseForm {
                     filePickerStatus.setText("File selected for upload.");
                 }
             };
-
             if (FileChooser.isAvailable()) {
                 FileChooser.showOpenDialog(".png,image/png,.jpg,image/jpg,.jpeg", callback);
             } else {

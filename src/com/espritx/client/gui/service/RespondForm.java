@@ -36,58 +36,8 @@ public class RespondForm extends BaseForm {
     public RespondForm(Resources resourceObjectInstance, Request instance) {
         setLayout(new BorderLayout());
 
-        final String[] newPicturePath = new String[1];
-        Container pictureContainer = new Container(BoxLayout.x());
-        instance.getEncodedPic(6);
-        pictureContainer.add(instance.getEncodedPic(6));
-        pictureContainer.setName("Picture Container");
-        Label filePickerStatus = new Label("No file chosen.");
-        pictureContainer.add(filePickerStatus);
-        Image icon = FontImage.createMaterial(FontImage.MATERIAL_ADD, new Style());
-        ScaleImageButton scaleImageButton = new ScaleImageButton(icon);
-        scaleImageButton.addActionListener((evt) -> {
-            ActionListener callback = e -> {
-                if (e != null && e.getSource() != null) {
-                    newPicturePath[0] = (String) e.getSource();
-                    filePickerStatus.setText("Selected File");
-                }
-            };
 
-            if (FileChooser.isAvailable()) {
-
-                FileChooser.showOpenDialog(".png,image/png,.jpg,image/jpg,.jpeg", callback);
-            } else {
-                Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
-            }
-
-
-        });
-        pictureContainer.add(scaleImageButton);
-
-        /*final String[] newFilePath = new String[1];
-        Container FileContainer = new Container(BoxLayout.x());
-        pictureContainer.setName("Picture Container");
-        Label filePickerStatus1 = new Label("No file chosen.");
-        FileContainer.add(filePickerStatus1);
-        Image icon1 = FontImage.createMaterial(FontImage.MATERIAL_ADD, new Style());
-        ScaleImageButton scaleImageButton1 = new ScaleImageButton(icon1);
-        scaleImageButton1.addActionListener((evt) -> {
-            ActionListener callback = e -> {
-                if (e != null && e.getSource() != null) {
-                    newFilePath[0] = (String) e.getSource();
-                    filePickerStatus.setText("Selected File");
-                }
-            };
-
-            if (FileChooser.isAvailable()) {
-
-                FileChooser.showOpenDialog(".pdf", callback);
-            } else {
-                Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
-            }
-        });
-        FileContainer.add(scaleImageButton1);*/
-
+        // construction
         this.RequestService = new RequestService();
         this.request = instance;
         instance.getPropertyIndex().registerExternalizable();
@@ -98,50 +48,63 @@ public class RespondForm extends BaseForm {
         iui.excludeProperty(this.request.RespondedAt);
         iui.excludeProperty(this.request.CreatedAt);
         iui.excludeProperty(this.request.UpdatedAt);
+        iui.excludeProperty(this.request.Requester);
+        iui.excludeProperty(this.request.Title);
+        iui.excludeProperty(this.request.Description);
+        iui.excludeProperty(this.request.Email);
+        iui.excludeProperty(this.request.Type);
         iui.excludeProperty(this.request.Picture);
         iui.excludeProperty(this.request.Attachement);
-        iui.excludeProperty(this.request.Status);
-        iui.excludeProperty(this.request.Requester);
-        iui.excludeProperty(this.request.Type);
+        iui.setMultiChoiceLabels(this.request.Status, "Hold", "Deny", "Done");
+        iui.setMultiChoiceValues(this.request.Status, "processing", "denied", "done");
         Container cnt = iui.createEditUI(request, true);
         cnt.setScrollableY(true);
         cnt.setInlineStylesTheme(resourceObjectInstance);
 
-        List<Service> serviceList = ServiceService.getInstance().getAllServices();
 
-        Label Type = new Label("Type (Reslect the same if there is no change)");
+        Label Titlelb=new Label("Title:");
+        Label Typelb=new Label("Service:");
+        Label Emaillb=new Label("Email:");
+        Label Deslb=new Label("Description:");
+        Label Picturelb=new Label("Picture");
+        Label Filelb=new Label("Files");
 
-        RadioButtonList radioButtonList = new RadioButtonList(new DefaultListModel());
-        radioButtonList.setLayout(BoxLayout.y());
-        for (Service S : serviceList) {
-            radioButtonList.getMultiListModel().addItem(S);
-        }
+        Label Titletext=new Label(instance.Title.toString());
+        Label Typetext=new Label(instance.Type.toString());
+        Label Emailtext=new Label(instance.Email.toString());
+        Label Destext=new Label(instance.Description.toString());
+        ScaleImageButton PictureCnt = new ScaleImageButton(FontImage.createMaterial(FontImage.MATERIAL_DOWNLOAD, new Style()));
+        ScaleImageButton FileCnt = new ScaleImageButton(FontImage.createMaterial(FontImage.MATERIAL_DOWNLOAD, new Style()));
 
-        Button b = new Button(request.Type.toString());
-        b.addActionListener(e -> {
-            Dialog d = new Dialog();
-            d.setLayout(BoxLayout.y());
-            d.getContentPane().setScrollableY(true);
-            d.add(radioButtonList);
-            radioButtonList.addActionListener(ee -> {
-                b.setText(radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex()).toString());
-                d.dispose();
-            });
-            d.showPopupDialog(b);
-            d.removeComponent(radioButtonList);
-        });
+        Container Title = new Container(BoxLayout.x());
+        Title.addAll(Titlelb,Titletext);
+        Container Des = new Container(BoxLayout.x());
+        Des.addAll(Deslb,Destext);
+        Container Email = new Container(BoxLayout.x());
+        Email.addAll(Emaillb,Emailtext);
+        Container Type = new Container(BoxLayout.x());
+        Type.addAll(Typelb,Typetext);
+        Container Pic = new Container(BoxLayout.x());
+        Pic.addAll(Picturelb,PictureCnt);
+        Container File = new Container(BoxLayout.x());
+        File.addAll(Filelb,FileCnt);
 
-        cnt.addAll(Type, b, pictureContainer);
-
+        System.out.println(instance.Picture.get());
+        cnt.addAll(Title,Des,Type);
+        if(instance.Email.get() != null)
+            cnt.add(Email);
+        if(instance.Picture.get() != null)
+            cnt.add(Pic);
+        if(instance.Attachement.get() != null)
+            cnt.add(File);
         addComponent(BorderLayout.CENTER, cnt);
+
 
         Button saveButton = makeButton("SaveButton", "Save");
         saveButton.addActionListener(evt -> {
             Dialog dlg = (new InfiniteProgress()).showInfiniteBlocking();
             try {
-                Service TypeSer = (Service) radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex());
-                request.Type.set(TypeSer);
-                this.RequestService.UpdateRequest(request, newPicturePath[0]);
+                this.RequestService.RespondRequest(request);
             } catch (Exception e) {
                 Log.p(e.getMessage(), Log.ERROR);
                 dlg.dispose();
@@ -151,6 +114,6 @@ public class RespondForm extends BaseForm {
             (new ShowRequestUserForm()).show();
         });
         addComponent(BorderLayout.SOUTH, saveButton);
-        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e -> showBack());
+        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e -> new ShowRequestGroupForm().show());
     }
 }

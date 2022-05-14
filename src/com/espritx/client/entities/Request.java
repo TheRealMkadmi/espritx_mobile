@@ -48,18 +48,6 @@ public class Request implements PropertyBusinessObject {
     public EncodedImage getEncodedPic(int _size) {
         int size = Display.getInstance().convertToPixels(_size, true);
         EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_IMAGE, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
-        /*if (Picture.get() != null) {
-            String[] fragments = StringUtils.split(this.Picture.get(), "/");
-            String storageName = fragments[fragments.length - 1];
-            URLImage photo = URLImage.createToStorage(placeholder, storageName, Picture.get());
-            return photo;
-        } else return placeholder;*/
-        return placeholder;
-    }
-
-    public EncodedImage getEncodedFile(int _size) {
-        int size = Display.getInstance().convertToPixels(_size, true);
-        EncodedImage placeholder = EncodedImage.createFromImage(FontImage.createFixed("" + FontImage.MATERIAL_PERSON, FontImage.getMaterialDesignFont(), 0xff, size, size), true);
         if (Picture.get() != null) {
             String[] fragments = StringUtils.split(this.Picture.get(), "/");
             String storageName = fragments[fragments.length - 1];

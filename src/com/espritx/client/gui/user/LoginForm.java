@@ -21,6 +21,7 @@ import com.codename1.uikit.pheonixui.BaseForm;
 import com.codename1.uikit.pheonixui.InboxForm;
 import com.codename1.uikit.pheonixui.SplashForm;
 import com.espritx.client.services.User.AuthenticationService;
+import com.espritx.client.utils.Statics;
 import com.espritx.client.utils.StringUtils;
 
 /**
@@ -45,8 +46,6 @@ public class LoginForm extends BaseForm {
         getTitleArea().setUIID("Container");
         getToolbar().setUIID("Container");
         getToolbar().getTitleComponent().setUIID("SigninTitle");
-        FontImage mat = FontImage.createMaterial(FontImage.MATERIAL_CLOSE, "SigninTitle", 3.5f);
-        getToolbar().addCommandToLeftBar("", mat, e -> new SplashForm().show());
         getContentPane().setUIID("SignInForm");
     }
 
@@ -76,9 +75,9 @@ public class LoginForm extends BaseForm {
         CheckBox save_account_to_device = new CheckBox("Save to device");
         save_account_to_device.setSelected(false);
         if (Fingerprint.isAvailable()) {
-            formContainer.add(BoxLayout.encloseXCenter(save_account_to_device));
+            formContainer.add(save_account_to_device);
             FloatingActionButton fab = FloatingActionButton.createBadge("Biometric Login");
-            formContainer.add(BoxLayout.encloseXCenter(fab));
+            formContainer.add(fab);
             fab.addActionListener(evt -> {
                 Fingerprint.getPassword(
                         "Get account from device",  // Message to display in auth dialog
@@ -104,7 +103,6 @@ public class LoginForm extends BaseForm {
                     }
                 });
             });
-            formContainer.add(fab);
         }
         /* end biometric login */
 
@@ -146,32 +144,7 @@ public class LoginForm extends BaseForm {
         /* start Google Login */
         Button loginwg = makeButton("googleSignin", "Sign In with Google");
         loginwg.addActionListener((evt -> {
-            Login gc = GoogleConnect.getInstance();
-            gc.setClientId("786928689663-6f51bkknetf779gv8m89ivq1kgcrqudk.apps.googleusercontent.com");
-            gc.setRedirectURI("http://localhost:8000/connect/google/check");
-            gc.setClientSecret("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");
-
-            // Sets a LoginCallback listener
-            gc.setCallback(new LoginCallback() {
-                public void loginSuccessful() {
-                    System.out.println(0);
-                    ;// we can now start fetching stuff from Google+!
-                }
-
-                public void loginFailed(String errorMessage) {
-                    System.out.println(0);
-                }
-            });
-
-            if (!gc.isUserLoggedIn()) {
-                gc.doLogin();
-            } else {
-                // get the token and now you can query the Google API
-                String token = gc.getAccessToken().getToken();
-                Log.p(token);
-                // NOTE: On Android, this token will be null unless you provide valid
-                // client ID and secrets.
-            }
+            new AuthenticationBrowserComponentForm().show();
         }));
         formContainer.addComponent(loginwg);
 

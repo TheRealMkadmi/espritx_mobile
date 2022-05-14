@@ -11,5 +11,6 @@ package com.espritx.client.utils;
  */
 public class Statics {
     //public static final String BASE_URL="https://espritx.xyz/api";
-    public static final String BASE_URL="http://localhost:8000/api";
+    public static final String DOMAIN="http://localhost:8000";
+    public static final String BASE_URL = DOMAIN + "/api";
 }

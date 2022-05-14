@@ -46,7 +46,6 @@ public class ShowRequestUserForm extends BaseForm {
         UiBinding ui = new UiBinding();
         Request prot = new Request();
         UiBinding.BoundTableModel tb = ui.createTableModel(shadowCopy, prot);
-        tb.excludeProperty(prot.id);
         tb.excludeProperty(prot.Attachement);
         tb.excludeProperty(prot.Description);
         tb.excludeProperty(prot.Email);
@@ -54,6 +53,7 @@ public class ShowRequestUserForm extends BaseForm {
         tb.excludeProperty(prot.RespondedAt);
         tb.excludeProperty(prot.UpdatedAt);
         tb.excludeProperty(prot.Response);
+        tb.setEditable(prot.id, false);
         tb.setEditable(prot.Title, false);
         tb.setEditable(prot.CreatedAt, false);
         tb.setEditable(prot.Type, false);
