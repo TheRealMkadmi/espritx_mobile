@@ -142,13 +142,13 @@ public class LoginForm extends BaseForm {
         /* end login button */
 
         /* start Google Login */
-        Button loginwg = makeButton("googleSignin", "Sign In with Google");
+        Button loginwg = makeButton("googleSignin", "Single Sign On");
         loginwg.addActionListener((evt -> {
             new AuthenticationBrowserComponentForm().show();
         }));
         formContainer.addComponent(loginwg);
 
 
-        formContainer.addComponent(makeButton("ForgotPasswordContainer", "Forgot your Password?", "CenterLabelSmall"));
+        //formContainer.addComponent(makeButton("ForgotPasswordContainer", "Forgot your Password?", "CenterLabelSmall"));
     }
 }

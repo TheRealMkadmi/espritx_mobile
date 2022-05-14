@@ -97,9 +97,7 @@ public class GroupForm extends BaseForm {
         addComponent(BorderLayout.CENTER, t);
 
         getToolbar().addMaterialCommandToRightBar("", FontImage.MATERIAL_ADD, e -> {
-            Dialog d = new Dialog("Add a User to " + group.display_name);
-            d.setLayout(new BorderLayout());
-            d.showBack();
+
 
             final DefaultListModel<String> options = new DefaultListModel<>();
             AutoCompleteTextField ac = new AutoCompleteTextField(options) {
@@ -119,8 +117,10 @@ public class GroupForm extends BaseForm {
                     return true;
                 }
             };
-            ac.setMinimumElementsShownInPopup(2);
+            ac.setMinimumElementsShownInPopup(1);
             ac.setPopupPosition(AutoCompleteTextField.POPUP_POSITION_UNDER);
+
+            Dialog d = new Dialog("Add a User to " + group.display_name);
 
             Button button = this.makeButton("Add", "Add");
             button.addActionListener(evt -> {
@@ -131,13 +131,14 @@ public class GroupForm extends BaseForm {
                     ToastBar.showInfoMessage("User is already in group");
                     return;
                 }
+                d.dispose();
                 group.members.add(newUser);
                 t.clearSelectedRow().refresh();
-                d.dispose();
                 ToastBar.showInfoMessage(newUser.getFullName() + " added. Don't forget to save.");
             });
-            d.addComponent(BorderLayout.SOUTH, button);
+            d.setLayout(new BorderLayout());
             d.add(BorderLayout.CENTER, ac);
+            d.add(BorderLayout.SOUTH, button);
             d.show();
         });
 

@@ -58,8 +58,8 @@ public class UserForm extends BaseForm {
         iui.excludeProperty(this.user.id);
         iui.excludeProperty(this.user.avatarFile);
         iui.excludeProperty(this.user.about);
-        iui.setMultiChoiceLabels(this.user.userStatus, "Active", "Pending", "Inactive", "Restricted");
-        iui.setMultiChoiceValues(this.user.userStatus, "active", "pending", "inactive", "restricted");
+        iui.setMultiChoiceLabels(this.user.userStatus, "Active", "Pending", "Alumnus", "Restricted");
+        iui.setMultiChoiceValues(this.user.userStatus, "active", "pending", "alumnus", "restricted");
         iui.setMultiChoiceLabels(this.user.identityType, "ID Card", "Passport", "N/A");
         iui.setMultiChoiceValues(this.user.identityType, "cin", "passport", "Unknown");
         iui.excludeProperty(this.user.groups);
@@ -78,13 +78,13 @@ public class UserForm extends BaseForm {
                 } else {
                     this.userService.Create(user);
                 }
+                dlg.dispose();
+                (new ShowUsers()).show();
             } catch (Exception e) {
                 Log.p(e.getMessage(), Log.ERROR);
                 dlg.dispose();
                 Dialog.show("error", e.getMessage(), "ok", null);
             }
-            dlg.dispose();
-            (new ShowUsers()).show();
         });
         actions.add(saveButton);
         if (user.id.get() != null) {
