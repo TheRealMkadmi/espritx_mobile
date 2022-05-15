@@ -141,41 +141,5 @@ public class LoginForm extends BaseForm {
             }
         });
         formContainer.addComponent(loginButton);
-        /* end login button */
-
-        /* start Google Login */
-        Button loginwg = makeButton("googleSignin", "Sign In with Google");
-        loginwg.addActionListener((evt -> {
-            Login gc = GoogleConnect.getInstance();
-            gc.setClientId("786928689663-6f51bkknetf779gv8m89ivq1kgcrqudk.apps.googleusercontent.com");
-            gc.setRedirectURI("http://localhost:8000/connect/google/check");
-            gc.setClientSecret("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");
-
-            // Sets a LoginCallback listener
-            gc.setCallback(new LoginCallback() {
-                public void loginSuccessful() {
-                    System.out.println(0);
-                    ;// we can now start fetching stuff from Google+!
-                }
-
-                public void loginFailed(String errorMessage) {
-                    System.out.println(0);
-                }
-            });
-
-            if (!gc.isUserLoggedIn()) {
-                gc.doLogin();
-            } else {
-                // get the token and now you can query the Google API
-                String token = gc.getAccessToken().getToken();
-                Log.p(token);
-                // NOTE: On Android, this token will be null unless you provide valid
-                // client ID and secrets.
-            }
-        }));
-        formContainer.addComponent(loginwg);
-
-
-        formContainer.addComponent(makeButton("ForgotPasswordContainer", "Forgot your Password?", "CenterLabelSmall"));
     }
 }
