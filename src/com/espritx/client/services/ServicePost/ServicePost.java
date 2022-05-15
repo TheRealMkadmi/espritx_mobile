@@ -169,22 +169,22 @@ public class ServicePost {
 
 
 
-                      //  float    idC = Float.parseFloat(obj.get("idC").toString());
-                      //  float    idpc = Float.parseFloat(obj.get("post").toString());
-                     //   int iddpc=Math.round(idpc);
+                        //  float    idC = Float.parseFloat(obj.get("idC").toString());
+                        //  float    idpc = Float.parseFloat(obj.get("post").toString());
+                        //   int iddpc=Math.round(idpc);
                         float nbC = Float.parseFloat(obj.get("nbrcomments").toString());
                         float totalP = Float.parseFloat(obj.get("nbPub").toString());
                         float totalComments = Float.parseFloat(obj.get("totalComments").toString());
                         float nbL = Float.parseFloat(obj.get("nbLikes").toString());
                         String title = obj.get("title").toString();
                         List<Map<String, Object>> listofMaps2 = (List<Map<String, Object>>) obj.get("commentaires");
-for (Map<String, Object> c : listofMaps2){
-    String message= c.get("commentaire").toString();
-    System.out.println("******************************************"+message);
-    p.setCommentaire(message);
+                        for (Map<String, Object> c : listofMaps2){
+                            String message= c.get("commentaire").toString();
+                            System.out.println("******************************************"+message);
+                            p.setCommentaire(message);
 
 
-}
+                        }
 
 
 
@@ -192,11 +192,11 @@ for (Map<String, Object> c : listofMaps2){
                         //    String commentaire = obj.get("commentaire").toString();
 
                         String content = obj.get("content").toString();
-                     //   'post'=>$idPc,
+                        //   'post'=>$idPc,
                         String nom=obj.get("nom").toString();
                         String prenom=obj.get("prenom").toString();
 
-                          String lati=obj.get("latitude").toString();
+                        String lati=obj.get("latitude").toString();
                         String longi=obj.get("longitude").toString();
                         String mail=obj.get("email").toString();
                         Boolean isValid = Boolean.parseBoolean(obj.get("isValid").toString());
@@ -205,9 +205,9 @@ for (Map<String, Object> c : listofMaps2){
 
 
                         dateString = new SimpleDateFormat("y-m-d").parse(obj.get("createdAt").toString());
-p.setNom(nom);
-p.setPrenom(prenom);
-p.setEmail(mail);
+                        p.setNom(nom);
+                        p.setPrenom(prenom);
+                        p.setEmail(mail);
                         p.setTotalPost(Math.round(totalP));
                         p.setTotalcomments(Math.round(totalComments));
                         p.setCreated_at(dateString);
@@ -227,10 +227,10 @@ else{
 }
 p.setPost(Math.round(iddpc));*/
                         p.setTitle(title);
-                    //  p.setCommentaire(commentaire);
+                        //  p.setCommentaire(commentaire);
                         p.setContent(content);
-                           p.setLatitude(lati);
-                         p.setLongitude(longi);
+                        p.setLatitude(lati);
+                        p.setLongitude(longi);
                         p.setValid(isValid);
                         result.add(p);
 
@@ -273,14 +273,14 @@ p.setPost(Math.round(iddpc));*/
                         Commentaire com = new Commentaire();
 
 
-                            float id = Float.parseFloat(obj.get("postId").toString());
-                            String message= obj.get("commentaire").toString();
+                        float id = Float.parseFloat(obj.get("postId").toString());
+                        String message= obj.get("commentaire").toString();
                         String nom= obj.get("nom").toString();
                         String prenom= obj.get("prenom").toString();
-                       com.setNom(nom);
-                       com.setPrenom(prenom);
-                            com.setIdPost(Math.round(id));
-                            com.setMessage(message);
+                        com.setNom(nom);
+                        com.setPrenom(prenom);
+                        com.setIdPost(Math.round(id));
+                        com.setMessage(message);
 
                         result2.add(com);
 
@@ -363,8 +363,8 @@ p.setPost(Math.round(iddpc));*/
         int totalC=0;
 
         totalC+=p.getNbCommentaire();
-          return  totalC;
- }
+        return  totalC;
+    }
 
     public Boolean deletePost(int id) {
         req = new ConnectionRequest();

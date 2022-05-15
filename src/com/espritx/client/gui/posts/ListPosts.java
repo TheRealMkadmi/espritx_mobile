@@ -43,7 +43,7 @@ public class ListPosts extends BaseForm  {
 
     public ListPosts(Resources res){
         installSidemenu(res);
-       //super("Feed", BoxLayout.y());
+        //super("Feed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         setToolbar(tb);
@@ -55,17 +55,17 @@ public class ListPosts extends BaseForm  {
         Tabs swipe = new Tabs();
         Label s1 = new Label();
         Label s2 = new Label();
-        
-        
-       addTab(swipe,s1,res.getImage("feed.jpg"),"","",res);
-        
-        
-       
-       
-       
-       
-       
-         swipe.setUIID("Container");
+
+
+        addTab(swipe,s1,res.getImage("feed.jpg"),"","",res);
+
+
+
+
+
+
+
+        swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
 
@@ -111,7 +111,7 @@ public class ListPosts extends BaseForm  {
         liste.setUIID("SelectBar");
         RadioButton partage = RadioButton.createToggle("poster", barGroup);
         partage.setUIID("SelectBar");
-       // RadioButton chercher = RadioButton.createToggle("Cherecher", barGroup);
+        // RadioButton chercher = RadioButton.createToggle("Cherecher", barGroup);
         //chercher.setUIID("SelectBar");
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
         liste.addActionListener((e) -> {
@@ -124,14 +124,14 @@ public class ListPosts extends BaseForm  {
 
 
         mesListes.addActionListener((e) -> {
-           MesPosts a= new MesPosts(res);
+            MesPosts a= new MesPosts(res);
             a.show();
 
             refreshTheme();
         });
         partage.addActionListener((e) -> {
-         AjoutPost a= new AjoutPost(res);
-         a.show();
+            AjoutPost a= new AjoutPost(res);
+            a.show();
             refreshTheme();
         });
         add(LayeredLayout.encloseIn(
@@ -145,7 +145,7 @@ public class ListPosts extends BaseForm  {
 
 
 
-       // partage.setSelected(true);
+        // partage.setSelected(true);
         arrow.setVisible(false);
         addShowListener(e -> {
             arrow.setVisible(true);
@@ -160,7 +160,7 @@ public class ListPosts extends BaseForm  {
             updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
         });
 
-       
+
         ArrayList<Post> list=ServicePost.getInstance().afficherAllPosts();
         ArrayList<Commentaire> listCommentaires = ServicePost.getInstance().afficherAllComments();
 
@@ -240,7 +240,7 @@ public class ListPosts extends BaseForm  {
 
                 });
 
-             //   AjouterCommentaire.setUIID("SelectBar");
+                //   AjouterCommentaire.setUIID("SelectBar");
 
                 ButtonGroup barGroup2 = new ButtonGroup();
                 RadioButton nbComm= RadioButton.createToggle(p.getNbCommentaire()+" Commentaires", barGroup2);
@@ -264,103 +264,103 @@ public class ListPosts extends BaseForm  {
                 gui_Button_4.setInlineStylesTheme(res);
                 gui_Button_4.setName("Button_4");
 
-                    addButton(urlim, p, res);
+                addButton(urlim, p, res);
                 add(nbComm);
-               add( title1);
+                add( title1);
                 add(AjouterCommentaire);
 
                 add(gui_Text_Area_4);
 
-              //  add(gui_Button_4);
-                }
+                //  add(gui_Button_4);
+            }
 
 
 
             for (Commentaire c : listCommentaires) {
-if(p.getId()==c.getIdPost()) {
-    MultiButton gui_Multi_Button_3 = new MultiButton();
+                if(p.getId()==c.getIdPost()) {
+                    MultiButton gui_Multi_Button_3 = new MultiButton();
 
-    gui_Multi_Button_3.setUIID("Label");
-    gui_Multi_Button_3.setInlineStylesTheme(res);
-    gui_Multi_Button_3.setName("Multi_Button_3");
+                    gui_Multi_Button_3.setUIID("Label");
+                    gui_Multi_Button_3.setInlineStylesTheme(res);
+                    gui_Multi_Button_3.setName("Multi_Button_3");
 
-    gui_Multi_Button_3.setPropertyValue("line1", c.getNom()+" "+c.getPrenom());
-    gui_Multi_Button_3.setPropertyValue("line2", c.getMessage());
-    gui_Multi_Button_3.setPropertyValue("uiid1", "Label");
-    gui_Multi_Button_3.setPropertyValue("uiid2", "RedLabel");
-
-
-    //  cnt.add(comm);
-
-    add(gui_Multi_Button_3);
+                    gui_Multi_Button_3.setPropertyValue("line1", c.getNom()+" "+c.getPrenom());
+                    gui_Multi_Button_3.setPropertyValue("line2", c.getMessage());
+                    gui_Multi_Button_3.setPropertyValue("uiid1", "Label");
+                    gui_Multi_Button_3.setPropertyValue("uiid2", "RedLabel");
 
 
-}
+                    //  cnt.add(comm);
+
+                    add(gui_Multi_Button_3);
+
+
+                }
 
             }
 
 
         }
 
-    
+
     }
-    
-    
-    
-      private void addTab(Tabs swipe, Label spacer,Image image, String string, String text, Resources res) {
-int size= Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
-
-if( image.getHeight() < size ){
-
-image =image.scaledHeight(size);
 
 
-}
+
+    private void addTab(Tabs swipe, Label spacer,Image image, String string, String text, Resources res) {
+        int size= Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
+
+        if( image.getHeight() < size ){
+
+            image =image.scaledHeight(size);
 
 
-if(image.getHeight()>Display.getInstance().getDisplayHeight()/2){
+        }
 
-image= image.scaledHeight(Display.getInstance().getDisplayHeight()/2);
-}
+
+        if(image.getHeight()>Display.getInstance().getDisplayHeight()/2){
+
+            image= image.scaledHeight(Display.getInstance().getDisplayHeight()/2);
+        }
 
         ScaleImageLabel imagescale=new ScaleImageLabel(image);
-       imagescale.setUIID("Container");
+        imagescale.setUIID("Container");
         imagescale.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
-Label overLay=new Label("","ImageOverlay");
+        Label overLay=new Label("","ImageOverlay");
 
 
 
-Container page1= LayeredLayout.encloseIn(
-imagescale,
-        overLay, 
-        BorderLayout.south(
-        BoxLayout.encloseY(
-        new SpanLabel(text, "LargeWhiteText"),
-              spacer
-        )
-        
-        )
+        Container page1= LayeredLayout.encloseIn(
+                imagescale,
+                overLay,
+                BorderLayout.south(
+                        BoxLayout.encloseY(
+                                new SpanLabel(text, "LargeWhiteText"),
+                                spacer
+                        )
 
-);
-swipe.addTab("", res.getImage("feed.jpg"),page1);
+                )
+
+        );
+        swipe.addTab("", res.getImage("feed.jpg"),page1);
 
     }
-    
-    
+
+
     public void bindButtonSelection(Button btn,Label l){
-    
-    btn.addActionListener((evt) -> {
-    
-        if(btn.isSelected()){
-        
-        updateArrowPosition(btn,l);
-        }
-        
-        
-    });
-    
-    
-    
+
+        btn.addActionListener((evt) -> {
+
+            if(btn.isSelected()){
+
+                updateArrowPosition(btn,l);
+            }
+
+
+        });
+
+
+
     }
 
     private void updateArrowPosition(Button btn, Label l) {
@@ -374,10 +374,12 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
 
 
         // create a String
-        String str = p.getLatitude();
-        String str2 = p.getLongitude();
+        String str = p.getLongitude();
+        String str2 = p.getLatitude();
         // convert into Double
         double lat = Double.parseDouble(str);
+
+
         double lon = Double.parseDouble(str2);
         Button btnMoveCamera = new Button("Voir la position");
         Style s = new Style();
@@ -600,17 +602,17 @@ swipe.addTab("", res.getImage("feed.jpg"),page1);
 
         ));
         //cnt1.add(BorderLayout.south( BoxLayout.encloseY(
-           //     BoxLayout.encloseY(BoxLayout.encloseX(gui_Text_Area_2,gui_Button_2)))));
+        //     BoxLayout.encloseY(BoxLayout.encloseX(gui_Text_Area_2,gui_Button_2)))));
 
 
 
         Container root = new Container();
-     //   int height1=Display.getInstance().convertToPixels(100f);
-       // int width2=Display.getInstance().convertToPixels(10f);
+        //   int height1=Display.getInstance().convertToPixels(100f);
+        // int width2=Display.getInstance().convertToPixels(10f);
         //cnt1.setPreferredSize(new Dimension(width2,height1));
 
 
-                add(cnt);
+        add(cnt);
         if(p.getLongitude() != null && p.getLatitude() != null){
             add( cnt1);
             add( btnMoveCamera);}
