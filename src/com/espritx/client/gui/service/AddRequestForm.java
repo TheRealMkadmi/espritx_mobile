@@ -126,30 +126,6 @@ public class AddRequestForm extends BaseForm {
     public AddRequestForm(Resources resourceObjectInstance, Request instance) {
         setLayout(new BorderLayout());
 
-        final String[] newPicturePath = new String[1];
-        Container pictureContainer = new Container(BoxLayout.x());
-        instance.getEncodedPic(6);
-        pictureContainer.add(instance.getEncodedPic(6));
-        pictureContainer.setName("Picture Container");
-        Label filePickerStatus = new Label("No file chosen.");
-        pictureContainer.add(filePickerStatus);
-        Image icon = FontImage.createMaterial(FontImage.MATERIAL_ADD, new Style());
-        ScaleImageButton scaleImageButton = new ScaleImageButton(icon);
-        scaleImageButton.addActionListener((evt) -> {
-            ActionListener callback = e -> {
-                if (e != null && e.getSource() != null) {
-                    newPicturePath[0] = (String) e.getSource();
-                    filePickerStatus.setText("Selected File");
-                }
-            };
-
-            if (FileChooser.isAvailable()) {
-                FileChooser.showOpenDialog(".png,image/png,.jpg,image/jpg,.jpeg", callback);
-            } else {
-                Display.getInstance().openGallery(callback, Display.GALLERY_IMAGE);
-            }
-        });
-        pictureContainer.add(scaleImageButton);
 
         this.RequestService = new RequestService();
         this.request = instance;
@@ -195,7 +171,7 @@ public class AddRequestForm extends BaseForm {
             d.removeComponent(radioButtonList);
         });
 
-        cnt.addAll(Type, b, pictureContainer);
+        cnt.addAll(Type, b);
 
         addComponent(BorderLayout.CENTER, cnt);
 
@@ -205,7 +181,7 @@ public class AddRequestForm extends BaseForm {
             try {
                 Service TypeSer = (Service) radioButtonList.getModel().getItemAt(radioButtonList.getModel().getSelectedIndex());
                 request.Type.set(TypeSer);
-                com.espritx.client.services.Service.RequestService.UpdateRequest(request, newPicturePath[0], null);
+                com.espritx.client.services.Service.RequestService.UpdateRequest(request, null, null);
             } catch (Exception e) {
                 Log.p(e.getMessage(), Log.ERROR);
                 dlg.dispose();
