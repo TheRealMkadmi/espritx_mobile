@@ -21,6 +21,7 @@ import com.codename1.uikit.pheonixui.BaseForm;
 import com.codename1.uikit.pheonixui.InboxForm;
 import com.codename1.uikit.pheonixui.SplashForm;
 import com.espritx.client.services.User.AuthenticationService;
+import com.espritx.client.utils.Statics;
 import com.espritx.client.utils.StringUtils;
 
 /**
@@ -45,8 +46,6 @@ public class LoginForm extends BaseForm {
         getTitleArea().setUIID("Container");
         getToolbar().setUIID("Container");
         getToolbar().getTitleComponent().setUIID("SigninTitle");
-        FontImage mat = FontImage.createMaterial(FontImage.MATERIAL_CLOSE, "SigninTitle", 3.5f);
-        getToolbar().addCommandToLeftBar("", mat, e -> new SplashForm().show());
         getContentPane().setUIID("SignInForm");
     }
 
@@ -76,9 +75,9 @@ public class LoginForm extends BaseForm {
         CheckBox save_account_to_device = new CheckBox("Save to device");
         save_account_to_device.setSelected(false);
         if (Fingerprint.isAvailable()) {
-            formContainer.add(BoxLayout.encloseXCenter(save_account_to_device));
+            formContainer.add(save_account_to_device);
             FloatingActionButton fab = FloatingActionButton.createBadge("Biometric Login");
-            formContainer.add(BoxLayout.encloseXCenter(fab));
+            formContainer.add(fab);
             fab.addActionListener(evt -> {
                 Fingerprint.getPassword(
                         "Get account from device",  // Message to display in auth dialog
@@ -104,7 +103,6 @@ public class LoginForm extends BaseForm {
                     }
                 });
             });
-            formContainer.add(fab);
         }
         /* end biometric login */
 
@@ -141,5 +139,16 @@ public class LoginForm extends BaseForm {
             }
         });
         formContainer.addComponent(loginButton);
+        /* end login button */
+
+        /* start Google Login */
+        Button loginwg = makeButton("googleSignin", "Single Sign On");
+        loginwg.addActionListener((evt -> {
+            AuthenticationService.StartDeviceAuthrorization();
+        }));
+        formContainer.addComponent(loginwg);
+
+
+        //formContainer.addComponent(makeButton("ForgotPasswordContainer", "Forgot your Password?", "CenterLabelSmall"));
     }
 }

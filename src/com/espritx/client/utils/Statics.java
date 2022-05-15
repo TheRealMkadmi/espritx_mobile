@@ -9,6 +9,7 @@ package com.espritx.client.utils;
  * @author mouna
  */
 public class Statics {
-    public static final String BASE_URL = "https://espritx.xyz/api";
+    public static final String DOMAIN = "https://espritx.xyz";
+    public static final String BASE_URL = DOMAIN + "/api";
     //public static final String BASE_URL="http://localhost:8000/api";
 }

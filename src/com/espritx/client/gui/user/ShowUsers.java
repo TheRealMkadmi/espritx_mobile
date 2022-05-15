@@ -47,7 +47,7 @@ public class ShowUsers extends BaseForm {
         for (User user : userList) {
             MultiButton mb = new MultiButton(user.getFullName());
             mb.setInlineStylesTheme(resourceObjectInstance);
-            mb.setIcon(user.getEncodedAvatar(10));
+            mb.setIcon(user.getEncodedAvatar(8));
             mb.setUIIDLine1("SlightlySmallerFontLabelLeft");
             mb.setTextLine2(user.email.get());
             mb.setUIIDLine2("RedLabel");
@@ -79,9 +79,7 @@ public class ShowUsers extends BaseForm {
             }
             list.animateLayout(150);
         }, 4);
-        getToolbar().addCommandToRightBar("", FontImage.createMaterial(FontImage.MATERIAL_PERSON_ADD, "FloatingActionButton", 4f), (e) -> {
-            (new UserForm(resourceObjectInstance, new User())).show();
-        });
+        getToolbar().addCommandToRightBar("", FontImage.createMaterial(FontImage.MATERIAL_PERSON_ADD, "FloatingActionButton", 4f), (e) -> (new UserForm(resourceObjectInstance, new User())).show());
         dlg.dispose();
     }
 }
