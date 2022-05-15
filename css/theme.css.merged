@@ -1,5 +1,5 @@
 
-/* C:\Users\Moetez\IdeaProjects\untitled\lib\impl\css\CodeRAD\theme.css */
+/* C:\Users\Wahib\Desktop\untitled\lib\impl\css\CodeRAD\theme.css */
 :root {
     --rad-main-font: 'native:MainRegular';
     --rad-main-font-light: 'native:MainLight';
@@ -142,9 +142,9 @@ FieldDescriptionText {
     font-family: var(--rad-main-font);
     color: #666666;
 }
-/* end C:\Users\Moetez\IdeaProjects\untitled\lib\impl\css\CodeRAD\theme.css*/
+/* end C:\Users\Wahib\Desktop\untitled\lib\impl\css\CodeRAD\theme.css*/
 
-/* C:\Users\Moetez\IdeaProjects\untitled\lib\impl\css\RADChatRoom\theme.css */
+/* C:\Users\Wahib\Desktop\untitled\lib\impl\css\RADChatRoom\theme.css */
 ChatBubbleTextOwn {
     font-family: 'native:MainLight';
     font-size: 2.5mm;
@@ -253,11 +253,11 @@ TypingAnimationDot {
     color:#666666;
     font-size: 1mm;
 }
-/* end C:\Users\Moetez\IdeaProjects\untitled\lib\impl\css\RADChatRoom\theme.css*/
+/* end C:\Users\Wahib\Desktop\untitled\lib\impl\css\RADChatRoom\theme.css*/
 
-/* C:\Users\Moetez\IdeaProjects\untitled\css\theme.css */
+/* C:\Users\Wahib\Desktop\untitled\css\theme.css */
 #Constants {
     includeNativeBool: true; 
 }
 
-/* End C:\Users\Moetez\IdeaProjects\untitled\css\theme.css */
+/* End C:\Users\Wahib\Desktop\untitled\css\theme.css */
