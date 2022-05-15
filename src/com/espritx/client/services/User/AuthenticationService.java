@@ -60,7 +60,7 @@ public class AuthenticationService {
     }
 
     public static void StartDeviceAuthrorization(){
-        String code = Rest.get(Statics.DOMAIN + "/authenticate_device/start").acceptJson().getAsJsonMap().getResponseData().get("code").toString();
+        String code = Rest.post(Statics.DOMAIN + "/authenticate_device/start").acceptJson().getAsJsonMap().getResponseData().get("code").toString();
         Display.getInstance().execute(Statics.DOMAIN + "/authenticated-device-authorization/mobile/" + code);
     }
 }

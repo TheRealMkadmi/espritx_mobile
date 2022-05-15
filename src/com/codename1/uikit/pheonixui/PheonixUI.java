@@ -19,6 +19,7 @@
 
 package com.codename1.uikit.pheonixui;
 
+import com.codename1.components.InfiniteProgress;
 import com.codename1.ui.*;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
@@ -26,6 +27,7 @@ import com.codename1.util.StringUtil;
 import com.espritx.client.gui.user.LoginForm;
 import com.espritx.client.gui.user.ShowUsers;
 import com.espritx.client.services.User.AuthenticationService;
+import com.espritx.client.utils.StringUtils;
 
 import java.util.List;
 
@@ -42,28 +44,21 @@ public class PheonixUI {
 
     public void start() {
         String arg = CN.getProperty("AppArg", null);
-        if(arg != null) {
-            if(arg.contains("//")) {
-                List<String> strs = StringUtil.tokenize(arg, "/");
-                arg = strs.get(strs.size() - 1);
-                while(arg.startsWith("/")) {
-                    arg = arg.substring(1);
-                }
-            }
-            if(arg.startsWith("token-")) {
-                String token = arg.substring(6);
+        if (arg != null && arg.startsWith("espritxandroid://token-")) {
+            String token = arg.substring(23);
+            try {
                 AuthenticationService.SetAuthenticatedToken(token);
-                CN.callSerially(() ->
-                        (new ShowUsers()).show()
-                );
+                (new ShowUsers(theme)).show();
+            } catch (Exception e) {
+                Dialog.show("An error occured", e.getMessage(), "OK", "");
             }
-            return;
+        } else {
+            if (current != null) {
+                current.show();
+                return;
+            }
+            new LoginForm(theme).show();
         }
-        if (current != null) {
-            current.show();
-            return;
-        }
-        new LoginForm(theme).show();
     }
 
     public void stop() {
